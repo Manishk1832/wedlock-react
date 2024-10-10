@@ -13,7 +13,7 @@ const persistConfig = {
     storage, // Use localStorage to persist the user state
     whitelist: ['accessToken', 'refreshToken', 'user', 'isPersonalFormFilled', 'isQualificationFormFilled', 'isOtherFormFilled', 'isLocationFormFilled', 'isImageFormFilled'], 
 };
-
+        
 // Create a persisted reducer for the user state
 const persistedUserReducer = persistReducer(persistConfig, userReducer.reducer);
 

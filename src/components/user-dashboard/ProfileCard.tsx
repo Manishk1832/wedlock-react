@@ -41,10 +41,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profiles }) => {
   const getBorderColor = (userType: string) => {
     switch (userType) {
       case "Exclusive":
-        return "border-[#8E69B4]"; // Purple border
+        return "border-[#60457E]"; 
       case "Premium":
-        return "border-[#007EAF]"; // Blue border
-      case "normal":
+        return "border-[#007EAF]"; 
+      case "Standard":
         return ""; // No border
       default:
         return "";
@@ -56,13 +56,13 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profiles }) => {
     window.location.reload();
   };
   return (
-    <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className=" ">
       {profiles.map((data) => (
         <div
           onClick={() => handleCardClick(data.userId)}
           key={data.id}
-          className={`relative w-full cursor-pointer md:w-[24rem] ${data.userType !== "normal" ? "h-[33.1rem]" : "h-[33.1rem]"} rounded-[1.9rem] ${
-            data.userType !== "normal" ? "border-t-[1rem]" : ""
+          className={`relative w-full cursor-pointer md:w-[24rem] ${data.userType !== "Standard" ? "h-[33.1rem]" : "h-[33.1rem]"} rounded-[1.9rem] ${
+            data.userType !== "Standard" ? "border-t-[1rem]" : ""
           } ${getBorderColor(data.userType)}`}
         >
           <img
@@ -72,7 +72,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profiles }) => {
           />
 
           <div
-            className={`relative p-5 text-white ${data.userType !== "normal" ? "space-y-[12.5rem]" : ""} h-full space-y-[13.5rem] rounded-2xl bg-black bg-opacity-45`}
+            className={`relative p-5 text-white ${data.userType !== "Standard" ? "space-y-[12.5rem]" : ""} h-full space-y-[13.5rem] rounded-2xl bg-black bg-opacity-45`}
           >
             <div className="flex items-center justify-between">
               <div className="rounded-full border-2 border-[#FFFFFF33] bg-transparent px-2">
