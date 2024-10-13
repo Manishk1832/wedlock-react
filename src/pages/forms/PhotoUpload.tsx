@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { toast } from "sonner";
 import { useProfileImageUploadMutation } from "../../Redux/Api/form.api";
 import { useNavigate } from "react-router-dom";
+import {auth,database} from '../../../utils/firebaseConfig.ts';
+import {ref,update} from "firebase/database";
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 // import { useDispatch } from "react-redux";
 // import { setUser } from "../../Redux/Reducers/user.reducer";
@@ -35,6 +37,7 @@ const PhotoUpload = () => {
   type ApiResponse = {
     success: boolean;
     message: string;
+    imageUploadData?: Array<string>;
   };
   type FetchBaseQueryErrorWithData = FetchBaseQueryError & {
     data: ApiResponse;
@@ -60,7 +63,12 @@ const PhotoUpload = () => {
             return;
           }
         } else {
-          // const isImageFormFilled = true;
+          const successData = response.data as ApiResponse;
+           const imageUrl = successData?.imageUploadData?.[0];
+           await update(ref(database, `users/${auth.currentUser?.uid}`), {
+            profilePic: imageUrl,
+           })
+
           toast.success(response.data.message);
           // dispatch(setUser(isImageFormFilled));
           navigate("/other-details");

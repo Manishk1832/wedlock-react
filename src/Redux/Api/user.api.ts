@@ -8,6 +8,11 @@ interface LogoutResponse {
     message: string;
 }
 
+interface DeleteResponse {
+  success: boolean;
+  message: string;
+}
+
 
 console.log(import.meta.env.VITE_BASE_URL, 'url');
 
@@ -90,14 +95,20 @@ export const userApi = createApi({
 
     }),
 
-
-
     logoutUser: builder.mutation<LogoutResponse, void>({
       query: () => ({
         url: 'logout',
         method: 'GET',
       }),
     }),
+
+    deleteUser: builder.mutation<DeleteResponse, void>({
+      query:() => ({
+        url: 'delete-user',
+        method: 'DELETE',
+        
+      })
+    })
     
 
 
@@ -107,4 +118,4 @@ export const userApi = createApi({
 
 });
 
-export const { useRegisterUserMutation,useVerifyOtpMutation,useSetPasswordMutation,useLoginMutation,useLogoutUserMutation,useForgotpasswordMutation,useVerifyMutation,useResetpasswordMutation} = userApi;
+export const { useRegisterUserMutation,useVerifyOtpMutation,useSetPasswordMutation,useLoginMutation,useLogoutUserMutation,useForgotpasswordMutation,useVerifyMutation,useResetpasswordMutation,useDeleteUserMutation} = userApi;

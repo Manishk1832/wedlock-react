@@ -12,6 +12,8 @@ import { toast } from 'sonner'
 import { z } from 'zod';
 
 
+
+
 const schema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
 });
@@ -23,11 +25,7 @@ type FormData = z.infer<typeof schema>;
 const register = () => {
     const navigate = useNavigate();
     
-
-
     const dispatch = useDispatch();
-
-    
   const [registerUser,{isLoading}] = useRegisterUserMutation();
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormData>({
@@ -50,6 +48,8 @@ const register = () => {
   
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
+
+     localStorage.setItem("email", data.email);
       const res = await registerUser({ email: data.email });
   
       if ('error' in res && res.error) {

@@ -110,7 +110,7 @@ const ReligiouModel: React.FC<EducationalModelProps> = ({
         classNames={classNames}
         styles={modalStyles}
         title={
-          <span className={styles["my-modal-title"]}>Personal Background</span>
+          <span className={styles["my-modal-title"]}>Education and Financial</span>
         }
         centered
         confirmLoading={isLoading}
@@ -130,7 +130,18 @@ const ReligiouModel: React.FC<EducationalModelProps> = ({
             </Col>
 
             <Col span={24}>
-              <Form.Item name="education" label="Education">
+              <Form.Item name="highestQualification" label="Education">
+                <Select placeholder="Select Body Type">
+                  <Option value="elementary-school">Elementary School</Option>
+                  <Option value="high-school">High School</Option>
+                  <Option value="graduation">Graduation</Option>
+                  <Option value="post-graduation">Post Graduation</Option>
+                  <Option value="other">Other</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item name="currentlyWorking" label="Working Status">
                 <Select placeholder="Select Body Type">
                   <Option value="elementary-school">Elementary School</Option>
                   <Option value="high-school">High School</Option>

@@ -114,34 +114,34 @@ const ReligiousModel: React.FC<ReligiousModalProps> = ({
         confirmLoading={isLoading}
       >
         <Form form={form} layout="vertical" autoComplete="off" onFinish={handleFormSubmit}>
-          <Form.Item name="religion" label="Religion" rules={[{ required: true , message: "Please enter your religion"}]}  >
+          <Form.Item name="religion" label="Religion" rules={[{ required: false , message: "Please enter your religion"}]}  >
             <Input placeholder="Enter Religion" />
           </Form.Item>
 
-          <Form.Item name="caste" label="Caste" rules={[{ required: true , message: "Please enter your Caste"}]}  >
+          <Form.Item name="caste" label="Caste" rules={[{ required: false , message: "Please enter your Caste"}]}  >
             <Input placeholder="Enter Caste" />
           </Form.Item>
 
-          <Form.Item name="subCommunity" label="Sub Community"  rules={[{ required: true , message: "Please enter your sub community"}]}>
+          <Form.Item name="subCommunity" label="Sub Community"  rules={[{ required: false , message: "Please enter your sub community"}]}>
             <Input placeholder="Enter Sub Community" />
           </Form.Item>
-          <Form.Item name="community" label="Community" rules={[{ required: true , message: "Please enter your community"}]}>
+          <Form.Item name="community" label="Community" rules={[{ required: false , message: "Please enter your community"}]}>
             <Input placeholder="Enter Community" />
           </Form.Item>
-          <Form.Item name="gothra" label="Gothra/Gothram" rules={[{ required: true , message: "Please enter your Gothra"}]}>
+          <Form.Item name="gothra" label="Gothra/Gothram" rules={[{ required: false , message: "Please enter your Gothra"}]}>
             <Input placeholder="Enter Gothra" />
           </Form.Item>
-          <Form.Item name="dateOfBirth" label="Date of Birth" rules={[{ required: true , message: "Please enter your date of birth"}]}>
+          <Form.Item name="dateOfBirth" label="Date of Birth" rules={[{ required: false , message: "Please enter your date of birth"}]}>
             <Input placeholder="Enter Date of Birth" />
           </Form.Item>
-          <Form.Item name="timeOfBirth" label="Time of Birth" rules={[{ required: true , message: "Please enter your time of birth"}]}>
+          <Form.Item name="timeOfBirth" label="Time of Birth" rules={[{ required: false , message: "Please enter your time of birth"}]}>
             <Input placeholder="Enter Time of Birth" />
           </Form.Item>
-          <Form.Item name="placeOfBirth" label="Place of Birth" rules={[{ required: true , message: "Please enter your place of birth"}]}>
+          <Form.Item name="placeOfBirth" label="Place of Birth" rules={[{ required: false , message: "Please enter your place of birth"}]}>
             <Input placeholder="Enter Place of Birth" />
           </Form.Item>
 
-          <Form.Item name="motherTongue" label="Mother Tongue" rules={[{ required: true , message: "Please enter your mother tongue"}]}>
+          <Form.Item name="motherTongue" label="Mother Tongue" rules={[{ required: false , message: "Please enter your mother tongue"}]}>
             <Input placeholder="Enter Place of Birth" />
           </Form.Item>
           

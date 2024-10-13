@@ -28,13 +28,13 @@ const Ai = () => {
               <img
                 src="/Ai.svg"
                 alt="AI"
-                className="absolute lg:left-40 left-1/4 top-[-2.5rem] w-52 md:w-[24rem] lg:w-auto     xl:h-[40rem]  2xl:h-[48rem] object-contain"
+                className="absolute lg:left-40 left-1/4 top-[-2.5rem] w-52 md:w-[24rem] lg:w-auto   xl:h-[48rem]  2xl:h-[48rem] object-contain"
               />
               <div className="absolute top-1/6 right-[7%] md:right-[1.4rem] md:top-6  lg:top-20 lg:right-5 w-32 md:w-60  lg:w-80">
                 <img
                   src="/recomended.png"
                   alt="Recommended"
-                  className="w-full h-auto    "
+                  className="w-full h-auto"
                 />
               </div>
             </div>

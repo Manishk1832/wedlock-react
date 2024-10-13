@@ -2,18 +2,18 @@ import {useSetPasswordMutation} from "../../Redux/Api/user.api";
 import Input from '../../components/input/Input';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { SubmitHandler, useForm } from "react-hook-form";
+import { auth, database } from '../../../utils/firebaseConfig.ts';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {createUserWithEmailAndPassword} from "firebase/auth";
+import {  ref, set} from "firebase/database";
 import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
-
 import { z } from 'zod';
 import { toast } from 'sonner'
 
 const CreatePassword = () => {
 
     const navigate = useNavigate();
-
-
 
     const [setPassword] = useSetPasswordMutation();
 
@@ -34,46 +34,78 @@ const CreatePassword = () => {
     type ApiResponse = {
       success: boolean;
       message: string;
+      user: any;
     };
   
     type FetchBaseQueryErrorWithData = FetchBaseQueryError & {
       data: ApiResponse;
     };
+
   
     const onSubmit: SubmitHandler<CreatePasswordInputs> = async (data) => {
+
+      const email =  localStorage.getItem("email");
+
       const { password: confirmPassword } = data;
-      
       const answers = Cookies.get("answers");
       const parsedAnswers = answers ? JSON.parse(answers) : null;
-    
       if (!parsedAnswers) {
         toast.error("Failed to retrieve answers from cookies.");
         return;
       }
     
       try {
+         
         const res = await setPassword({ password: confirmPassword, answer: parsedAnswers });
-        
+
+
         if ('error' in res && res.error) {  
           const errorData = res.error as FetchBaseQueryErrorWithData;
-          
           if (errorData.data?.success === false) {
             toast.error(errorData.data.message);
             return;
           }
+
         } else {
+
           const successData = res.data as ApiResponse;
+          const userData = successData.user;
+
+          
+          const userCredential = await createUserWithEmailAndPassword(auth, email!, confirmPassword!);
+
+          const user = userCredential.user;
+
+          if(user !== null) {
+
+          await set(ref(database, 'users/' + user.uid), {
+            email: userData.email,
+            userId : userData.userId,
+            firstName:"",
+            lastName: "",
+            displayName: "",
+            profilePic:"",
+            fcmToken : "",
+            createdAt : new Date().toISOString(),
+          });
+          }
+
+
+
+          localStorage.removeItem("email");
+
           toast.success(successData.message);
           Cookies.remove("answers");
+
           navigate("/personal-details");
         }
-    
+
       } catch (error) {
         toast.error("An unexpected error occurred.");
         console.error(error);
       }
     };
-   
+
   return (
     <div className="min-w-screen h-screen flex flex-col items-center justify-center bg-[#007EAF]">
     <div className="flex items-center justify-center mb-2 md:mb-10">

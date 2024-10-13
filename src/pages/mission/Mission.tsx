@@ -2,12 +2,12 @@
 const Mission = () => {
     return (
         <div className="pt-[83.5px] ">
-          <div className="pt-16 space-y-16">
-            <div className=" flex justify-between items-center w-[79%] m-auto">
-              <h1 className="text-[#101828E5] text-7xl ">
+          <div className=" pt-5 mb-4 md:mb-0 md:pt-16 space-y-14">
+            <div className=" flex flex-col md:flex-row justify-between items-center w-[79%] m-auto ">
+              <h1 className="text-[#101828E5] text-5xl font-bold xl:text-7xl ">
                 At the heart of Wedlock.
               </h1>
-              <p className="text-[#42526B] text-lg    w-[56%] ">
+              <p className="text-[#42526B] text-md md:text-lg    md:w-[56%] py-4 w-full ">
                 Cras imperdiet est eget nulla fringilla, sit amet volutpat sem
                 tristique. Pellentesque quis augue ac mauris posuere vehicula.
               </p>
@@ -64,14 +64,14 @@ const Mission = () => {
     
           {/* value in action  */}
     
-          <div className="bg-[#F5F4F4] text-[#061C3D] font-lato py-16 px-32">
+          <div className="bg-[#F5F4F4] text-[#061C3D] font-lato py-16 px-14 md:px-32">
           <div className="container mx-auto ">
             <h1 className="text-4xl font-bold mb-4">We put our values in action.</h1>
             <p className="text-lg mb-12">
               Our principles guide us to put our values first with every decision.
             </p>
-            <div className="flex gap-8">
-              <div className="bg-white  rounded-lg p-6 shadow-lg lg:w-[23%] lg:h-[20rem]">
+            <div className="flex flex-col md:flex-row gap-8">
+              <div className="bg-white  rounded-lg p-6 shadow-lg  lg:w-[23%] lg:h-[20rem]">
                 <h2 className="text-2xl font-semibold mb-4">Love the Problem</h2>
                 <p>Breakthrough innovation happens when we spend time deeply understanding a problem, not jumping to solutions.</p>
               </div>
@@ -95,7 +95,7 @@ const Mission = () => {
     
           {/* wedlock difference */}
     
-          <div className="bg-white text-[#061C3D] py-12 ">
+          <div className="bg-white text-[#061C3D] py-12 px-14 md:px-32">
           <div className="container mx-auto ">
             <h2 className="text-3xl font-bold mb-4 lg:px-[5%]">The Wedlock Difference</h2>
             <p className="text-lg mb-12 text-gray-600 lg:px-[5%]">Our principles guide us to put our values first with every decision.</p>

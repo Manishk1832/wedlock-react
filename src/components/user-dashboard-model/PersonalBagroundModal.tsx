@@ -121,7 +121,7 @@ const ReligiouModel: React.FC<PersonalBagroundModelProps> = ({
         centered
         confirmLoading={isLoading}
       >
-        <Form form={form} layout="vertical" autoComplete="off"     onFinish={handleFormSubmit}
+        <Form form={form} layout="vertical" autoComplete="off" onFinish={handleFormSubmit}
         >
           <Row gutter={16}>
           <Col span={24}>

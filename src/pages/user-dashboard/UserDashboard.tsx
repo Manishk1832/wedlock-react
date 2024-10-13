@@ -7,7 +7,7 @@ import Plan from "../../pages/plan/Plan";
 import Notification from "../../components/user-dashboard/Notification";
 import Discover from "../../components/user-dashboard/Discover";
 
-import Favourate from "../../components/user-dashboard/Favourate";
+// import Favourate from "../../components/user-dashboard/Favourate";
 import MyDetails from "../../components/user-dashboard/Mydetails";
 // import '../../app/globals.css'
 
@@ -33,15 +33,15 @@ const UserDashboard: React.FC = () => {
             </div>
           ),
         },
-        {
-          key: "3",
-          label: `Favorite Profile`,
-          children: (
-            <div>
-              <Favourate />
-            </div>
-          ),
-        },
+        // {
+        //   key: "3",
+        //   label: `Favorite Profile`,
+        //   children: (
+        //     <div>
+        //       <Favourate />
+        //     </div>
+        //   ),
+        // },
         {
           key: "4",
           label: `Plan`,

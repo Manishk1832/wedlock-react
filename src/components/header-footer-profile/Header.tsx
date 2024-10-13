@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Popover } from 'antd';
 import { IoIosLogOut } from "react-icons/io";
 import { AiOutlineUserDelete } from "react-icons/ai";
-import { useLogoutUserMutation } from "../../Redux/Api/user.api";
+import { useLogoutUserMutation,useDeleteUserMutation } from "../../Redux/Api/user.api";
 import { useMyDetailsQuery } from "../../Redux/Api/profile.api";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -14,6 +14,7 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [logoutUser] = useLogoutUserMutation();
+  const [deleteUser] = useDeleteUserMutation();
 
   interface LogoutResponse {
      
@@ -21,6 +22,35 @@ const Header = () => {
       message: string;
   
   }
+
+  interface DeleteResponse {
+      success: boolean;
+      message: string;
+  }
+
+
+  const handleDelete = async () => {
+    try {
+      const response: DeleteResponse = await deleteUser().unwrap();
+      console.log(response);
+      if (response?.success === true) {
+        toast.success(response?.message);
+        Cookies.remove("isImageFormFilled");
+        Cookies.remove("isProfileFormFilled");
+        Cookies.remove("isLocationFormFilled");
+        Cookies.remove("isQualificationFormFilled");
+        Cookies.remove("isOtherFormFilled");
+        Cookies.remove("isPersonalFormFilled");
+        dispatch(logout());
+        navigate("/");
+        window.location.reload();
+      } else {
+        toast.error("Logout failed. Please try again.");
+      }
+    } catch (error) {
+      toast.error("An error occurred while logging out");
+    }
+  };
 
 
 
@@ -54,7 +84,7 @@ const Header = () => {
       <button className="flex items-center gap-2" onClick={handleLogout}>
         <span><IoIosLogOut /></span> Logout
       </button>
-      <button className="flex items-center gap-2">
+      <button className="flex items-center gap-2" onClick={handleDelete}>
         <span><AiOutlineUserDelete /></span>Delete Account
       </button>
     </div>

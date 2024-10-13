@@ -69,24 +69,23 @@ const LifestyleModel: React.FC<LifestyleModelProps> = ({
         classNames={classNames}
         styles={modalStyles}
         title={
-          <span className={styles["my-modal-title"]}>Personal Details</span>
+          <span className={styles["my-modal-title"]}>Basic & LifeStyle </span>
         }
         centered
       >
         <Form form={form} layout="vertical" autoComplete="off">
           <Row gutter={16}>
             <Col span={24}>
-              <Form.Item name="name" label="Name">
-                <Input placeholder="Enter Name" />
+              <Form.Item name="displayName" label="Display Name">
+                <Input placeholder="Enter Display Name" />
               </Form.Item>
             </Col>
 
             <Col span={24}>
               <Form.Item name="gender" label="Gender">
                 <Select placeholder="Select Gender">
-                  <Option value="male">Male</Option>
-                  <Option value="female">Female</Option>
-                  <Option value="transgender">Transgender</Option>
+                  <Option value="man">Male</Option>
+                  <Option value="woman">Female</Option>
                 </Select>
               </Form.Item>
             </Col>

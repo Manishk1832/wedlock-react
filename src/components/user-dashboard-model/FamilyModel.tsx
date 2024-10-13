@@ -102,7 +102,7 @@ const FamilyModel: React.FC<FamilyModelProps> = ({ isVisible, onClose }) => {
           <Form.Item
             name="fatherOccupation"
             label="Father's Occupation"
-            rules={[{ required: true, message: "Please enter father's occupation" }]}
+            rules={[{ required: false, message: "Please enter father's occupation" }]}
           >
             <Input placeholder="Enter Father's Occupation" />
           </Form.Item>
@@ -110,7 +110,7 @@ const FamilyModel: React.FC<FamilyModelProps> = ({ isVisible, onClose }) => {
           <Form.Item
             name="motherOccupation"
             label="Mother's Occupation"
-            rules={[{ required: true, message: "Please enter mother's occupation" }]}
+            rules={[{ required: false, message: "Please enter mother's occupation" }]}
           >
             <Input placeholder="Enter Mother's Occupation" />
           </Form.Item>
@@ -118,7 +118,7 @@ const FamilyModel: React.FC<FamilyModelProps> = ({ isVisible, onClose }) => {
           <Form.Item
             name="numberOfSiblings"
             label="Number of Siblings"
-            rules={[{ required: true, message: "Please select number of siblings" }]}
+            rules={[{ required: false, message: "Please select number of siblings" }]}
           >
             <Select placeholder="Select Number of Siblings">
               {siblingCounts.map((siblingCount) => (
@@ -132,7 +132,7 @@ const FamilyModel: React.FC<FamilyModelProps> = ({ isVisible, onClose }) => {
           <Form.Item
             name="livingWithFamily"
             label="Living with Family"
-            rules={[{ required: true, message: "Please select an option" }]}
+            rules={[{ required: false, message: "Please select an option" }]}
           >
             <Select placeholder="Select Living with Family">
               <Option value="Yes">Yes</Option>

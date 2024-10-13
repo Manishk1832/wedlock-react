@@ -16,7 +16,7 @@ const Navbar: React.FC = () => {
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
   const isBlueBgRoute = ["/mission", "/advice", "/help", "/legal", "/security", "/faqs", "/contact-us", "/cookies-policy", "/community-guidelines", "/privacy-policy", "/terms-conditions", "/about-us", "/plan", "/services"].includes(pathname);
-  const hiddenRoutes = ["/verification", "/register", "/questions", "/login", "/forgot-password", "/create-password", "/change-password", "/other-details", "/personal-details", "/test", "/qualification-details", "/location-details", "/photoupload", "/user-dashboard", "/verify-otp","/profile","/success"];
+  const hiddenRoutes = ["/verification", "/register", "/questions", "/login", "/forgot-password", "/create-password", "/change-password", "/other-details", "/personal-details", "/test", "/qualification-details", "/location-details", "/photoupload", "/user-dashboard", "/verify-otp","/profile","/success",'/profle/:id'];
   const isHiddenRoute = hiddenRoutes.includes(pathname);
 
   if (isHiddenRoute) {
@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
               </ul>
             </div>
             <div className="px-0 md:mr-8">
-              <img src="/newlogo.png" alt="logo" className="w-[9rem] h-[4rem] px-0 xl:w-[14rem] xl:h-[6rem] " />
+              <img src="/newlogo.png" alt="logo" className="w-[10rem] h-[4rem] px-0 xl:w-[18rem] xl:h-[6rem] " />
             </div>
 
             <div className='flex gap-5 items-start justify-center'>
@@ -56,13 +56,13 @@ const Navbar: React.FC = () => {
 
         <div className={`fixed top-0 left-0 h-full w-64 bg-[#007eb0] z-20 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}>
           <div className="flex justify-between items-center p-4">
-            <img src="/Logo.png" alt="logo" className='w-32 h-12' />
+            <img src="/Logo.png" alt="logo" className='w-36 h-10' />
 
             <button className="text-3xl text-white" onClick={toggleSidebar}>
               <RiCloseLine />
             </button>
           </div>
-          <nav className="flex flex-col p-4 text-[20px]">
+          <nav className="flex flex-col p-4 text-[20px] items-center">
             <Link to="/mission" className="py-1 text-white" onClick={toggleSidebar}>Mission</Link>
             <Link to="/advice" className="py-1 text-white" onClick={toggleSidebar}>Advice</Link>
             <Link to="/help" className="py-1 text-white" onClick={toggleSidebar}>Help</Link>

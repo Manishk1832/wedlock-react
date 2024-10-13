@@ -4,6 +4,8 @@ import { z } from "zod";
 import {usePersonalDetialsMutation} from "../../Redux/Api/form.api";
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { zodResolver } from "@hookform/resolvers/zod";
+import {auth,database} from '../../../utils/firebaseConfig.ts';
+import {ref,update} from "firebase/database";
 import { useNavigate } from "react-router-dom";
 // import { useDispatch, useSelector } from "react-redux";
 // import { setUser } from "../../Redux/Reducers/user.reducer";
@@ -78,7 +80,13 @@ const navigate = useNavigate();
 
       }else {
         const successData = res.data as ApiResponse;
-        console.log(successData);
+        await update(ref(database, `users/${auth.currentUser?.uid}`), {
+          firstName : data.firstName,
+          lastName : data.lastName,
+          displayName: data.displayName,
+        })
+        
+        
         // const isPersonalDetailsFormFilled = true
         toast.success(successData.message);
         // dispatch(setUser(isPersonalDetailsFormFilled));
