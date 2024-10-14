@@ -12,7 +12,6 @@ const Discover = () => {
   
 
   const { data, isLoading } = useGetProfilesQuery({});
-  console.log(data, "data");
 
   const openFilterModel = () => {
     setFilterModelOpen(true);
