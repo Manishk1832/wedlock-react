@@ -95,7 +95,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profiles }) => {
                       ""
                     )}
                   </h1>
-                  <h1>{`${data.gender === 'Men' ? 'F' : 'M'},${data.age}`}</h1>
+                  <h1>{`${data.gender === 'Man' ? 'M' : 'F'},${data.age}`}</h1>
                   </div>
                 <div className="flex items-center justify-between">
                   <h1 className="text-xl font-semibold"> {data.occupation}</h1>

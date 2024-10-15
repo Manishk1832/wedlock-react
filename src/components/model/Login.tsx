@@ -27,8 +27,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   
-
-
+  
 
 
   const [login, { isLoading }] = useLoginMutation();
@@ -116,7 +115,6 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
     <div className="flex items-center justify-center  ">
       <div
         className="backdrop-blur-xl
-
   p-8 rounded-2xl absolute top-20 right-5 left-5 md:left-auto md:top-16 xl:top-32 md:right-20 xl:w-[50%] "
       >
         <button

@@ -6,7 +6,6 @@ import Footer from "../../components/header-footer-profile/Footer";
 import Plan from "../../pages/plan/Plan";
 import Notification from "../../components/user-dashboard/Notification";
 import Discover from "../../components/user-dashboard/Discover";
-
 // import Favourate from "../../components/user-dashboard/Favourate";
 import MyDetails from "../../components/user-dashboard/Mydetails";
 // import '../../app/globals.css'

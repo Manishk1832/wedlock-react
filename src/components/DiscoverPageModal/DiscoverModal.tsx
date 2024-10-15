@@ -67,9 +67,16 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
 
   const [form] = Form.useForm();
 
+
+
   const handleFormSubmit = async (values: any) => {
-    console.log(values);
+    console.log(values, checkedValues);
+
   };
+
+
+
+
   const modalStyles = {
     header: {
       borderRadius: 0,

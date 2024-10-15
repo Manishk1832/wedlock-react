@@ -34,7 +34,7 @@ const Discover = () => {
     (profile :any) =>
       profile.firstName !== null &&
       profile.age !== null &&
-      profile.occupation !== null // Add any other required fields to check here
+      profile.occupation !== null 
   );
 
   return (

@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import { RiArrowDropDownLine, RiCloseLine } from "react-icons/ri";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { Link, useLocation } from 'react-router-dom'; 
+import { Link, useLocation } from 'react-router-dom';
 import Login from '../model/Login';
+import { useSelector } from "react-redux";
+import { RootState } from "../../Redux/store";
+
+
 
 const Navbar: React.FC = () => {
+  const { accessToken } = useSelector((state: RootState) => state.userReducer);
+
+
   const location = useLocation(); // Use useLocation to get the current path
   const pathname = location.pathname;
-  
+
   const [isLoginOpen, setLoginOpen] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
@@ -16,12 +23,14 @@ const Navbar: React.FC = () => {
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
   const isBlueBgRoute = ["/mission", "/advice", "/help", "/legal", "/security", "/faqs", "/contact-us", "/cookies-policy", "/community-guidelines", "/privacy-policy", "/terms-conditions", "/about-us", "/plan", "/services"].includes(pathname);
-  const hiddenRoutes = ["/verification", "/register", "/questions", "/login", "/forgot-password", "/create-password", "/change-password", "/other-details", "/personal-details", "/test", "/qualification-details", "/location-details", "/photoupload", "/user-dashboard", "/verify-otp","/profile","/success",'/profle/:id'];
+  const hiddenRoutes = ["/verification", "/register", "/questions", "/login", "/forgot-password", "/create-password", "/change-password", "/other-details", "/personal-details", "/test", "/qualification-details", "/location-details", "/photoupload", "/user-dashboard", "/verify-otp", "/profile", "/success", '/profle/:id'];
   const isHiddenRoute = hiddenRoutes.includes(pathname);
 
   if (isHiddenRoute) {
     return null;
   }
+
+  
 
   return (
     <>
@@ -41,10 +50,25 @@ const Navbar: React.FC = () => {
             </div>
 
             <div className='flex gap-5 items-start justify-center'>
-              <button className='flex items-center justify-center  md:gap-3 md:text-[24px] text-white md:rounded-full rounded-3xl border-white font-bold border md:w-[170px] md:h-[69px] px-3' onClick={openLogin}>
-                Login
-                <RiArrowDropDownLine className="text-5xl" />
-              </button>
+              {
+                accessToken ? (
+                  <button
+                    className="flex items-center justify-center md:gap-3 md:text-[24px] text-white md:rounded-full rounded-3xl border-white font-bold border md:w-[170px] md:h-[69px] px-3 hidden"
+                    
+                  >
+                    Dashboard
+                  </button>
+                ) : (
+                  <button
+                    className="flex items-center justify-center md:gap-3 md:text-[24px] text-white md:rounded-full rounded-3xl border-white font-bold border md:w-[170px] md:h-[69px] px-3"
+                    onClick={openLogin}
+                  >
+                    Login
+                    <RiArrowDropDownLine className="text-5xl" />
+                  </button>
+                )
+              }
+
               <img src="/Aus.svg" alt='lang' className='hidden md:block w-10 h-12' />
               <button className="md:hidden text-3xl" onClick={toggleSidebar}>
                 <GiHamburgerMenu />
