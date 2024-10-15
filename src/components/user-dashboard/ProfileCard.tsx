@@ -78,7 +78,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profiles }) => {
               <div className="rounded-full border-2 border-[#FFFFFF33] bg-transparent px-2">
                 <h1 className="font-bold">{data.userType}</h1>
               </div>
+
+              <button className="flex items-center gap-2">
               <FaRegStar className="text-2xl" />
+ 
+              </button>
+
             </div>
             <div className="flex flex-col gap-4">
               <div className="flex h-10 w-24 items-center justify-center rounded-lg bg-gradient-to-t from-[#FFD54266] to-[#C0970766] px-1">

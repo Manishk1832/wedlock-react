@@ -38,11 +38,13 @@ const useStyle = createStyles(({ token }) => ({
 interface DiscoverModalProps {
   isVisible: boolean;
   onClose: () => void;
+  onFormSubmit: (data: any) => void;
 }
 
 const DiscoverModal: React.FC<DiscoverModalProps> = ({
   isVisible,
   onClose,
+  onFormSubmit,
 }) => {
   const { styles } = useStyle();
   const [checkedValues, setCheckedValues] = useState<any[]>([]);
@@ -73,21 +75,23 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
   const [form] = Form.useForm();
 
   const handleFormSubmit = async (values: any) => {
-  const ageRange = `${values.ageMin} - ${values.ageMax}`;
-  const heightRange = `${values.heightMin} - ${values.heightMax}`;
-  const income = values.income;
-  const religion = values.religion;
-  const ethnicity = values.ethnicity;
-  const highestQualification = values.highestQualification;
-  const smokingHabbit = values.smokingHabits;
-  const workingWith = values.workingWith;
-  const maritalStatus = values.maritalStatus;
-  const eatingHabbits = values.eatingHabbits;
-  const community = values.community;
-  
 
+  const data = {
+    ageRange: `${values.ageMin} - ${values.ageMax}`,
+    heightRange: `${values.heightMin} - ${values.heightMax}`,
+    income: values.income,
+    religion: values.religion,
+    ethnicity: values.ethnicity,
+    highestQualification: values.highestQualification,
+    smokingHabbit: values.smokingHabits,
+    workingWith: values.workingWith,
+    maritalStatus: values.maritalStatus,
+    eatingHabbits: values.eatingHabits,
+    community: values.community,
+  };
   
-  console.log(values);
+   onFormSubmit(data);
+   onClose();
   
   };
   const modalStyles = {

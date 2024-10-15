@@ -98,6 +98,7 @@ const CreatePassword = () => {
           Cookies.remove("answers");
 
           navigate("/personal-details");
+          window.location.reload();
         }
 
       } catch (error) {

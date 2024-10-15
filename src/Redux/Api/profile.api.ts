@@ -96,13 +96,13 @@ import { RootState } from '../store';
       
     }),
 
-    filterProfles: builder.query({
+    filterProfles: builder.mutation({
       query: (data) => ({
         url: 'filterProfiles',
         method: 'POST',
         body: data,
       }),
-      providesTags: ['profile'],
+      invalidatesTags: ['profile'],
     }),
 
     filterFieldCount: builder.query({
@@ -117,5 +117,5 @@ import { RootState } from '../store';
  
 });
 
- export const { useMyDetailsQuery,useUpdateEducationAndFinancialDetailsMutation,useUpdateFamilyDetailsMutation,useUpdateLocationDetailsMutation,useUpdatePersonalBackgroundMutation,useUpdatePersonalDetailsMutation,useUpdateReligiousBackgroundMutation,useGetProfilesQuery,useUserByidMutation ,useFilterProflesQuery,useFilterFieldCountQuery} = profileApi;
+ export const { useMyDetailsQuery,useUpdateEducationAndFinancialDetailsMutation,useUpdateFamilyDetailsMutation,useUpdateLocationDetailsMutation,useUpdatePersonalBackgroundMutation,useUpdatePersonalDetailsMutation,useUpdateReligiousBackgroundMutation,useGetProfilesQuery,useUserByidMutation ,useFilterProflesMutation,useFilterFieldCountQuery} = profileApi;
 
