@@ -1,3 +1,5 @@
+import React,{useState} from "react";
+
 import { MdDone } from "react-icons/md";
 import { FaArrowRightLong } from "react-icons/fa6";
 import FAQ from "../../components/faqs/Faq3";
@@ -5,9 +7,13 @@ import Subscription from "../../components/Subscription/Subscription";
 import "../../font.css";
 
 const page = () => {
+  const [monthlyPrice , setMonthlyPrice] = useState(0)
+  const [yearlyPrice, setYearlyPrice] = useState(0)
+  const [activeTab, setActiveTab] = useState('Monthly'); 
+
   return (
-    <div className="space-y-20  xl:space-y-20 mt-24">
-      <div className="px-5">
+    <div className="space-y-20  xl:space-y-20 ">
+      <div className="px-2">
         <div className="flex flex-col items-center justify-between md:flex-row">
           <div className="flex flex-col space-y-4 p-4 md:p-8">
             <h3 className="text-3xl font-semibold">Our pricing plan</h3>
@@ -19,15 +25,36 @@ const page = () => {
           </div>
 
           <div className="mt-5 flex h-16 w-60 items-center gap-8 rounded-full bg-[#FFF9EE] p-3 xl:mt-0">
-            <div className="flex h-10 w-32 items-center justify-center rounded-full bg-[#FFC759] p-2">
-              <h1 className="font-semibold text-[#061C3D]">Monthly</h1>
-            </div>
-            <div>
-              <h1 className="text-center font-semibold text-[#42526B]">
-                Yearly
-              </h1>
-            </div>
-          </div>
+      <button
+        className={`flex h-10 w-32 items-center justify-center p-2 rounded-full transition-all duration-300 ${
+          activeTab === 'Monthly' ? 'bg-[#FFC759] w-52  ' : 'bg-transparent'
+        }`}
+        onClick={() => setActiveTab('Monthly')}
+      >
+        <h1
+          className={`font-semibold transition-colors duration-300 ${
+            activeTab === 'Monthly' ? 'text-white' : 'text-[#42526B]'
+          }`}
+        >
+          Monthly
+        </h1>
+      </button>
+
+      <button
+        className={`flex h-10 w-32 items-center justify-center p-2 rounded-full transition-all duration-300 ${
+          activeTab === 'Yearly' ? 'bg-[#FFC759] w-52' : 'bg-transparent'
+        }`}
+        onClick={() => setActiveTab('Yearly')}
+      >
+        <h1
+          className={`font-semibold transition-colors duration-300 ${
+            activeTab === 'Yearly' ? 'text-white' : 'text-[#42526B]'
+          }`}
+        >
+          Yearly
+        </h1>
+      </button>
+    </div>
         </div>
         <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3 md:px-5 lg:gap-8 xl:mt-4 xl:gap-24 2xl:gap-32 3xl:gap-36 3xl:px-60">
           <div className="space-y-4    rounded-lg bg-white p-4 border shadow">
@@ -127,7 +154,7 @@ const page = () => {
           </div>
           <div className="space-y-4 flex flex-col   rounded-lg bg-white p-4 text-white shawdow border">
             <div className="space-y-4">
-              <h1 className="font-semibold text-[#007EAF]">Elite</h1>
+              <h1 className="font-semibold text-[#007EAF]">Exclusive</h1>
               <h1 className="text-4xl text-[#007EAF] font-bold">
                 AUD 39.99{" "}
                 <span className="text-base font-normal text-[#42526B]">

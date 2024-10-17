@@ -37,7 +37,8 @@ const Qualification = lazy(() => import("./pages/forms/QualificationDetails"))
 const Success = lazy(() => import("./pages/forms/SuccessPage"))
 const UserDashboard = lazy(() => import("./pages/user-dashboard/UserDashboard"))
 const Profile = lazy(() => import("./pages/profile/Profile"))
-
+const Sucessfull = lazy(() => import("./pages/sucessfull/Sucessfull"))
+const Cancel = lazy(() => import("./pages/cancel/Cancel"))
 
 const App = () => {
   const { accessToken  } = useSelector((state: RootState) => state.userReducer) ;
@@ -59,12 +60,12 @@ const App = () => {
           <Route path="/terms-conditions" element={<Terms_Conditions />} />
           <Route path="/community-guidelines" element={<Community_Guidelines />} />
           <Route path="/faqs" element={<Faqs />} />
+          <Route path="/sucessfull" element={<Sucessfull />} />
+          <Route path="/cancel" element={<Cancel />} />
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/about-us" element={<About />} />
           <Route path="/plan" element={<Plan />} />
           <Route path="/services" element={<Services />} />
-
-
           <Route element={ <ProtectedRoute isAuthenticated={accessToken ? false : true} />}>
           <Route path="/questions" element={<Questions />} />
           <Route path="/register" element={<Register />} />
