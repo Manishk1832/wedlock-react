@@ -1,17 +1,14 @@
 import { LoadingOutlined } from "@ant-design/icons";
 
 const Loading = () => {
-    return (
-      <div
-        className="inline-block h-10 w-10 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-        role="status"
-      >
-        <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-            <LoadingOutlined />
-        </span>
-      </div>
-    );
-  };
-  
-  export default Loading;
-  
+  return (
+    <div
+      className=" h-[80vh] flex items-center justify-center w-full"
+      role="status"
+    >
+      <LoadingOutlined style={{ color: "#007EAF", fontSize: "42px", fontWeight: "bold", transition: "none" }} />
+    </div>
+  );
+};
+
+export default Loading;

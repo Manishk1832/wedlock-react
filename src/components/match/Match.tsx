@@ -7,6 +7,7 @@ import { FaWineGlassAlt } from "react-icons/fa";
 import { useUserByidMutation } from "../../Redux/Api/profile.api";
 import { FaUserGraduate } from "react-icons/fa";
 import "../../font.css";
+import Loading from "../Loading";
 // import '../app/globals.css'
 
 interface MatchProps {
@@ -31,7 +32,7 @@ const Match: React.FC<MatchProps> = ({ userId}) => {
   }, [userId, userByid]);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (isError) {
@@ -42,6 +43,8 @@ const Match: React.FC<MatchProps> = ({ userId}) => {
     return <p>No user data found.</p>;
   }
 
+
+  
 
 
 
@@ -63,6 +66,7 @@ const Match: React.FC<MatchProps> = ({ userId}) => {
             className="self-start text-sm font-semibold  leading-5 text-zinc-900"
           >
             <h1>Basic & Lifestyle</h1>
+            <button className="rounded-[0.5rem] bg-[#F9F5FFE5] px-4 py-2 text-[#007EAF]">Connect</button>
 
           </div>
           <div className="mt-2.5 flex flex-wrap items-center gap-2.5 self-start text-base font-medium leading-4 text-slate-900">

@@ -93,7 +93,9 @@ const MyDetails = () => {
     
     <div>
       {isLoading ? (
+        <div className="flex items-center justify-center">
         <Loading />
+        </div>
       ) : (
       <div className="min-w-screen flex min-h-screen flex-col gap-4 md:gap-10 lg:flex-row">
         <div className="mb-4 md:grid grid-cols-1 gap-2 md:mb-0  auto-rows-[10rem] ">

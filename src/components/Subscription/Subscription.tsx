@@ -26,7 +26,7 @@ const Subscription: React.FC = () => {
                   <div className="pt-5 pb-5">Premium</div>
                 </th>
                 <th>
-                  <div className="pt-5 pb-5">Elite</div>
+                  <div className="pt-5 pb-5">Exclusive</div>
                 </th>
               </tr>
             </thead>

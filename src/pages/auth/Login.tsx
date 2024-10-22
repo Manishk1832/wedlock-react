@@ -114,7 +114,7 @@ const Login = () => {
   return (
     <div className="min-w-screen h-screen flex flex-col items-center justify-center  bg-[#007EAF] ">
     <div className="flex items-center justify-center mb-10  ">
-      <img src="/logowhite.png" alt=""  className='w-48 h-24 fixed top-2' />
+      <img src="/logowhite.png" alt=""  className='w-48 h-24 md:w-64 md:h-24  fixed top-2' />
     </div>
 
     <div className="flex flex-col items-center justify-center  mt-12">
