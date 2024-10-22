@@ -20,4 +20,4 @@ const messaging = getMessaging(app);
 const database = getDatabase(app);
 const auth = getAuth(app);
 
-export { app, auth, messaging, database };
+export { app, auth, messaging, database} ;

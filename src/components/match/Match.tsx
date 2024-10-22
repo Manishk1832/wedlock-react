@@ -6,8 +6,13 @@ import { FaSmoking } from "react-icons/fa";
 import { FaWineGlassAlt } from "react-icons/fa";
 import { useUserByidMutation } from "../../Redux/Api/profile.api";
 import { FaUserGraduate } from "react-icons/fa";
+import {useCreateConnectionMutation} from "../../Redux/Api/connection.api";
 import "../../font.css";
+import Loading from "../Loading";
+import { toast } from 'sonner';
 // import '../app/globals.css'
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
+
 
 interface MatchProps {
   userId: string;
@@ -15,7 +20,11 @@ interface MatchProps {
 
 const Match: React.FC<MatchProps> = ({ userId}) => {
   const [profileData, setProfileData] = useState<any>([]);
-  const [userByid, { isLoading, isSuccess, isError }] = useUserByidMutation();
+  const [userByid, { isLoading, isSuccess, isError}] = useUserByidMutation();
+  
+
+  const [create, { isLoading: isLoadingConnection }] = useCreateConnectionMutation();
+
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -28,10 +37,10 @@ const Match: React.FC<MatchProps> = ({ userId}) => {
     };
 
     fetchProfileData();
-  }, [userId, userByid]);
+  }, [userId, userByid  ]);  
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (isError) {
@@ -42,6 +51,43 @@ const Match: React.FC<MatchProps> = ({ userId}) => {
     return <p>No user data found.</p>;
   }
 
+
+  type ApiResponse = {
+    success: boolean;
+    message: string;
+    user: any;
+  };
+
+  type FetchBaseQueryErrorWithData = FetchBaseQueryError & {
+    data: ApiResponse;
+  };
+
+
+
+  const createConnection = async (userId: string) => {
+    try {
+      const receiverId = userId;
+      const response = await create(receiverId);
+
+      if (response.error) {
+        const errorData = response.error as FetchBaseQueryErrorWithData;
+        if (errorData.data?.success === false) {
+          toast.error(errorData.data.message);
+          return;
+        }
+      }
+
+      if (response.data) {
+        toast.success('Connection created successfully!');
+      }
+      
+    } catch (error) {
+      toast.error('Failed to create connection. Please try again later.');
+    }
+  };
+
+
+  
 
 
 
@@ -76,7 +122,13 @@ const Match: React.FC<MatchProps> = ({ userId}) => {
             <div className=" my-auto text-md justify-center self-stretch whitespace-nowrap rounded-[100px] bg-orange-100 px-1 py-1.5 text-center capitalize trackingl md:px-3">
               {profileData[0]?.basic_and_lifestye?.age}
             </div>
+
+            <div className=" "    >
+            <button onClick={() => createConnection(userId)} className="rounded-[0.5rem] bg-[#007EAF] px-4 py-2 text-white">Connect</button>
+
+          </div>  
           </div>
+         
           <div className="mt-6 flex flex-col rounded-xl bg-cyan-600 bg-opacity-20 px-6 py-3 max-md:max-w-full max-md:px-5">
             <div className="text-base font-bold leading-6 tracking-wide text-gray-900 text-opacity-90 max-md:max-w-full">
               About {profileData[0]?.basic_and_lifestye?.displayName || profileData[0]?.basic_and_lifestye?.firstName + " " + profileData[0]?.basic_and_lifestye?.lastName}

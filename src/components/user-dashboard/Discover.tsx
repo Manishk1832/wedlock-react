@@ -10,7 +10,7 @@ import { toast } from "sonner";
 
 const Discover = () => {
   const [filterModelOpen, setFilterModelOpen] = useState(false);
-  const skeletonArray = new Array(6).fill(0);
+  const skeletonArray = new Array(3).fill(0);
   const [filterData, setFilterData] = useState<any[]>([]); // Store the filtered profiles data
   console.log(filterData, "filterData");
 

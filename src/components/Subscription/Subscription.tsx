@@ -15,7 +15,7 @@ const Subscription: React.FC = () => {
         <div className="overflow-x-auto">
           <table className="w-full  table-fixed border-collapse">
             <thead className="border-b-2">
-              <tr className="border-b-2 text-2xl">
+              <tr className="border-b-2 tex-md  md:text-2xl">
                 <th className="text-left">
                   <div className="pt-5 pb-5">Features</div>
                 </th>
@@ -26,7 +26,7 @@ const Subscription: React.FC = () => {
                   <div className="pt-5 pb-5">Premium</div>
                 </th>
                 <th>
-                  <div className="pt-5 pb-5">Elite</div>
+                  <div className="pt-5 pb-5">Exclusive</div>
                 </th>
               </tr>
             </thead>

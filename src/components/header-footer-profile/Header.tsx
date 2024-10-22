@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Popover } from 'antd';
+import { Popover, Avatar,Skeleton } from 'antd';
 import { IoIosLogOut } from "react-icons/io";
 import { AiOutlineUserDelete } from "react-icons/ai";
 import { useLogoutUserMutation,useDeleteUserMutation } from "../../Redux/Api/user.api";
@@ -77,7 +77,7 @@ const Header = () => {
     }
   };
 
-  const { data: myDetails } = useMyDetailsQuery<any>();
+  const { data: myDetails, isLoading } = useMyDetailsQuery<any>();
 
   const profile = (
     <div className="flex flex-col gap-4">
@@ -104,23 +104,30 @@ const Header = () => {
         </div>
 
         <div className="flex items-center justify-between gap-2 md:gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white md:h-12 md:w-12">
-            <Popover content={profile}>
-              <button>
-                {myDetails?.data[0]?.profileImage && (
-                  <img
-                    src={
-                      Array.isArray(myDetails.data[0].profileImage)
-                        ? myDetails.data[0].profileImage[0]
-                        : myDetails.data[0].profileImage
-                    }
-                    alt="profile"
-                    className="h-10 rounded-full w-10 md:h-10 md:w-10"
-                  />
-                )}
-              </button>
-            </Popover>
-          </div>
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white md:h-12 md:w-12">
+  <Popover content={profile}>
+    <button>
+      <Skeleton
+        loading={isLoading}
+        avatar={true}
+        active={true}
+        className="flex items-center ml-4 justify-center h-10 w-10 "
+      />
+      {myDetails?.data[0]?.profileImage && (
+        <img
+          src={
+            Array.isArray(myDetails.data[0].profileImage)
+              ? myDetails.data[0].profileImage[0]
+              : myDetails.data[0].profileImage
+          }
+          alt="profile"
+          className="h-10 w-10 rounded-full md:h-10 md:w-10"
+        />
+      )}
+    </button>
+  </Popover>
+</div>
+
           <div className="">
             <button>
               <img

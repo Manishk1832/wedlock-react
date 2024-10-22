@@ -2,7 +2,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import "./App.css";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
 import { RootState } from "./Redux/store";
+import {messaging} from "../utils/firebaseConfig";
+import { getToken } from "firebase/messaging";
 import Footer from "./components/home/Footer";
 import Navbar from "./components/home/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -37,12 +40,33 @@ const Qualification = lazy(() => import("./pages/forms/QualificationDetails"))
 const Success = lazy(() => import("./pages/forms/SuccessPage"))
 const UserDashboard = lazy(() => import("./pages/user-dashboard/UserDashboard"))
 const Profile = lazy(() => import("./pages/profile/Profile"))
-
+const Sucessfull = lazy(() => import("./pages/sucessfull/Sucessfull"))
+const Cancel = lazy(() => import("./pages/cancel/Cancel"))
 
 const App = () => {
   const { accessToken  } = useSelector((state: RootState) => state.userReducer) ;
 
+  async function requestPermission() {
+    const permission = await Notification.requestPermission();
+    if (permission === "granted") {
+      //Generate token
+      const token = await getToken(messaging,{
+        vapidKey:'BDMJ1bttVFT8x_Im4tTOPjWMXR4lqlb193pBRAfRYPWx2JkkvSk9eZkjf3d0dfDPlMfcwawtCd21WTMPq_0x2_w'
+      });
+      
+      localStorage.setItem("fcmToken",token!);
 
+    } else {
+
+       alert("You denied for notification");
+
+    }
+  }
+
+
+  useEffect(() => {
+    requestPermission();
+  },[])
 
   return  (
     <Router>
@@ -59,12 +83,12 @@ const App = () => {
           <Route path="/terms-conditions" element={<Terms_Conditions />} />
           <Route path="/community-guidelines" element={<Community_Guidelines />} />
           <Route path="/faqs" element={<Faqs />} />
+          <Route path="/sucessfull" element={<Sucessfull />} />
+          <Route path="/cancel" element={<Cancel />} />
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/about-us" element={<About />} />
           <Route path="/plan" element={<Plan />} />
           <Route path="/services" element={<Services />} />
-
-
           <Route element={ <ProtectedRoute isAuthenticated={accessToken ? false : true} />}>
           <Route path="/questions" element={<Questions />} />
           <Route path="/register" element={<Register />} />
@@ -88,7 +112,7 @@ const App = () => {
           <Route element={<ProtectedRoute isAuthenticated={accessToken ? true : false} />}>
           <Route path="/user-dashboard" element={<UserDashboard />}/>
           <Route path="/photoupload" element={<Photoupload />} />
-          <Route path="/profile/:userId" element={<Profile />} />
+          <Route path="/profile/:name/:userId" element={<Profile />} />
           <Route path="/personal-details" element={<Personal/>} />
           <Route path="/location-details" element={<Location />} />
           <Route path="/other-details" element={<Other />} />

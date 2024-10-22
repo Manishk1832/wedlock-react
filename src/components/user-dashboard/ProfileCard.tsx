@@ -51,15 +51,15 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profiles }) => {
     }
   };
 
-  const handleCardClick = (userId: string) => {
-    navigate(`/profile/${userId}`);
+  const handleCardClick = (userId: string ,name : string) => {
+    navigate(`/profile/${name}/${userId}`);
     window.location.reload();
   };
   return (
     <div className=" ">
       {profiles.map((data) => (
         <div
-          onClick={() => handleCardClick(data.userId)}
+          onClick={() => handleCardClick(data.userId,data.firstName)}
           key={data.id}
           className={`relative w-full cursor-pointer md:w-[24rem] ${data.userType !== "Standard" ? "h-[33.1rem]" : "h-[33.1rem]"} rounded-[1.9rem] ${
             data.userType !== "Standard" ? "border-t-[1rem]" : ""
