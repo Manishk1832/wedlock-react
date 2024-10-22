@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {createUserWithEmailAndPassword} from "firebase/auth";
 import {  ref, set} from "firebase/database";
 import Cookies from 'js-cookie';
+import { LoadingOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
 import { z } from 'zod';
 import { toast } from 'sonner'
@@ -15,7 +16,7 @@ const CreatePassword = () => {
 
     const navigate = useNavigate();
 
-    const [setPassword] = useSetPasswordMutation();
+    const [setPassword, { isLoading }] = useSetPasswordMutation();
 
     const createPasswordSchema = z.object({
       password: z.string().min(8, "Password must be at least 8 characters long"),
@@ -98,6 +99,7 @@ const CreatePassword = () => {
           Cookies.remove("answers");
 
           navigate("/personal-details");
+          window.location.reload();
         }
 
       } catch (error) {
@@ -151,7 +153,11 @@ const CreatePassword = () => {
           )}
         </div>
         <button type="submit" className="bg-white text-[#007EAF] w-full h-10 rounded-md mt-4">
-          Confirm
+        {isLoading ? (
+              <LoadingOutlined className="text-white animate-spin" />
+            ) : (
+              "Create Password"
+            )}
         </button>
       </form>
     </div>

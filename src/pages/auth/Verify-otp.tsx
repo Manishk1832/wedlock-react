@@ -51,6 +51,7 @@ const Verify = () => {
   };
 
   const onSubmit: SubmitHandler<VerificationInputs> = async (data) => {
+   try{
     const activationCode = data.code0 + data.code1 + data.code2 + data.code3;
     const activationToken = Cookies.get('activationToken');
 
@@ -64,9 +65,15 @@ const Verify = () => {
       }
     }
     const successData = res.data as ApiResponse;
+    
     toast.success(successData.message);
     Cookies.remove("activationToken");
     navigate("/change-password");
+
+   }
+   catch(error){
+    toast.error("An error occurred");
+   }
   };
 
   return (

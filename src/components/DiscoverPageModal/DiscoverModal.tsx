@@ -38,15 +38,20 @@ const useStyle = createStyles(({ token }) => ({
 interface DiscoverModalProps {
   isVisible: boolean;
   onClose: () => void;
+  onFormSubmit: (data: any) => void;
 }
 
 const DiscoverModal: React.FC<DiscoverModalProps> = ({
   isVisible,
   onClose,
+  onFormSubmit,
 }) => {
   const { styles } = useStyle();
   const [checkedValues, setCheckedValues] = useState<any[]>([]);
   const [selectedRadio, setSelectedRadio] = useState(null);
+
+
+  
 
   const handleCheckboxChange = (checkedValues: any[]) => {
     setCheckedValues(checkedValues);
@@ -65,13 +70,31 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
     title: styles["my-modal-title"],
   };
 
+  
+
   const [form] = Form.useForm();
 
 
 
   const handleFormSubmit = async (values: any) => {
-    console.log(values, checkedValues);
 
+  const data = {
+    ageRange: `${values.ageMin} - ${values.ageMax}`,
+    heightRange: `${values.heightMin} - ${values.heightMax}`,
+    income: values.income,
+    religion: values.religion,
+    ethnicity: values.ethnicity,
+    highestQualification: values.highestQualification,
+    smokingHabbit: values.smokingHabits,
+    workingWith: values.workingWith,
+    maritalStatus: values.maritalStatus,
+    eatingHabbits: values.eatingHabits,
+    community: values.community,
+  };
+  
+   onFormSubmit(data);
+   onClose();
+  
   };
 
 
@@ -114,9 +137,9 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
           >
             Cancel
           </Button>
-          <Button onClick={onClose} className="w-44 bg-[#007EAF] text-white">
-            Find Members
-          </Button>
+          <Button onClick={() => form.submit()} className="w-44 bg-[#007EAF] text-white">
+          Find Members
+         </Button>
         </div>
       }
     >
@@ -207,6 +230,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
         </Form.Item>
 
         <Form.Item
+        name={"income"}
           label={
             <label
               style={{
@@ -228,6 +252,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
         </Form.Item>
 
         <Form.Item
+          name="hasChildren"
           label={
             <label
               style={{
@@ -291,6 +316,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
         </Form.Item>
 
         <Form.Item
+          name="religion"
           label={
             <label
               style={{
@@ -382,6 +408,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
         <Row gutter={14}>
           <Col span={12}>
             <Form.Item
+            name={"ethnicity"}
               label={
                 <label
                   style={{
@@ -393,7 +420,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
                   Ethnicity
                 </label>
               }
-              className="h-auto rounded bg-[#DDDDDD] p-4"
+              className="h-auto rounded bg-[#EAF2FF] p-4"
             >
               <Checkbox.Group
                 className="gap-4"
@@ -460,6 +487,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
           </Col>
           <Col span={12}>
             <Form.Item
+            name={"highestQualification"}
               label={
                 <label
                   style={{
@@ -471,7 +499,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
                   Highest Qualification
                 </label>
               }
-              className="h-auto rounded bg-[#DDDDDD] p-4"
+              className="h-auto rounded bg-[#EAF2FF] p-4"
             >
               <Checkbox.Group
                 className="gap-4"
@@ -539,6 +567,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
         </Row>
 
         <Form.Item
+          name={"smokingHabits"}
           label={
             <label
               style={{
@@ -596,6 +625,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
             style={{ display: "flex", flexDirection: "column" }}
           >
             <Form.Item
+              name={"workingWith"}
               label={
                 <label
                   style={{
@@ -607,7 +637,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
                   Working With
                 </label>
               }
-              className="h-full flex-grow rounded bg-[#DDDDDD] p-4"
+              className="h-full flex-grow rounded bg-[#EAF2FF] p-4"
             >
               <Checkbox.Group
                 className="gap-4"
@@ -616,6 +646,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
                 <Checkbox
                   style={{ flexDirection: "row-reverse", alignItems: "center" }}
                   className="rounded-md bg-[#ffff] p-1 text-[#344054]"
+                  value={"all"}
                 >
                   All
                 </Checkbox>
@@ -684,6 +715,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
             style={{ display: "flex", flexDirection: "column" }}
           >
             <Form.Item
+              name={"maritalStatus"}
               label={
                 <label
                   style={{
@@ -695,7 +727,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
                   Martial Status
                 </label>
               }
-              className="h-full flex-grow rounded bg-[#DDDDDD] p-4"
+              className="h-full flex-grow rounded bg-[#EAF2FF] p-4"
             >
               <Checkbox.Group
                 className="gap-4"
@@ -777,6 +809,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
             style={{ display: "flex", flexDirection: "column" }}
           >
             <Form.Item
+            name={"eatingHabits"}
               label={
                 <label
                   style={{
@@ -788,7 +821,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
                   Eating Habits
                 </label>
               }
-              className="h-full flex-grow rounded bg-[#DDDDDD] p-4"
+              className="h-full flex-grow rounded bg-[#EAF2FF] p-4"
             >
               <Checkbox.Group
                 className="gap-4"
@@ -865,6 +898,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
         </Row>
 
         <Form.Item
+          name={"community"}
           label={
             <label
               style={{
@@ -882,6 +916,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
             <Checkbox
               style={{ flexDirection: "row-reverse", alignItems: "center" }}
               className="rounded-md bg-[#ffff] p-1 text-[#344054]"
+              value={"all"}
             >
               All
             </Checkbox>

@@ -4,7 +4,7 @@ import { PiChatsBold } from "react-icons/pi";
 import '../../font.css';
 const Matching = () => {
   return (
-    <div className="bg-[#DCD1E8] bg-gradient-to-bl from-[white] to-[#DCD1E8]  px-6  relative w-100 pb-8  ">
+    <div className="bg-[#DCD1E8] bg-gradient-to-bl from-[white] to-[#DCD1E8]    relative w-100 pb-8  ">
      
      
       <div className="bg-[url('/shadow.png')] -rotate-342 absolute w-[80rem] h-[100%]  top-0 right-0  sm:hidden hidden "></div>
@@ -16,7 +16,7 @@ const Matching = () => {
 
 
 
-      <div className="text-[#60457E]  sm:px-20 z-20 matchmaking container w-100 3xl:px-28  4xl:px-24 xl:pb-16 pb-8 sm:py-5 3xl:px-28 2xl:px-24">
+      <div className="text-[#60457E]  sm:px-20 z-20  container w-100 3xl:px-28  4xl:px-24 xl:pb-16 pb-8 sm:py-5 3xl:px-28 2xl:px-24">
 
         <h1 className=" text-[24px] sm:text-[48px] md:text-[52px] pt-10  xl:text-[64px] font-[Proxima-Nova-Bold]  text-center   md:text-start  text-[#4E3A63] ">Exclusive matchmaking</h1>
 

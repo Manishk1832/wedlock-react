@@ -170,7 +170,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
             </label>
           </div>
           <Link
-            to="/forgotpassword"
+            to="/forgot-password"
             className="text-white xl:mr-40 underline"
           >
             Forgot your login details?
