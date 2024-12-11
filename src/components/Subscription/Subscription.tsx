@@ -1,12 +1,12 @@
 import React from "react";
-import { IoIosCheckmark } from "react-icons/io";
-import { RxCross1 } from "react-icons/rx";
+// import { IoIosCheckmark } from "react-icons/io";
+// import { RxCross1 } from "react-icons/rx";
 
 const Subscription: React.FC = () => {
   return (
     <div className="container mx-auto p-6">
       <h2 className="text-3xl font-semibold text-center mb-4">
-        Subscription tiers at a glance
+        Subscription Plan Comparison
       </h2>
 
       <hr className="my-4" />
@@ -15,233 +15,137 @@ const Subscription: React.FC = () => {
         <div className="overflow-x-auto">
           <table className="w-full  table-fixed border-collapse">
             <thead className="border-b-2">
-              <tr className="border-b-2 tex-md  md:text-2xl">
+              <tr className="border-b-2 text-md text-left  md:text-2xl">
                 <th className="text-left">
                   <div className="pt-5 pb-5">Features</div>
                 </th>
                 <th>
-                  <div className="pt-5 pb-5">Standard</div>
+                  <div className="pt-5 pb-5">Explorer</div>
                 </th>
                 <th>
-                  <div className="pt-5 pb-5">Premium</div>
+                  <div className="pt-5 pb-5">Advanced ($9.99/month)</div>
                 </th>
                 <th>
-                  <div className="pt-5 pb-5">Exclusive</div>
+                  <div className="pt-5 pb-5">Elite ($29.99/month)</div>
                 </th>
               </tr>
             </thead>
             <tbody className="text-left">
-              <tr className="border-b-2   text-center">
-                <td className="font-normal text-left pt-5 pb-5 ">
-                  Match. Chat. Meet.
+              <tr className="border-b-2 ">
+                <td className="font-normal text-xl font-[Proxima-Nova-bold]  text-left pt-5 pb-5 ">
+                  Price
                 </td>
-                <td className="font-normal pt-5 pb-5">Up to 3</td>
-                <td className="font-normal pt-5 pb-5">Unlimited</td>
-                <td className="font-normal pt-5 pb-5">Unlimited</td>
+                <td className="font-normal pt-5 pb-5">Free</td>
+                <td className="font-normal pt-5 pb-5">$9.99 per month</td>
+                <td className="font-normal pt-5 pb-5">$29.99 per month</td>
               </tr>
 
               <tr className="border-b-2">
-                <td className="pt-5 pb-5">Unlimited likes </td>
-                <td className="pt-5 pb-5 text-2xl pt-5 pb-5">
-                  <IoIosCheckmark className="mx-auto " />
+                <td className="pt-5 pb-5 text-xl font-[Proxima-Nova-bold]">Match Access </td>
+                <td className="pt-5 pb-5 text-md">
+                  Limited matches
                 </td>
-                <td className="pt-5 pb-5 text-2xl pt-5 pb-5">
-                  <IoIosCheckmark className="mx-auto" />
+                <td className="pt-5 pb-5 text-md">
+                  Unlimited matches
                 </td>
-                <td className="pt-5 pb-5 text-2xl pt-5 pb-5">
-                  <IoIosCheckmark className="mx-auto" />
+                <td className="pt-5 pb-5 ttext-md ">
+                  Personalised matchmaking
                 </td>
               </tr>
 
               <tr className="border-b-2 ">
-                <td>Unlimited Rewinds</td>
-                <td className="pt-5 pb-5  text-md text-[#AFAFAF] pt-5 pb-5 ">
+                <td className="text-xl font-[Proxima-Nova-bold]">Search Filters</td>
+                <td className="pt-5 pb-5  text-md   ">
                   {" "}
-                  <RxCross1 className="mx-auto" />
+                  Basic filters
                 </td>
-                <td className="pt-5 pb-5 text-2xl pt-5 pb-5">
-                  <IoIosCheckmark className="mx-auto" />
+                <td className="pt-5 pb-5 text-md">
+                  Advanced search filters
                 </td>
-                <td className="pt-5 pb-5 text-2xl pt-5 pb-5">
+                <td className="pt-5 pb-5 text-md">
                   {" "}
-                  <IoIosCheckmark className="mx-auto" />
+                  Advanced + Exclusive matchmaking filters
                 </td>
               </tr>
 
               <tr className="border-b-2">
-                <td>Passport™ to any location</td>
-                <td className="pt-5 pb-5 pt-5 pb-5 text-md text-[#AFAFAF] ">
+                <td className="text-xl font-[Proxima-Nova-bold]">Visibility</td>
+                <td className="pt-5 pb-5 pt-5 pb-5 text-md  ">
                   {" "}
-                  <RxCross1 className="mx-auto" />
+                  Standard visibility
                 </td>
-                <td className="pt-5 pb-5 text-md text-[#AFAFAF] ">
+                <td className="pt-5 pb-5 text-md ">
                   {" "}
-                  <RxCross1 className="mx-auto" />
+                  Visibility boosts
                 </td>
-                <td className="pt-5 pb-5 text-2xl ">
+                <td className="pt-5 pb-5 text-md ">
                   {" "}
-                  <IoIosCheckmark className="mx-auto" />
+                  Top-tier profile visibility
                 </td>
               </tr>
 
               <tr className="border-b-2">
-                <td>Hide advertisements</td>
-                <td className="pt-5 pb-5  text-md text-[#AFAFAF] ">
+                <td className="text-xl font-[Proxima-Nova-bold]">Events/Workshops</td>
+                <td className="pt-5 pb-5  text-md ">
                   {" "}
-                  <RxCross1 className="mx-auto" />
+                  Community forums only
                 </td>
-                <td className="pt-5 pb-5 text-md text-[#AFAFAF] ">
+                <td className="pt-5 pb-5 text-md ">
                   {" "}
-                  <RxCross1 className="mx-auto" />
+                  Monthly webinars
                 </td>
-                <td className="pt-5 pb-5 text-2xl ">
+                <td className="pt-5 pb-5 text-md ">
                   {" "}
-                  <IoIosCheckmark className="mx-auto" />
-                </td>
-              </tr>
-              <tr className="border-b-2">
-                <td>Go Incognito </td>
-                <td className="pt-5 pb-5 text-md text-[#AFAFAF] ">
-                  {" "}
-                  <RxCross1 className="mx-auto" />
-                </td>
-                <td className="pt-5 pb-5 text-md text-[#AFAFAF] ">
-                  {" "}
-                  <RxCross1 className="mx-auto" />
-                </td>
-                <td className="pt-5 pb-5 text-2xl ">
-                  {" "}
-                  <IoIosCheckmark className="mx-auto" />
+                  Exclusive events + workshops
                 </td>
               </tr>
               <tr className="border-b-2">
-                <td>*Weekly Super Likes</td>
-                <td className="pt-5 pb-5 text-md text-[#AFAFAF] ">
+                <td className="text-xl font-[Proxima-Nova-bold]">Customer Support</td>
+                <td className="pt-5 pb-5 text-md  ">
                   {" "}
-                  <RxCross1 className="mx-auto" />
+                  Basic support
                 </td>
-                <td className="pt-5 pb-5 text-md text-[#AFAFAF] ">
+                <td className="pt-5 pb-5 text-md  ">
                   {" "}
-                  <RxCross1 className="mx-auto" />
+                  Priority customer support
                 </td>
-                <td className="pt-5 pb-5 text-2xl ">
+                <td className="pt-5 pb-5 text-md ">
                   {" "}
-                  <IoIosCheckmark className="mx-auto" />
+                  24/7 VIP support + dedicated relationship manager
+                </td>
+              </tr>
+              <tr className="border-b-2">
+                <td className="text-xl font-[Proxima-Nova-bold]">Privacy Settings</td>
+                <td className="pt-5 pb-5 text-md  ">
+                  {" "}
+                  Basic privacy
+                </td>
+                <td className="pt-5 pb-5 text-md  ">
+                  {" "}
+                  Enhanced privacy
+                </td>
+                <td className="pt-5 pb-5 text-md ">
+                  {" "}
+                  Ultimate control over privacy and visibility
                 </td>
               </tr>
 
               <tr className="border-b-2">
-                <td>*1 Free Boost a month</td>
-                <td className="pt-5 pb-5 text-md text-[#AFAFAF] ">
+                <td className="text-xl font-[Proxima-Nova-bold]">Additional Benefits</td>
+                <td className="pt-5 pb-5 text-md ">
                   {" "}
-                  <RxCross1 className="mx-auto" />
+                  N/A
                 </td>
-                <td className="pt-5 pb-5  text-md text-[#AFAFAF] ">
+                <td className="pt-5 pb-5  text-md  ">
                   {" "}
-                  <RxCross1 className="mx-auto" />
+                  Monthly relationship webinars
                 </td>
-                <td className="pt-5 pb-5 text-2xl ">
+                <td className="pt-5 pb-5 text-md ">
                   {" "}
-                  <IoIosCheckmark className="mx-auto" />
-                </td>
-              </tr>
-              <tr className="border-b-2">
-                <td>
-                  Free monthly Boost only available with subscriptions of 1
-                  month or longer.
-                </td>
-                <td className="pt-5 pb-5  text-md text-[#AFAFAF] ">
-                  {" "}
-                  <RxCross1 className="mx-auto" />
-                </td>
-                <td className="pt-5 pb-5  text-md text-[#AFAFAF] ">
-                  {" "}
-                  <RxCross1 className="mx-auto" />
-                </td>
-                <td className="pt-5 pb-5 text-2xl ">
-                  {" "}
-                  <IoIosCheckmark className="mx-auto" />
-                </td>
-              </tr>
-              <tr className="border-b-2">
-                <td>See who likes you</td>
-                <td className="pt-5 pb-5  text-md text-[#AFAFAF] ">
-                  {" "}
-                  <RxCross1 className="mx-auto" />
-                </td>
-                <td className="pt-5 pb-5  text-md text-[#AFAFAF] ">
-                  {" "}
-                  <RxCross1 className="mx-auto" />
-                </td>
-                <td className="pt-5 pb-5 text-2xl ">
-                  {" "}
-                  <IoIosCheckmark className="mx-auto" />
+                  Personality assessments + VIP networking events
                 </td>
               </tr>
 
-              <tr className="border-b-2">
-                <td> New Top Picks every day</td>
-                <td className="pt-5 pb-5  text-md text-[#AFAFAF] ">
-                  {" "}
-                  <RxCross1 className="mx-auto" />
-                </td>
-                <td className="pt-5 pb-5  text-md text-[#AFAFAF] ">
-                  {" "}
-                  <RxCross1 className="mx-auto" />
-                </td>
-                <td className="pt-5 pb-5 text-2xl ">
-                  {" "}
-                  <IoIosCheckmark className="mx-auto" />
-                </td>
-              </tr>
-
-              <tr className="border-b-2">
-                <td>Message before matching</td>
-                <td className="pt-5 pb-5 text-md text-[#AFAFAF] ">
-                  {" "}
-                  <RxCross1 className="mx-auto" />
-                </td>
-                <td className="pt-5 pb-5  text-md text-[#AFAFAF] ">
-                  {" "}
-                  <RxCross1 className="mx-auto" />
-                </td>
-                <td className="pt-5 pb-5 text-2xl ">
-                  {" "}
-                  <IoIosCheckmark className="mx-auto" />
-                </td>
-              </tr>
-
-              <tr className="border-b-2">
-                <td>Prioritised likes</td>
-                <td className="pt-5 pb-5  text-md text-[#AFAFAF] ">
-                  {" "}
-                  <RxCross1 className="mx-auto" />
-                </td>
-                <td className="pt-5 pb-5  text-md text-[#AFAFAF] ">
-                  {" "}
-                  <RxCross1 className="mx-auto" />
-                </td>
-                <td className="pt-5 pb-5 text-2xl ">
-                  {" "}
-                  <IoIosCheckmark className="mx-auto" />
-                </td>
-              </tr>
-
-              <tr className="">
-                <td>See the likes you’ve sent over the last 7 days</td>
-                <td className="pt-5 pb-5  text-md text-[#AFAFAF] ">
-                  {" "}
-                  <RxCross1 className="mx-auto" />
-                </td>
-                <td className="pt-5 pb-5  text-md text-[#AFAFAF] ">
-                  {" "}
-                  <RxCross1 className="mx-auto" />
-                </td>
-                <td className="pt-5 pb-5 text-2xl ">
-                  {" "}
-                  <IoIosCheckmark className="mx-auto" />
-                </td>
-              </tr>
             </tbody>
           </table>
         </div>

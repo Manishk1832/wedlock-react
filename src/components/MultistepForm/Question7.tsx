@@ -17,7 +17,7 @@ const question = [
     id: 8,
     text: "I am looking for a partner of age",
     summary:
-      "Lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit amet consectetur.",
+      "Specifying the age range of your ideal partner helps us connect you with individuals who match your preferences",
     options: ["18", "19", "20", "21", "22", "23"],
     text2: "to",
     options1: ["18", "19", "20", "21", "22", "23"],

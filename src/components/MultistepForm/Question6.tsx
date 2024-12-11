@@ -6,7 +6,7 @@ const question = [
     id: 7,
     text: "I am age",
     summary:
-      "Lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit amet consectetur.",
+      "Knowing your age allows us to create matches that are compatible and appropriate for your life stage",
     options: ["18", "19", "20", "21", "22", "23", "24", "26"],
   },
 ];

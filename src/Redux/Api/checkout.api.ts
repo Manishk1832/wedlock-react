@@ -24,8 +24,24 @@ export const checkoutApi = createApi({
                 body: { planId },
             }),
         }),
+
+        paymentSuccess:builder.query({
+            query: (session_id: string) => ({
+                url: `payment-success/${session_id}`,
+                method: 'GET',
+            }),
+        }),
+
+        getSubscriptionHistory: builder.query<void, void>({
+            query: () => ({
+                url: 'getSubscriptionHistory',
+                method: 'GET',
+            }),
+        })
+
+    
     }),
 })
 
 
-export const { useCreateCheckoutSessionMutation } = checkoutApi
+export const { useCreateCheckoutSessionMutation ,usePaymentSuccessQuery,useGetSubscriptionHistoryQuery} = checkoutApi

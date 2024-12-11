@@ -1,4 +1,4 @@
-import { FaArrowRightLong } from "react-icons/fa6";
+// import { FaArrowRightLong } from "react-icons/fa6";
 
 interface StoryCardProps {
   title: string;
@@ -18,8 +18,10 @@ const StoryCard = ({ title, description, imageSrc }: StoryCardProps) => {
       </div>
       <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black via-transparent to-transparent p-6">
         <h2 className="mb-2 text-xl font-bold">{title}</h2>
-        <p className="mb-4 text-sm md:text-lg">{description}</p>
-        <a
+        <p className="mb-4 text-sm md:text-lg line-clamp-6 hover:line-clamp-none">
+  {description}
+</p>
+        {/* <a
           href="#"
           className="flex items-center gap-2 font-bold text-white hover:underline"
         >
@@ -27,7 +29,7 @@ const StoryCard = ({ title, description, imageSrc }: StoryCardProps) => {
           <span>
             <FaArrowRightLong />
           </span>
-        </a>
+        </a> */}
       </div>
     </div>
   );

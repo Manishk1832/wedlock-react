@@ -1,9 +1,15 @@
+// import React , { useState } from "react";
 import { FaRegStar } from "react-icons/fa";
 import { FaRegMap } from "react-icons/fa6";
 import { FaRegUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { RootState } from "./../../Redux/store";
+import { useSelector } from "react-redux";
+// import { FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
 import { MdVerified } from "react-icons/md";
 import "../../font.css";
+import { FaStar } from "react-icons/fa";
+
 
 interface Profile {
   id: string;
@@ -25,15 +31,21 @@ interface Profile {
 
 interface ProfileCardProps {
   profiles: Profile[];
+  isFavourite: boolean;
+  handleFavouriteToggle: (userId: string) => void;
+  
 }
 
 
 
-const ProfileCard: React.FC<ProfileCardProps> = ({ profiles }) => {
-  console.log(profiles,"profiles");
+const ProfileCard: React.FC<ProfileCardProps> = ({ profiles, isFavourite, handleFavouriteToggle }) => {
+  const {user } = useSelector((state: RootState) => state.userReducer) ;
+
+
 
 
   const navigate = useNavigate();
+
 
   
 
@@ -51,15 +63,45 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profiles }) => {
     }
   };
 
+  console.log(user?.usertype,"userType");
+
+  const getBlurStyle = (currentUserType: string, targetUserType: string): string => {
+    if (currentUserType === "Standard"  &&  targetUserType === "Standard") {
+      return " blur-sm";
+    }
+    if (currentUserType === "Standard" && targetUserType === "Premium") {
+      return "blur-sm";
+    }
+    if (currentUserType === "Standard" && targetUserType === "Exclusive") {
+      return "blur-sm";
+    }
+
+    if(currentUserType === "Premium" && targetUserType === "Standard"){
+      return "";
+    }
+    if(currentUserType === "Premium" && targetUserType === "Exclusive"){
+      return "blur-sm";
+    }
+    
+  
+    return "";
+  };
+
+
+  
   const handleCardClick = (userId: string ,name : string) => {
     navigate(`/profile/${name}/${userId}`);
     window.location.reload();
   };
+
+
+
+
   return (
     <div className=" ">
       {profiles.map((data) => (
         <div
-          onClick={() => handleCardClick(data.userId,data.firstName)}
+        onClick={() => handleCardClick(data.userId,data.firstName)}
           key={data.id}
           className={`relative w-full cursor-pointer md:w-[24rem] ${data.userType !== "Standard" ? "h-[33.1rem]" : "h-[33.1rem]"} rounded-[1.9rem] ${
             data.userType !== "Standard" ? "border-t-[1rem]" : ""
@@ -68,8 +110,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profiles }) => {
           <img
             src={data?.profileImages?.[0] ? data.profileImages[0] : 'path/to/default-image.jpg'}
             alt="p"
-            className="absolute h-full w-full rounded-2xl object-cover"
-          />
+            className={`absolute h-full w-full rounded-2xl object-cover ${getBlurStyle(user?.usertype || '', data.userType)}`}          />
 
           <div
             className={`relative p-5 text-white ${data.userType !== "Standard" ? "space-y-[12.5rem]" : ""} h-full space-y-[13.5rem] rounded-2xl bg-black bg-opacity-45`}
@@ -79,14 +120,34 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profiles }) => {
                 <h1 className="font-bold">{data.userType}</h1>
               </div>
 
-              <button className="flex items-center gap-2">
-              <FaRegStar className="text-2xl" />
- 
-              </button>
+              {
+                isFavourite ?  <button
+                className="flex items-center gap-2 "
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleFavouriteToggle( data.userId);
+
+                }}
+              > <FaStar className="text-2xl text-white" />  </button> :
+
+
+              <button
+            className="flex items-center gap-2 "
+            onClick={(e) => {
+              e.stopPropagation();
+              handleFavouriteToggle( data.userId);
+
+            }}
+          >
+            <FaRegStar className="text-2xl" />
+          </button>
+
+
+               }
 
             </div>
             <div className="flex flex-col gap-4">
-              <div className="flex h-10 w-24 items-center justify-center rounded-lg bg-gradient-to-t from-[#FFD54266] to-[#C0970766] px-1">
+              <div className="flex h-10 w-28 items-center justify-center rounded-lg bg-gradient-to-t from-[#FFD54266] to-[#C0970766] px-1">
                 <h1 className="text-white">{data.match_percentage}% match</h1>
               </div>
               <div>

@@ -1,101 +1,162 @@
-import  { useState } from 'react';
-import { IoArrowForward, IoArrowBack } from 'react-icons/io5';
-import StoryCard from './StoryCard';
-import '../../font.css';
-
-
+import { useState, useEffect } from "react";
+import { IoArrowForward, IoArrowBack } from "react-icons/io5";
+import StoryCard from "./StoryCard";
+import "../../font.css";
 
 const Stories = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [cardsPerSlide, setCardsPerSlide] = useState(1);
 
   const stories = [
     {
       src: "/cardbg.jpeg",
-      title: "JACK & Celine",
+      title: "Sophia & Arjun",
       description:
-        "We matched, spoke for sometime and then met in real. We were sure we want to spend our life together after the initial few conversations.",
+        "We met on Wedlock, and despite being from two different countries, we found common ground through our shared values and goals. The platform’s AI technology truly understood what we were looking for in a partner. After months of late-night calls and video chats, we finally met in person, and it was everything we had hoped for. Today, we’re married, and Wedlock helped make it happen.",
       index: 0,
     },
     {
       src: "/cardbg.jpeg",
-      title: "JACK & Celine",
+      title: "Emily & John",
       description:
-        "We matched, spoke for sometime and then met in real. We were sure we want to spend our life together after the initial few conversations.",
+        "Both of us had been through previous relationships that didn’t work out, but Wedlock gave us hope again. We were both looking for something deeper—someone who understood our past and was willing to build a future together. The AI matched us based on our shared experiences and values, and from the first conversation, we felt a connection. Now, we’re planning our wedding and couldn’t be happier.",
       index: 1,
     },
     {
       src: "/cardbg.jpeg",
-      title: "JACK & Celine",
+      title: "Isabella & Liam",
       description:
-        "We matched, spoke for sometime and then met in real. We were sure we want to spend our life together after the initial few conversations.",
+        "When we first matched, we weren’t even sure we were ready for a serious relationship, but something clicked. We started with casual conversations, but as we got to know each other, we realized we had so much in common. Wedlock’s AI did a fantastic job of finding someone who matched both our personalities and our long-term goals. We’re now happily engaged!",
       index: 2,
     },
-  
+    {
+      src: "/cardbg.jpeg",
+      title: "Olivia & Ethan",
+      description:
+        "We started out as friends on Wedlock, sharing common interests and getting to know each other without any pressure. Over time, those conversations turned into something more. The platform gave us the chance to build a relationship slowly and meaningfully. We’re now not only in love but also best friends, and we owe it all to Wedlock’s thoughtful matchmaking process.",
+      index: 3,
+    },
+    {
+      src: "/cardbg.jpeg",
+      title: "Priya & Aaron",
+      description:
+        "I was initially hesitant to try an AI-powered matchmaking service, but Wedlock’s personalised suggestions really surprised me. It wasn’t about superficial interests; it was about deep compatibility. After a few weeks, I matched with my now-husband, and it felt like the perfect fit right from the start. We bonded over shared values and life goals, and today, we’re happily married.",
+      index: 4,
+    },
   ];
 
+  useEffect(() => {
+    const updateCardsPerSlide = () => {
+      const width = window.innerWidth;
+      if (width >= 1024) setCardsPerSlide(3); // Large screens: show 3 cards
+      else if (width >= 768)
+        setCardsPerSlide(2); // Medium screens: show 2 cards
+      else setCardsPerSlide(1); // Small screens: show 1 card
+    };
+
+    updateCardsPerSlide();
+    window.addEventListener("resize", updateCardsPerSlide);
+    return () => window.removeEventListener("resize", updateCardsPerSlide);
+  }, []);
+
   const nextSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide === stories.length - 1 ? 0 : prevSlide + 1));
+    setCurrentSlide((prevSlide) =>
+      prevSlide === Math.ceil(stories.length / cardsPerSlide) - 1
+        ? 0
+        : prevSlide + 1
+    );
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide === 0 ? stories.length - 1 : prevSlide - 1));
+    setCurrentSlide((prevSlide) =>
+      prevSlide === 0
+        ? Math.ceil(stories.length / cardsPerSlide) - 1
+        : prevSlide - 1
+    );
   };
+
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
   };
 
   return (
-    
-    <div className="w-full h-auto 8xl:px-32 bg-[#007EAF] pb-10 sm:pb-[80px] 3xl:px-48 xl:px-10 7xl:px-36" >
-
-
-      
-    
-    <div className="container  m-auto md:space-y-16 md:px-20 md:py-5 px-4 space-y-5   overflow-hidden bg-[#007EAF] text-white relative">
-       <img
-        src="/curvewhite.svg" 
-        alt="arw"
-        className="absolute  w-[42rem] rotate-12 -right-10 -top-40 z-10"
-      />
-      <div className="md:space-y-10 space-y-5 happy_story">
-        <div className="flex items-center justify-between gap-5">
-          <h1 className=" text-[30px]  lg:text-[48px] md:text-[52px]  xl:text-[64px] font-[Proxima-Nova-Bold] leading-[42px] tracking-[0.02em]  md:leading-[52px] xl:leading-[89.6px] " >Happy Stories</h1>
-          <div className="flex items-center gap-4 z-10">
-            <IoArrowBack className="md:w-10 md:h-10 hover:bg-[#009BDA] rounded-full cursor-pointer" onClick={prevSlide} />
-            <IoArrowForward className="md:w-10 md:h-10 hover:bg-[#009BDA] rounded-full cursor-pointer" onClick={nextSlide} />
+    <div className="w-full h-auto 8xl:px-32 bg-[#007EAF] pb-10 sm:pb-[80px] 3xl:px-48 xl:px-10 7xl:px-36">
+      <div className="container m-auto md:space-y-16 md:px-20 md:py-5 px-4 space-y-5 overflow-hidden bg-[#007EAF] text-white relative">
+        <img
+          src="/curvewhite.svg"
+          alt="arw"
+          className="absolute w-[42rem] rotate-12 -right-10 -top-40 z-10"
+        />
+        <div className="md:space-y-10  happy_story">
+          <div className="flex items-center justify-between gap-5">
+            <h1 className="text-[32px] md:text-[48px] xl:text-[64px]  xl:leading-[83.2px] font-[Proxima-Nova-Bold] tracking-[-0.02em]">
+              Inspiring Wedlock stories
+            </h1>
+            <div className="flex items-center gap-4 z-10">
+              <IoArrowBack
+                className="md:w-10 md:h-10 hover:bg-[#009BDA] rounded-full cursor-pointer"
+                onClick={prevSlide}
+              />
+              <IoArrowForward
+                className="md:w-10 md:h-10 hover:bg-[#009BDA] rounded-full cursor-pointer"
+                onClick={nextSlide}
+              />
+            </div>
           </div>
+          <p className="text-[20px] max-md:pt-5 pt-8 sm:text-[24px] md:text-[21px]  md:text-start  xl:text-[28px]  ">
+            Witness real-life success stories from members who found love with
+            Wedlock. Our platform fosters meaningful relationships, bringing
+            together people from all walks of life. Hear from couples who found
+            their perfect match on Wedlock Australia.
+          </p>
         </div>
-        <p className="sm:w-[60%] w-full xl:w-full  text-[16px]  md:text-[20px] xl:text-[28px] font-[Proxima-Nova-Regular] leading-loose tracking-widest " >
-          Dive into stories of unexpected friendships, love that blossoms in the most extraordinary places, and dreams that come true against all odds.
-        </p>
-      </div>
-     
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4  ">
-        {stories.map((story, index) => (
-          <div
-            key={index}
-            className={`relative ${index === currentSlide ? "block" : ""}`}
-          >
-            <StoryCard
-              title={story.title}
-              description={story.description}
-              imageSrc={story.src}
-            />
-          </div>
-        ))}
-      </div>
-      <div className="mt-5 flex justify-center gap-1">
-        {stories.map((_, index) => (
-          <div
-            key={index}
-            className={`h-2 w-4 cursor-pointer rounded-xl ${index === currentSlide ? "w-8 bg-white" : "bg-[#00587b]"}`}
-            onClick={() => goToSlide(index)}
-          ></div>
-        ))}
+
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {stories.map((story, index) => {
+            // Calculate the range of visible cards
+            const startIndex = currentSlide * cardsPerSlide;
+            const endIndex = startIndex + cardsPerSlide;
+
+            // Adjust to show the second card on the third slide
+            const adjustedStartIndex =
+              cardsPerSlide === 3 && currentSlide === 2 ? 1 : startIndex;
+
+            return (
+              <div 
+                key={index} 
+                className={`relative ${
+                  index >= adjustedStartIndex &&
+                  index < adjustedStartIndex + cardsPerSlide
+                    ? "block"
+                    : "hidden"
+                }`}
+              >
+                <StoryCard
+                  title={story.title}
+                  description={story.description}
+                  imageSrc={story.src}
+                />
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Indicator Dots */}
+        <div className="mt-5 flex justify-center gap-1">
+          {Array.from({
+            length: Math.ceil(stories.length / cardsPerSlide),
+          }).map((_, index) => (
+            <div
+              key={index}
+              className={`h-2 w-4 cursor-pointer rounded-xl ${
+                index === currentSlide ? "w-8 bg-white" : "bg-[#00587b]"
+              }`}
+              onClick={() => goToSlide(index)}
+            ></div>
+          ))}
+        </div>
       </div>
     </div>
-
-</div>
   );
 };
 

@@ -1,5 +1,6 @@
 import "../../font.css";
 import { useForm } from "react-hook-form";
+import { useEffect,useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useOtherDetailsMutation } from "../..//Redux/Api/form.api";
@@ -8,6 +9,8 @@ import { useOtherDetailsMutation } from "../..//Redux/Api/form.api";
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { useNavigate } from "react-router-dom";
 import {toast} from 'sonner'
+import { LoadingOutlined } from '@ant-design/icons';
+
 
 // caste, community, dateOfBirth, timeOfBirth, religion, placeOfBirth
 
@@ -21,6 +24,19 @@ const otherDetailsSchema = z.object({
 });
 
 const OtherDetails = () => {
+
+  const [isExclusive, setExclusive] = useState(false);
+
+  useEffect(()=>{
+    const isExclusive = localStorage.getItem("isExclusive");
+    if(isExclusive){
+      setExclusive(true)
+    }
+  },[])
+
+
+
+
   const casteOptions = [
     {
       Varna: "Brahmins",
@@ -48,7 +64,7 @@ const OtherDetails = () => {
     },
   ];
 
-  const [otherDetails] = useOtherDetailsMutation();
+  const [otherDetails, { isLoading }] = useOtherDetailsMutation();
   const navigate = useNavigate();
 
   // const dispatch = useDispatch();
@@ -105,7 +121,7 @@ const OtherDetails = () => {
 
   return (
 
-    <div className="flex min-h-screen flex-col items-center justify-center bg-[#007EAF] px-5 md:px-20 lg:px-40 3xl:px-60">
+    <div className={`flex min-h-screen flex-col items-center justify-center ${isExclusive? 'bg-[#60457E]': 'bg-[#007EAF]'} px-5 md:px-20 lg:px-40 3xl:px-60`}>
       <img
         src="/logowhite.png"
         alt="Wedlock Logo"
@@ -120,8 +136,8 @@ const OtherDetails = () => {
             Other Details
           </h1>
           <p className="text-sm leading-6 xl:text-xl">
-            Lorem ipsum dolor sit amet consectetur.
-          </p>
+          Including additional details enriches your profile, making it easier to find meaningful and compatible connections.         
+           </p>
         </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -254,10 +270,11 @@ const OtherDetails = () => {
           <div className="md:col-span-2 flex justify-end">
             <button
               type="submit"
-              className="w-full rounded-[0.5rem] bg-[#F9F5FFE5] px-4 py-2 text-[#007EAF] md:w-20 2xl:w-32"
-            >
-              Save
-            </button>
+              className={`w-full rounded-[0.5rem] bg-[#F9F5FFE5] px-4 py-2 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'}
+              md:w-20 2xl:w-32`}
+                         >
+                {isLoading ? <LoadingOutlined className={`${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} animate-spin`} /> : 'Save'}
+                </button>
           </div>
         </form>
       </div>

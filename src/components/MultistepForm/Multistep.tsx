@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { FaArrowRightLong , FaArrowLeftLong} from "react-icons/fa6";
 import Cookies from "js-cookie";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 import Question1 from "./Question1";
 import Question2 from "./Question2";
@@ -16,12 +18,23 @@ import Question7 from "./Question7";
 import Question11 from "./Question11";
 
 const Multistep = () => {
+  const [isExclusive, setExclusive] = useState(false);
+  
    const navigate = useNavigate();
-
 
   const [selectedOptions, setSelectedOptions] = useState<
     { questionId: number; answerValue: string | string[] }[]
   >([]);
+
+
+
+  useEffect(()=>{
+    const isExclusive = localStorage.getItem("isExclusive");
+    if(isExclusive){
+      setExclusive(true)
+    }
+
+  })
   
 
   console.log(selectedOptions,"selected")
@@ -145,21 +158,151 @@ const Multistep = () => {
     });
   };
 
+  
+
   const handleNext = () => {
-    if (page < PageTitles.length - 1) {
-      setPage(page + 1);
-    }
-    if(page === PageTitles.length - 1){
-      Cookies.set("answers", JSON.stringify(selectedOptions))
-      navigate("/register")
-      
+    if (page === 0) {
+      const has1AnsweredAll = selectedOptions.some(
+        (sel) => sel.questionId === 1
+      );
+     
+      if (!has1AnsweredAll) {
+        toast.error("Please answer Your gender before proceeding!");
+        return;
+      }
+
+      const has2AnsweredAll = selectedOptions.some(
+        (sel) => sel.questionId === 2
+      );
+      if (!has2AnsweredAll) {
+        toast.error("Please answer Partner looking for before proceeding!");
+        return;
+      }
     }
 
+    if (page === 1) {
+      const hasAnsweredAll = selectedOptions.some(
+        (sel) => sel.questionId === 3
+      );
+      if (!hasAnsweredAll) {
+        toast.error("Please answer Have you tried looking for your life partner online before? before proceeding!");
+        return;
+      }
+    }
+
+    if(page === 2) {
+      const hasAnsweredAll = selectedOptions.some(
+        (sel) => sel.questionId === 4
+      );
+      if (!hasAnsweredAll) {
+        toast.error("Please answer What are your wedding goals? before proceeding!");
+        return;
+      }
+    }
+
+    if(page === 3) {
+      const hasAnsweredAll = selectedOptions.some(
+        (sel) => sel.questionId === 5
+      );
+      if (!hasAnsweredAll) {
+        toast.error("Please answer How long have you been looking for? before proceeding!");
+        return;
+      }
+    }
+    if(page === 4) {
+      const hasAnsweredAll = selectedOptions.some(
+        (sel) => sel.questionId === 6
+      );
+      if (!hasAnsweredAll) {
+        toast.error("Please answer For whom are you looking? before proceeding!");
+        return;
+      }
+    }
+    if(page === 5) {
+      const hasAnsweredAll = selectedOptions.some(
+        (sel) => sel.questionId === 7
+      );
+      if (!hasAnsweredAll) {
+        toast.error("Please answer Your age  before proceeding!");
+        return;
+      }
+    }
+
+    if (page === 6) { // Validation for Question 8
+      const answerValue = selectedOptions.find((sel) => sel.questionId === 8)?.answerValue;
+    
+      if (!answerValue) {
+        toast.error("Please select both minimum and maximum age before proceeding!");
+        return;
+      }
+    
+      const [minAge, maxAge] = (typeof answerValue === 'string' ? answerValue : '').split('-').map(Number);
+    
+      if (!minAge || !maxAge || isNaN(minAge) || isNaN(maxAge)) {
+        toast.error("Invalid age range. Please select valid ages!");
+        return;
+      }
+    
+      if (minAge >= maxAge) {
+        toast.error("Minimum age should be less than maximum age!");
+        return;
+      }
+    }
+
+    if(page === 7) {
+      const hasAnsweredAll = selectedOptions.some(
+        (sel) => sel.questionId === 9
+      );
+      if (!hasAnsweredAll) {
+        toast.error("Please answer Are you looking for a partner living in Australia? before proceeding!");
+        return;
+      }
+    }
+
+    if(page === 8) {
+      const hasAnsweredAll = selectedOptions.some(
+        (sel) => sel.questionId === 10
+      );
+      if (!hasAnsweredAll) {
+        toast.error("Please answer Do you believe in horoscope match? before proceeding!");
+        return;
+      }
+    }
+
+    if(page === 9) {
+      const hasAnsweredAll = selectedOptions.some(
+        (sel) => sel.questionId === 11
+      );
+      if (!hasAnsweredAll) {
+        toast.error("Please answer Does religion and caste matter for your preferred partner? before proceeding!");
+        return;
+      }
+    }
+
+    if (page === 10) { 
+      const selectedAnswer = selectedOptions.find((sel) => sel.questionId === 12)?.answerValue;
+    
+      if (!selectedAnswer || selectedAnswer.length === 0) {
+        toast.error("Please answer 'What are your interests and hobbies?' before proceeding!");
+        return;
+      }
+    }
+    
+
+    
+  
+    if (page < PageTitles.length - 1) {
+      setPage(page + 1);
+    } else if (page === PageTitles.length - 1) {
+      Cookies.set("answers", JSON.stringify(selectedOptions));
+      navigate("/register");
+    }
   };
+  
 
 
   return (
-    <div className="min-w-screen relative flex min-h-screen flex-col items-center bg-[#007EAF] px-2 text-white md:px-28 lg:px-60 3xl:px-60">
+    <div className={`min-w-screen relative flex min-h-screen flex-col items-center ${isExclusive? 'bg-[#60457E]': 'bg-[#007EAF]'} px-2 text-white md:px-28 lg:px-60 3xl:px-60`}>
       <div className="mt-5 flex w-full items-center justify-between md:mt-10">
              {page > 0 ? (
                 <button
@@ -179,11 +322,13 @@ const Multistep = () => {
                 </button>
               )}
 
+         <Link  to={"/"} className="mx-auto mb-2 " >
         <img
           src="/logowhite.png"
           alt="Wedlock Logo"
-          className="md:w-72 md:h-24 mx-auto mb-2 h-20 w-60"
+          className="md:w-72 md:h-24 h-20 w-60"
         />
+        </Link>
       </div>
 
       <div className="mt-10 w-full text-center xl:w-[40vw]">
@@ -204,12 +349,12 @@ const Multistep = () => {
         <div className="form-body ">{PageDisplay()}</div>
 
         <div className="form-footer">
-          <div className="bottom-20 flex w-full flex-col items-center justify-end   md:absolute md:right-20 md:flex-row lg:right-40 xl:mt-6 3xl:right-60">
+          <div className="max-md:bottom-5 2xl:bottom-10  flex w-full flex-col items-center justify-end   md:absolute md:right-20 md:flex-row lg:right-40 xl:mt-6 3xl:right-60">
             <div className="flex w-full items-end justify-between md:justify-end md:gap-10">
              
               <button
                 type="button"
-                className="flex h-[48px] w-full items-center justify-center gap-2 rounded-md bg-white  px-2 py-2 text-[#007EAF] md:w-auto xl:mt-20 md:mt-0"
+                className={`flex  h-[48px] w-full items-center justify-center gap-2 rounded-md bg-white  px-2 py-2 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} md:w-auto xl:mt-20 md:mt-0`}
                 onClick={handleNext}
               >
                 Continue <FaArrowRightLong />

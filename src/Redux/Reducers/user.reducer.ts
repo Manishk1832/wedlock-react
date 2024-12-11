@@ -7,9 +7,48 @@ const refreshToken = Cookies.get("refresh_token") || null;
 const activationToken = Cookies.get("activationToken") || null;
 const token = Cookies.get("token") || null;
 
-const initialState = {
+interface User {
+  id: number;
+  uid: string;
+  userStatus: boolean;
+  fcmToken: string;
+  userId: string;
+  email: string;
+  otp: string | null;
+  password: string;
+  usertype: string;
+  isVerified: boolean;
+  isPersonalFormFilled: boolean;
+  isQualificationFormFilled: boolean;
+  isLocationFormFilled: boolean;
+  isOtherFormFilled: boolean;
+  isImageFormFilled: boolean;
+  role: string;
+  createdAt: string; // Consider using Date if you intend to handle these as Date objects
+  updatedAt: string; // Same as above
+}
+
+interface InitialState {
+  loading: boolean;
+  user: User | null;
+  notificationData: any | null;
+  accessToken: string | null;
+  refreshToken: string | null;
+  activationToken: string | null;
+  token: string | null;
+  isPersonalFormFilled: boolean;
+  isQualificationFormFilled: boolean;
+  isOtherFormFilled: boolean;
+  isLocationFormFilled: boolean;
+  isImageFormFilled: boolean;
+}
+
+
+
+const initialState : InitialState = {
   loading:true,
   user: null,
+  notificationData: null,
   accessToken: accessToken || null,
   refreshToken: refreshToken || null,
   activationToken: activationToken,
@@ -54,15 +93,20 @@ const userSlice = createSlice({
       state.isQualificationFormFilled =user?.isQualificationFormFilled || isQualificationFormFilled || false;
       state.isOtherFormFilled = user?.isOtherFormFilled || isOtherFormFilled || false;
 
-    //   Cookies.set( "isLocationFormFilled",String(state.isLocationFormFilled ?? false));
-    //   Cookies.set("isImageFormFilled",String(state.isImageFormFilled ?? false));
-    //   Cookies.set( "isPersonalFormFilled", String(state.isPersonalFormFilled ?? false));
-    //   Cookies.set("isQualificationFormFilled",String(state.isQualificationFormFilled ?? false) );
-    //   Cookies.set("isOtherFormFilled",String(state.isOtherFormFilled ?? false));
     },
 
     setRefreshToken: (state, action) => {
       state.refreshToken = action.payload;
+    },
+
+    setNotificationData: (state, action) => {
+      state.notificationData = action.payload;
+    },
+
+    setUserType: (state, action) => {
+      if (state.user) {
+        state.user.usertype = action.payload;
+      }
     },
 
     logout: (state) => {
@@ -73,6 +117,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUser, setRefreshToken, logout, setActivationToken } =
+export const { setUser, setRefreshToken, logout, setActivationToken ,setNotificationData,setUserType} =
   userSlice.actions;
 export default userSlice;

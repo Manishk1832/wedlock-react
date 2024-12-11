@@ -1,10 +1,12 @@
 import React, { useRef } from 'react';
+import { useState,useEffect } from 'react';
 import Input from '../../components/input/Input';
 import { useVerifyOtpMutation } from "../../Redux/Api/user.api";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import { LoadingOutlined } from '@ant-design/icons';
 import Cookies from "js-cookie";
 import { z } from 'zod';
@@ -23,6 +25,14 @@ const verificationSchema = z.object({
 
 const Verification = () => {
   const navigate = useNavigate();
+  const [isExclusive, setExclusive] = useState(false);
+
+  useEffect(()=>{
+    const isExclusive = localStorage.getItem("isExclusive");
+    if(isExclusive){
+      setExclusive(true)
+    }
+  },[])
 
   type VerificationInputs = z.infer<typeof verificationSchema>;
 
@@ -76,10 +86,14 @@ const Verification = () => {
     navigate("/create-password");
   };
 
+  
+
   return (
-    <div className="min-w-screen min-h-screen flex flex-col items-center justify-center bg-[#007EAF]">
+    <div className={`min-w-screen min-h-screen flex flex-col items-center justify-center ${isExclusive? 'bg-[#8E69B4]': 'bg-[#007EAF]'}`}>
       <div className="flex items-center justify-center mb-14">
-        <img src="/logowhite.png" alt="" className='w-72 h-24 fixed top-4' />
+        <Link to={"/"} className='fixed top-4'>
+        <img src="/logowhite.png" alt="" className='w-72 h-24 ' />
+        </Link>
       </div>
       <div className="flex flex-col items-center justify-center mt-8 mb-2">
         <div className="bg-white flex items-center justify-center rounded-md w-12 h-12">
@@ -124,8 +138,8 @@ const Verification = () => {
               <button type="button"> Click to resend.</button>
             </div>
 
-            <button className="bg-white text-[#007EAF] w-full h-12 rounded-xl mt-6">
-              {isLoading ? <LoadingOutlined className="text-[#007EAF] animate-spin" /> : 'Verify'}
+            <button className={`bg-white ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'}  w-full h-12 rounded-xl mt-6`}>
+              {isLoading ? <LoadingOutlined className={`${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} animate-spin`} /> : 'Verify'}
             </button>
           </form>
         </div>

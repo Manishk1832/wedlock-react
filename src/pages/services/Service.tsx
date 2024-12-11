@@ -10,9 +10,8 @@ const Service = () => {
         </h3>
         <h1 className=" text-2xl md:text-4xl font-semibold">Services</h1>
         <p className="text-[#475467] text-md md:text-xl text-balance">
-          Your privacy is important to us at Untitled. We respect your privacy
-          regarding any <br /> information we may collect from you across our
-          website.
+        Wedlock is a global matchmaking platform developed to redefine the landscape of matrimony, <br /> empowering individuals to embark on their journey towards matrimony and marital bliss with confidence and ease.
+
         </p>
       </div>
       <div className="px-4 py-4 flex md:flex-row flex-col gap-7">

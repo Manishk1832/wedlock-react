@@ -1,10 +1,23 @@
 
 import { Link } from "react-router-dom";
 import "../../font.css";
+import { useEffect,useState } from "react";
+
 
 const page = () => {
+
+  const [isExclusive, setExclusive] = useState(false);
+
+  useEffect(()=>{
+    const isExclusive = localStorage.getItem("isExclusive");
+    if(isExclusive){
+      setExclusive(true)
+    }
+  },[])
+
   return (
-    <div className="flex min-h-screen flex-col items-center bg-[#007EAF] px-5 md:px-20 lg:px-40 3xl:px-60">
+    <div className={`flex min-h-screen flex-col items-center ${isExclusive? 'bg-[#60457E]': 'bg-[#007EAF]'}
+ px-5 md:px-20 lg:px-40 3xl:px-60`}>
       <img
         src="/logowhite.png"
         alt="logo"
@@ -31,7 +44,7 @@ const page = () => {
           </p>
         </div>
         <div className="mb-5 mt-auto flex w-full justify-end py-8 pb-4 md:mt-0 xl:px-80 2xl:mb-4 2xl:px-0 3xl:mb-20 3xl:px-0">
-          <button className="mt-10 w-full rounded-[0.5rem] bg-[#F9F5FFE5] px-4 py-2 text-[#007EAF]">
+          <button className={`mt-10 w-full rounded-[0.5rem] bg-[#F9F5FFE5] px-4 py-2 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'}`}>
             <Link to="/user-dashboard"> Click here to continue</Link>
           </button>
         </div>

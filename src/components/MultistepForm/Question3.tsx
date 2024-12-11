@@ -5,7 +5,7 @@ const question = [
         id: 4,
         text: "What are your wedding goals?",
         summary:
-          "Lorem ipsum dolor sit amet consectetur.Lorem ipsum dolor sit amet consectetur.",
+          "Describe your vision for marriage and what you seek in a life partner.",
         options: [
           "Serious to get married soon",
           "Should understand each other first",

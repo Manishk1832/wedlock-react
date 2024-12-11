@@ -27,10 +27,10 @@ export const connectionApi = createApi({
         }),
 
         cancelConnection: builder.mutation({
-            query: ( connectionId ) => ({
+            query: ( receiverId ) => ({
                 url: '/cancelConnection',
                 method: 'POST',
-                body: connectionId
+                body: {receiverId: receiverId}
             }),
             invalidatesTags: ['Connection'],
         }),
@@ -38,32 +38,43 @@ export const connectionApi = createApi({
             query: ( receiverId ) => ({
                 url: '/removeConnection',
                 method: 'POST',
-                body: receiverId
+                body:  {receiverId: receiverId}
             }),
             invalidatesTags: ['Connection'],
         }),
 
         acceptConnection: builder.mutation({
-            query: ( receiverId ) => ({
+            query: ( senderId ) => ({
                 url: '/acceptConnection',
                 method: 'POST',
-                body: receiverId
+                body: {senderId: senderId}
             }),
             invalidatesTags: ['Connection'],
         }),
 
         rejectConnection: builder.mutation({
-            query: ( receiverId ) => ({
+            query: ( senderId ) => ({
                 url: '/rejectConnection',
                 method: 'POST',
-                body: receiverId
+                body: {senderId: senderId}
             }),
             invalidatesTags: ['Connection'],
-        })
+        }),
+
+        getConnectionStatus: builder.mutation({
+            query: ( userId ) => ({
+                url: '/getConnectionStatus',
+                method: 'POST',
+                body: {userId: userId}
+            }),
+            invalidatesTags: ['Connection'],
+        }),
+
+        
 
 
 
     }),
 })
 
-export const { useCreateConnectionMutation, useCancelConnectionMutation,useAcceptConnectionMutation,useRejectConnectionMutation,useRemoveConnectionMutation } = connectionApi
+export const { useCreateConnectionMutation, useCancelConnectionMutation,useAcceptConnectionMutation,useRejectConnectionMutation,useRemoveConnectionMutation,useGetConnectionStatusMutation } = connectionApi

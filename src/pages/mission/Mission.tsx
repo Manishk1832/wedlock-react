@@ -5,11 +5,10 @@ const Mission = () => {
           <div className=" pt-5 mb-4 md:mb-0 md:pt-16 space-y-14">
             <div className=" flex flex-col md:flex-row justify-between items-center w-[79%] m-auto ">
               <h1 className="text-[#101828E5] text-5xl font-bold xl:text-7xl ">
-                At the heart of Wedlock.
-              </h1>
+              Redefining Matrimony,<br /> One Match at a Time
+                            </h1>
               <p className="text-[#42526B] text-md md:text-lg    md:w-[56%] py-4 w-full ">
-                Cras imperdiet est eget nulla fringilla, sit amet volutpat sem
-                tristique. Pellentesque quis augue ac mauris posuere vehicula.
+                At Wedlock Australia, our mission is to help you find meaningful connections that lead to lifelong happiness. We’re committed to fostering a safe, respectful, and inclusive platform where users can explore relationships that align with their personal values, preferences, and cultural backgrounds. By leveraging advanced technology and compassionate support, we strive to redefine the matchmaking experience, making it easier for everyone to find companionship and create lasting memories. We are here to support you every step of the way as you embark on this important journey.
               </p>
             </div>
             <div className="ml-[11%] m-auto w-[77%]">
@@ -36,24 +35,24 @@ const Mission = () => {
           <div className="container mx-auto text-center lg:px-10">
             <h1 className="text-4xl font-bold mb-6">Relationships are at the core of everything we do.</h1>
             <p className="text-lg mb-12">
-              And not just the romantic kind. We can’t accomplish really hard things alone—so we make great relationships the foundation of our teamwork.
-              <br />
-              We believe these three core values are what it takes to build those great relationships.
+              At Wedlock Australia, relationships are more than just connections—they’re the heart of our mission and the foundation of our platform. We believe in fostering partnerships built on mutual respect, shared values, and long-term compatibility. Every feature we offer, every match we suggest, and every step of the journey is crafted to support you in finding a meaningful relationship that stands the test of time.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="bg-white  rounded-lg p-6 shadow-lg flex justify-center items-center flex-col">
                 <h2 className="text-2xl font-semibold mb-4 text-[#007EAF]">Authenticity</h2>
-                <p className="mb-4 text-[#42526B]">We share — never hide — our words, actions, and intentions.</p>
+                <p className="mb-4 text-[#42526B]">Wedlock values genuine connections by encouraging members to bring their true selves to every interaction</p>
                 <a href="#" className="text-[#007EAF] ">Learn More →</a>
               </div>
               <div className="bg-white rounded-lg p-6 shadow-lg h-[336px] flex justify-center items-center flex-col">
                 <h2 className="text-2xl font-semibold mb-4 text-[#007EAF]">Courage</h2>
-                <p className="mb-4 text-[#42526B]">Breakthroughs require a willingness to take risks and embrace lofty goals and tough challenges.</p>
+                <p className="mb-4 text-[#42526B]">We honor the courage it takes to pursue a lifelong partnership, supporting each step with confidence.</p>
                 <a href="#" className="text-[#007EAF]">Learn More →</a>
               </div>
               <div className="bg-white text-[#007EAF] rounded-lg p-6 shadow-lg flex justify-center items-center flex-col">
-                <h2 className="text-2xl font-semibold mb-4 text-[#007EAF]">Empathy</h2>
-                <p className="mb-4 text-[#42526B]">We’re all humans first. So we deeply consider the perspectives of others, listen openly, and speak with care.</p>
+                <h2 className="text-2xl font-semibold mb-4 text-[#007EAF]">Inclusivity</h2>
+                <p className="mb-4 text-[#42526B]">
+                  We are committed to inclusivity, creating a space where all individuals can find their perfect match, regardless of their cultural background or personal preferences
+                </p>
                 <a href="#" className="text-[#007EAF]">Learn More →</a>
               </div>
             </div>
@@ -66,26 +65,31 @@ const Mission = () => {
     
           <div className="bg-[#F5F4F4] text-[#061C3D] font-lato py-16 px-14 md:px-32">
           <div className="container mx-auto ">
-            <h1 className="text-4xl font-bold mb-4">We put our values in action.</h1>
+            <h1 className="text-4xl font-bold mb-4">Learn More About Our Commitments  </h1>
             <p className="text-lg mb-12">
-              Our principles guide us to put our values first with every decision.
+            We are dedicated to innovation in matchmaking, fostering inclusivity, ensuring privacy and security, and providing dedicated support to create a meaningful and enriching experience for all our members.
+
             </p>
-            <div className="flex flex-col md:flex-row gap-8">
-              <div className="bg-white  rounded-lg p-6 shadow-lg  lg:w-[23%] lg:h-[20rem]">
-                <h2 className="text-2xl font-semibold mb-4">Love the Problem</h2>
-                <p>Breakthrough innovation happens when we spend time deeply understanding a problem, not jumping to solutions.</p>
+            <div className="flex flex-col md:flex-row gap-8 items-center ">
+              <div className="bg-white  rounded-lg p-6 shadow-lg   lg:w-[23%] lg:h-[20rem]">
+                <h2 className="text-2xl font-semibold mb-4">Innovation in Matchmaking</h2>
+                <p>We leverage cutting-edge technology and AI-driven algorithms to continually enhance our matchmaking process, ensuring meaningful connections for our members.
+                </p>
               </div>
               <div className="bg-white  rounded-lg p-6 shadow-lg lg:w-[23%] lg:h-[20rem]">
-                <h2 className="text-2xl font-semibold mb-4">Keep it Simple</h2>
-                <p>We prioritize elegant solutions that align with our biggest goals – both as an organization and within teams. We say {`"no"`} to a lot so we can do the few things that matter most.</p>
+                <h2 className="text-2xl font-semibold mb-4">Cultivating Inclusivity</h2>
+                <p>We are committed to creating an inclusive platform that welcomes individuals from diverse backgrounds, fostering a sense of belonging for all users.
+                </p>
               </div>
               <div className="bg-white  rounded-lg p-6 shadow-lg lg:w-[23%] lg:h-[20rem]">
-                <h2 className="text-2xl font-semibold mb-4">Decide with Principles</h2>
-                <p>We are highly thoughtful and intentional with every decision at Wedlock. Decisions are driven by principles, not arbitrary personal judgment.</p>
+                <h2 className="text-2xl font-semibold mb-4 ">Upholding Privacy and Security</h2>
+                <p>Your privacy is our priority; we implement robust security measures to protect your personal information and ensure a safe online experience.
+                </p>
               </div>
               <div className="bg-white rounded-lg p-6 shadow-lg lg:w-[23%] lg:h-[20rem]">
-                <h2 className="text-2xl font-semibold mb-4">Tend to Trust</h2>
-                <p>At Wedlock, we tend to trust each other; we also put in the work to nurture and rebuild trust through transparency and open collaboration. When trust is missing, we speak up.</p>
+                <h2 className="text-2xl font-semibold mb-4">Offering Dedicated Support</h2>
+                <p>Our dedicated support team is always available to assist you, providing guidance and assistance throughout your journey on our platform.
+                </p>
               </div>
             </div>
           </div>
@@ -98,47 +102,48 @@ const Mission = () => {
           <div className="bg-white text-[#061C3D] py-12 px-14 md:px-32">
           <div className="container mx-auto ">
             <h2 className="text-3xl font-bold mb-4 lg:px-[5%]">The Wedlock Difference</h2>
-            <p className="text-lg mb-12 text-gray-600 lg:px-[5%]">Our principles guide us to put our values first with every decision.</p>
+            <p className="text-lg mb-12 text-gray-600 lg:px-[5%]">Our unique combination of features work together to foster long term genuine connections.
+            </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8  lg:px-12">
-              <div className="bg-white  rounded-lg p-6 ">
+              <div className="bg-white  rounded-lg p-6 border shadow-md ">
                 <h3 className="text-2xl font-semibold mb-4">Detailed Profiles</h3>
-                <p className="mb-4">Go ahead, be picky. Wedlock profiles encourage you to share your religion, education, and day-to-day life so we can introduce you to the best people for you.</p>
-                <a href="#" className="text-blue-500 hover:text-blue-700">Learn more →</a>
+                <p className="mb-4">Our detailed profiles provide comprehensive insights into each member's personality, interests, and values, facilitating more meaningful connections.
+                </p>
               </div>
-              <div className="bg-white  rounded-lg p-6 ">
+              <div className="bg-white  rounded-lg p-6 border shadow-md ">
                 <h3 className="text-2xl font-semibold mb-4">Proven Prompts</h3>
-                <p className="mb-4">Answer three prompts to activate your profile, and switch them up any time. We review our prompts and keep the ones that are most likely to get you out on a date.</p>
-                <a href="#" className="text-blue-500 hover:text-blue-700">Learn more →</a>
+                <p className="mb-4">We offer proven prompts that encourage engaging conversations, helping users break the ice and foster genuine interactions.
+                </p>
               </div>
-              <div className="bg-white  rounded-lg p-6 ">
+              <div className="bg-white  rounded-lg p-6 border shadow-md">
                 <h3 className="text-2xl font-semibold mb-4">Conversation Starters</h3>
-                <p className="mb-4">Our research found that liking specific pictures or prompts leads to better matches and more dates than liking a profile in general. So now users must like a specific part of a Wedlock profile—they can even add a comment to their like to kickstart a conversation.</p>
-                <a href="#" className="text-blue-500 hover:text-blue-700">Learn more →</a>
+                <p className="mb-4">Our platform includes tailored conversation starters designed to spark interesting discussions and enhance compatibility for matrimony.
+                </p>
               </div>
-              <div className="bg-white rounded-lg p-6 ">
+              <div className="bg-white rounded-lg p-6 border shadow-md">
                 <h3 className="text-2xl font-semibold mb-4">Matchmaking Algorithm</h3>
-                <p className="mb-4">Wedlock uses a Nobel-Prize-winning algorithm that helps you go on better quality dates, not just more dates. You’re eight times more likely to have a great date with your Most Compatible suggestions, aka the people you’re most likely to have mutual chemistry with.</p>
-                <a href="#" className="text-blue-500 hover:text-blue-700">Learn more →</a>
+                <p className="mb-4">Our advanced matchmaking algorithm analyses user preferences and behaviours to deliver highly compatible matches, ensuring a personalised experience.
+                </p>
               </div>
-              <div className="bg-white rounded-lg p-6 ">
+              <div className="bg-white rounded-lg p-6 border shadow-md">
                 <h3 className="text-2xl font-semibold mb-4">Meaningful Likes</h3>
-                <p className="mb-4">Research has shown us that eight is the magic number. When our members had more free likes per day, their matches were worse. When they had fewer, they were paying to send more. So now everyone gets eight for free.</p>
-                <a href="#" className="text-blue-500 hover:text-blue-700">Learn more →</a>
+                <p className="mb-4">This feature allows users to express genuine interest in potential matches, promoting deeper connections based on shared values and preferences.
+                </p>
               </div>
-              <div className="bg-white rounded-lg p-6 ">
+              <div className="bg-white rounded-lg p-6  border shadow-md ">
                 <h3 className="text-2xl font-semibold mb-4">Transparent Likes</h3>
-                <p className="mb-4">No anonymous likes—we show you who has liked you, so you don’t miss out on a potential match.</p>
-                <a href="#" className="text-blue-500 hover:text-blue-700">Learn more →</a>
+                <p className="mb-4">Our platform ensures users are able to see who has shown interest in their profiles, fostering openness and trust.
+                </p>
               </div>
-              <div className="bg-white  rounded-lg p-6 ">
+              <div className="bg-white  rounded-lg p-6  border shadow-md">
                 <h3 className="text-2xl font-semibold mb-4">Reply Reminders</h3>
-                <p className="mb-4">We let you know when it’s your turn to reply. It’s a friendly nudge that helps you focus on your matches and limits accidental ghosting.</p>
-                <a href="#" className="text-blue-500 hover:text-blue-700">Learn more →</a>
+                <p className="mb-4">Our reply reminders help keep conversations active by notifying users when it's time to respond, ensuring engagement and connection continuity.
+                </p>
               </div>
-              <div className="bg-white  rounded-lg p-6 ">
+              <div className="bg-white  rounded-lg p-6 border shadow-md ">
                 <h3 className="text-2xl font-semibold mb-4">Smart Matches</h3>
-                <p className="mb-4">We ask about your dates to learn your type so we can introduce you to the right people.</p>
-                <a href="#" className="text-blue-500 hover:text-blue-700">Learn more →</a>
+                <p className="mb-4">Smart matches leverage AI technology to pair users with the most compatible partners, enhancing the likelihood of successful long term relationships.
+                </p>
               </div>
             </div>
           </div>

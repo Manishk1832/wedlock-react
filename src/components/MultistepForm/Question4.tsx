@@ -5,7 +5,7 @@ const question = [
         id: 5,
         text: "How long have you been looking for?",
         summary:
-          "Lorem ipsum dolor sit amet consectetur.Lorem ipsum dolor sit amet consectetur.",
+          "Indicate how long you’ve been on your journey to find a meaningful connection.",
         options: [
           "Just started",
           "It's been a while",

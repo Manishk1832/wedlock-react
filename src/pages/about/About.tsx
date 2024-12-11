@@ -10,9 +10,8 @@ const About = () => {
         </h3>
         <h1 className=" text-2xl md:text-4xl font-semibold">About</h1>
         <p className="text-[#475467] text-md md:text-xl text-balance">
-          Your privacy is important to us at Untitled. We respect your privacy
-          regarding any <br /> information we may collect from you across our
-          website.
+        Premier and most trusted matrimony service recognised for its unwavering commitment to helping individuals find their perfect life partners.
+
         </p>
       </div>
       <div className="px-4 py-4 flex md:flex-row flex-col gap-7">

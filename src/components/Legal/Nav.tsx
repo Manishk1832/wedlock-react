@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const sections = [
   { title: "Community Guidelines", links: "/community-guidelines" },
-  { title: "About", links: "/about" },
+  { title: "About", links: "/about-us" },
   { title: "TERMS", links: "/terms-conditions" },
   { title: "PRIVACY", links: "/privacy-policy" },
   { title: "COOKIES POLICY", links: "/cookies-policy" },

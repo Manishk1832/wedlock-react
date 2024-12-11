@@ -5,7 +5,7 @@ const question = [
         id: 10,
         text: "Do you believe in horoscope match?",
         summary:
-          "Lorem ipsum dolor sit amet consectetur.Lorem ipsum dolor sit amet consectetur.",
+          "Share whether astrological compatibility is important in your search for a life partner",
         options: ["It's must", "Doesn't matter", "Prefer not to say"],
       },
 ];

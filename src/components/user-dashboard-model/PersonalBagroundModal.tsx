@@ -123,21 +123,19 @@ const ReligiouModel: React.FC<PersonalBagroundModelProps> = ({
       >
         <Form form={form} layout="vertical" autoComplete="off" onFinish={handleFormSubmit}
         >
-          <Row gutter={16}>
+          <Row gutter={16}> 
           <Col span={24}>
-              <Form.Item label="Height" required>
+              <Form.Item label="Height" >
                 <Input.Group compact>
                   <Form.Item
                     name="feet"
                     noStyle
-                    rules={[{ required: true, message: "Please enter feet" }]}
                   >
                     <Input style={{ width: "49%", marginRight: "2%" }} placeholder="Feet" />
                   </Form.Item>
                   <Form.Item
                     name="inches"
                     noStyle
-                    rules={[{ required: true, message: "Please enter inches" }]}
                   >
                     <Input style={{ width: "49%" }} placeholder="Inches" />
                   </Form.Item>
@@ -146,13 +144,13 @@ const ReligiouModel: React.FC<PersonalBagroundModelProps> = ({
             </Col>
 
             <Col span={24}>
-              <Form.Item name="weight" label="Weight" rules={[{ required: true,message: "Please Enter Weight" }] }>
+              <Form.Item name="weight" label="Weight" >
                 <Input placeholder="Enter Weight" />
               </Form.Item>
             </Col>
 
             <Col span={24}>
-              <Form.Item name="language" label="Language" rules={[{ required: true,message: "Please Enter Language" }] }>
+              <Form.Item name="language" label="Language" >
                 <Select placeholder="Enter Language">
                   <Option value="english">English</Option>
                   <Option value="hindi">Hindi</Option>
@@ -166,7 +164,7 @@ const ReligiouModel: React.FC<PersonalBagroundModelProps> = ({
             </Col>
 
             <Col span={24}>
-              <Form.Item name="bodyType" label="Body Type" rules={[{ required: true,message: "Please Enter Body Type" }] }>
+              <Form.Item name="bodyType" label="Body Type" >
                 <Select placeholder="Select Body Type">
                   <Option value="mesomorph">Mesomorph</Option>
                   <Option value="ectomorph">Ectomorph</Option>
@@ -176,7 +174,7 @@ const ReligiouModel: React.FC<PersonalBagroundModelProps> = ({
             </Col>
 
             <Col span={24}>
-              <Form.Item name="smokingHabbit" label="Smoking Habbit" rules={[{ required: true,message: "Please Enter Smoking Habbit" }] }>
+              <Form.Item name="smokingHabbit" label="Smoking Habbit" >
                 <Select placeholder="Select Smoking Habbit">
                   <Option value="smoker">Smoker</Option>
                   <Option value="non-smoker">Non-Smoker</Option>
@@ -185,7 +183,7 @@ const ReligiouModel: React.FC<PersonalBagroundModelProps> = ({
             </Col>
 
             <Col span={24}>
-              <Form.Item name="drinkingHabbit" label="Drinking Habbit" rules={[{ required: true,message: "Please Enter Drinking Habbit" }] }>
+              <Form.Item name="drinkingHabbit" label="Drinking Habbit" >
                 <Select placeholder="Select Drinking Habbit">
                   <Option value="alcoholic">Alcoholic</Option>
                   <Option value="non-alcoholic">Non-Alcoholic</Option>
@@ -194,7 +192,7 @@ const ReligiouModel: React.FC<PersonalBagroundModelProps> = ({
             </Col>
 
             <Col span={24}>
-              <Form.Item name="diet" label="Diet" rules={[{ required: true,message: "Please Enter Diet" }] }>
+              <Form.Item name="diet" label="Diet" >
                 <Select placeholder="Select Diet">
                   <Option value="veg">Veg</Option>
                   <Option value="non-veg">Non-Veg</Option>
@@ -203,7 +201,7 @@ const ReligiouModel: React.FC<PersonalBagroundModelProps> = ({
             </Col>
 
             <Col span={24}>
-              <Form.Item name="complexion" label="Complexion" rules={[{ required: true,message: "Please Enter Complexion" }] }>
+              <Form.Item name="complexion" label="Complexion" >
                 <Select placeholder="Select Complexion">
                   {ComplexionOptions.map((option) => (
                     <Option key={option.value} value={option.value}>

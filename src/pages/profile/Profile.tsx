@@ -1,17 +1,35 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import Header from "../../components/header-footer-profile/Header";
 import Footer from "../../components/header-footer-profile/Footer";
+import { ConfigProvider } from "antd";
 import { Tabs } from "antd";
 import type { TabsProps } from "antd";
 import Discover from "../../components/user-dashboard/Discover";
+// import {Messaging} from 'firebase/messaging'
 import Favourate from "../../components/user-dashboard/Favourate";
 import Notification from "../../components/user-dashboard/Notification";
 import { useParams } from "react-router-dom";
+import { RootState } from "./../../Redux/store";
+import { useSelector } from "react-redux";
+
+
 
 import Match from "../../components/match/Match";
 
 const Profile: React.FC = () => {
+  
   const { userId } = useParams<{ userId: string }>(); 
+  const {user } = useSelector((state: RootState) => state.userReducer) ;
+
+  const [isExclusive, setIsExclusive] = useState(false);
+
+  useEffect(() => {
+    const isExclusive = localStorage.getItem("isExclusive");
+    if (isExclusive === "true" || user?.usertype === "Exclusive") {
+      setIsExclusive(true);
+    }
+    [];
+  });
 
   const items: TabsProps["items"] = [
     {
@@ -54,12 +72,31 @@ const Profile: React.FC = () => {
             User Profile
           </h1>
           <div className="p-0 md:p-4">
-            <Tabs
+            
+
+<ConfigProvider
+              theme={{
+                token: {
+                  colorPrimary: `${isExclusive ? "#60457E" : "#007EAF"}`,
+                },
+                components: {
+                  Tabs: {
+                    colorBgContainer: "#E6F2F7",
+                    colorText: "black",
+                    colorBgTextActive: "#363636",
+                    colorBorder: "#E6F2F7",
+                    fontSize: 16,
+                    fontFamily: "Proxima-Nova-semibold",
+                  },
+                },
+              }}
+            >
+              <Tabs
               defaultActiveKey="1"
               items={items}
-              style={{ height: "fit-content", font: "#363636" }}
               className="ant-tabs"
             />
+            </ConfigProvider>
           </div>
         </div>
       </div>

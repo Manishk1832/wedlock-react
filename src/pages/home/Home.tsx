@@ -14,7 +14,7 @@ import Pre from '../../components/home/Pre'
 const Home = () => {
   return (
     <div>
-        <Navbar />
+      <Navbar />
       <Hero />
       <Archive />
       <GetApp />

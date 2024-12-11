@@ -6,7 +6,7 @@ const Terms = () => {
         updatedAt: "Current as of 7th August 2024",
         title: "Terms and Conditions ",
         description:
-          "Your privacy is important to us at Untitled. We respect your privacy regarding any information we may collect from you across our website.",
+          "Terms and Conditions are subject to change by Wedlock in its sole discretion at any time. We will notify you of any such changes by posting an updated version of the agreement on this page. Your continued use of the Services after the posting of revisions to this agreement will constitute your acceptance of such revisions.",
       };
     
       return (

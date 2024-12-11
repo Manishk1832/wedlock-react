@@ -13,12 +13,17 @@ const YouTube = () => {
       />
     <div className='py-5 lg:py-20  sm:px-14 youtube'>
   
-        <h1 className=' text-[30px]  md:text-[34px]  font-[Proxima-Nova-Bold]  lg:text-[48px] xl:text-[64px]  text-[#007EAF] md:leading-[64px] xl:leading-[83.2px] '>Introducing: A new wedlock experience
+        <h1 className='text-[32px] md:text-[48px] xl:text-[64px]  xl:leading-[83.2px] font-[Proxima-Nova-Bold] tracking-[-0.02em] text-[#007EAF] '>Introducing: A new wedlock experience
         </h1>
-        <p className=' text-[20px] md:text-[24px] lg:text-[20px] xl:text-[28px]  pt-[21px] font-[Proxima-Nova-Regular] lg:leading-[32px] text-[#475467] xl:leading-[42px] '>Your search for a great relationship has never been easier with groundbreaking overhaul of the eharmony you know and trust.
+        <p className=' text-[20px] md:text-[24px] lg:text-[20px] xl:text-[28px]  pt-[21px] font-[Proxima-Nova-Regular] lg:leading-[32px] text-[#475467] xl:leading-[42px] '>Your search for a great matrimonial profile has never been easier with groundbreaking overhaul of the Wedlock you know and trust.
         </p>
         <h4 className='text-[20px]  md:text-[24px] lg:text-[20px] xl:text-[28px] text-[#007EAF] pt-10 font-[Proxima-Nova-SemiBold] leading-[32px]  '>Get a sneek peek:</h4>
-        <img src="/YT.svg"  alt='yt' className='relative  sm:left-2 z-0 mt-8 sm:h-[20%] 3xl:w-[98%] 5xl:w-[100%] '/>
+
+        <div className='mt-10'>
+
+        <iframe className='w-full h-[calc(100vh-4rem)]' src="https://www.youtube.com/embed/88kzxvrR22A?si=1wWkr4LJbRSFmuxb" title="YouTube video player"  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  ></iframe>
+        </div>
+
 
     </div>
     

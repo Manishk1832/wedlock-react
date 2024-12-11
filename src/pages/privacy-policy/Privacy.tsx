@@ -9,7 +9,7 @@ const Privacy = () => {
             </h3>
             <h1 className=" text-2xl md:text-4xl font-semibold">Privacy Policy</h1>
             <p className="text-[#475467] text-md md:text-xl text-balance">
-              Your privacy is important to us at Untitled. We respect your privacy
+              Your privacy is important to us at Wedlock. We respect your privacy
               regarding any <br /> information we may collect from you across our
               website.
             </p>

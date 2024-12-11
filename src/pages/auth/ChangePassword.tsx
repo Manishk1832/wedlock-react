@@ -1,16 +1,27 @@
-
+import { useEffect,useState } from "react";
 import {useResetpasswordMutation} from "../../Redux/Api/user.api";
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
 import Cookies from 'js-cookie';
 import Input from '../../components/input/Input';
+import { Link } from "react-router-dom";
 import { LoadingOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
+
+
 import { z } from 'zod';
 import { toast } from 'sonner'
 
 const ChangePassword = () => {
+  const [isExclusive, setExclusive] = useState(false);
+
+  useEffect(()=>{
+    const isExclusive = localStorage.getItem("isExclusive");
+    if(isExclusive){
+      setExclusive(true)
+    }
+  },[])
 
     const navigate = useNavigate();
     const [resetpassword, { isLoading }] = useResetpasswordMutation();
@@ -65,9 +76,11 @@ const ChangePassword = () => {
     }
   };
   return (
-    <div className="min-w-screen h-screen flex flex-col items-center justify-center bg-[#007EAF]">
+    <div className={`min-w-screen h-screen flex flex-col items-center justify-center ${isExclusive? 'bg-[#60457E]': 'bg-[#007EAF]'}`}>
     <div className="flex items-center justify-center mb-2 md:mb-10">
-      <img src="/logowhite.png" alt=""  className='w-72 h-24 fixed top-10' />
+      <Link to={"/"} className="fixed top-10">
+      <img src="/logowhite.png" alt=""  className='w-72 h-24 ' />
+      </Link>
     </div>
     <div className="flex flex-col items-center justify-center mt-4">
       <div className="bg-white flex items-center justify-center rounded-full w-12 h-12">
@@ -110,8 +123,8 @@ const ChangePassword = () => {
           )}
         </div>
 
-        <button type="submit" className="bg-white text-[#007EAF] w-full h-10 rounded-md mt-4">
-          {isLoading ? <LoadingOutlined className="text-[#007EAF] animate-spin" /> : 'Change Password'}
+        <button type="submit" className={`bg-white ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} w-full h-10 rounded-md mt-4`}>
+          {isLoading ? <LoadingOutlined className={`${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} animate-spin`} /> : 'Change Password'}
         </button>
       </form>
     </div>

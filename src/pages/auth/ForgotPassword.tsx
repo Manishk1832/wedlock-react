@@ -1,9 +1,12 @@
+
 import Input from '../../components/input/Input';
+import { useEffect,useState } from 'react';
 import{ useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {useForgotpasswordMutation} from "../../Redux/Api/user.api";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Link } from 'react-router-dom';
 import { toast } from 'sonner'
 import { LoadingOutlined } from '@ant-design/icons';
 import { setActivationToken } from "../../Redux/Reducers/user.reducer";
@@ -19,6 +22,18 @@ const schema = z.object({
   
 
 const forgotPassword = () => {
+  const [isExclusive, setExclusive] = useState(false);
+
+
+
+
+    useEffect(()=>{
+      const isExclusive = localStorage.getItem("isExclusive");
+      if(isExclusive){
+        setExclusive(true)
+      }
+  
+    })
 
     const navigate = useNavigate();
 
@@ -71,9 +86,11 @@ const forgotPassword = () => {
 
 
   return (
-    <div className="min-w-screen min-h-screen flex flex-col items-center   bg-[#007EAF] ">
+    <div className={`min-w-screen min-h-screen flex flex-col items-center bg-[#007EAF] ${isExclusive? 'bg-[#60457E]': 'bg-[#007EAF]'} `}>
     <div className="flex items-center justify-center mb-14 w-[268px] h-[90px]">
-      <img src="/logowhite.png" alt="Logo"   className='w-72 h-24 fixed top-8' />
+      <Link to={"/"} className='fixed top-8'>
+      <img src="/logowhite.png" alt="Logo"   className='w-72 h-24 ' />
+      </Link>
     </div>
 
     <div className="flex flex-col items-center justify-center  mt-8 mb-4">
@@ -104,11 +121,11 @@ const forgotPassword = () => {
 
         <button
            type="submit"
-          className="w-full py-2 px-4 text-[#007EAF] rounded bg-[#ffffff]"
+          className={`w-full py-2 px-4 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} rounded bg-[#ffffff]`}
           disabled={isSubmitting}
           
         >
-          {isLoading ? <LoadingOutlined className="text-[#007EAF] animate-spin" /> : 'Send Email'}
+          {isLoading ? <LoadingOutlined className={`${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} animate-spin`} /> : 'Send Email'}
           </button>
       </form>
     </div>

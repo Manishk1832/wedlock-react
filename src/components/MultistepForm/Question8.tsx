@@ -5,7 +5,7 @@ const question = [
         id: 9,
         text: "Are you looking for a partner living in Australia?",
         summary:
-          "Lorem ipsum dolor sit amet consectetur.Lorem ipsum dolor sit amet consectetur.",
+          "Defining your location preference helps us prioritise matches within your desired region for convenience",
         options: ["Yes", "No", "Doesn't matter"],
       },
 ];

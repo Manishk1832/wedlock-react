@@ -5,7 +5,7 @@ const question = [
         id: 11,
         text: "Does religion and caste matter for your preferred partner?",
         summary:
-          "Lorem ipsum dolor sit amet consectetur.Lorem ipsum dolor sit amet consectetur.",
+          "Indicating the importance of religion or caste ensures matches align with your cultural and personal values",
         options: ["It's must", "Doesn't matter", "Prefer not to say"],
       },
 ];

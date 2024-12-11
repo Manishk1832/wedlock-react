@@ -1,9 +1,13 @@
+import { useState ,useEffect} from "react";
 import {useSetPasswordMutation} from "../../Redux/Api/user.api";
 import Input from '../../components/input/Input';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { SubmitHandler, useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 import { auth, database } from '../../../utils/firebaseConfig.ts';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {setUser} from "../../Redux/Reducers/user.reducer";
+import { useDispatch } from "react-redux";
 import {createUserWithEmailAndPassword} from "firebase/auth";
 import {  ref, set} from "firebase/database";
 import Cookies from 'js-cookie';
@@ -13,8 +17,21 @@ import { z } from 'zod';
 import { toast } from 'sonner'
 
 const CreatePassword = () => {
+  const [isExclusive, setExclusive] = useState(false);
+
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    useEffect(()=>{
+      const isExclusive = localStorage.getItem("isExclusive");
+      if(isExclusive){
+        setExclusive(true)
+      }
+  
+    },[])
+
+
 
     const [setPassword, { isLoading }] = useSetPasswordMutation();
 
@@ -72,10 +89,16 @@ const CreatePassword = () => {
           const successData = res.data as ApiResponse;
           const userData = successData.user;
 
+          console.log(userData,"userData");
+
+
+
           
           const userCredential = await createUserWithEmailAndPassword(auth, email!, confirmPassword!);
 
           const user = userCredential.user;
+
+          localStorage.setItem("uid", user.uid);
 
           if(user !== null) {
 
@@ -91,15 +114,12 @@ const CreatePassword = () => {
           });
           }
 
-
-
           localStorage.removeItem("email");
-
-          toast.success(successData.message);
           Cookies.remove("answers");
-
+          dispatch(setUser(res.data));
           navigate("/personal-details");
-          window.location.reload();
+          toast.success(successData.message);
+           window.location.reload();
         }
 
       } catch (error) {
@@ -109,9 +129,13 @@ const CreatePassword = () => {
     };
 
   return (
-    <div className="min-w-screen h-screen flex flex-col items-center justify-center bg-[#007EAF]">
+    <div className={`min-w-screen h-screen flex flex-col items-center justify-center ${isExclusive? 'bg-[#60457E]': 'bg-[#007EAF]'}`}>
     <div className="flex items-center justify-center mb-2 md:mb-10">
-      <img src="/logowhite.png" alt=""  className='w-72 h-24 fixed top-10' />
+
+    <Link to="/">
+      <img src="/logowhite.png" alt=""  className='w-72 h-24  top-10' />
+      </Link>
+
     </div>
     <div className="flex flex-col items-center justify-center mt-4">
       <div className="bg-white flex items-center justify-center rounded-full w-12 h-12">
@@ -152,10 +176,9 @@ const CreatePassword = () => {
             <p className="text-orange-200 text-sm">{errors.confirmPassword.message}</p>
           )}
         </div>
-        <button type="submit" className="bg-white text-[#007EAF] w-full h-10 rounded-md mt-4">
+        <button type="submit" className={`bg-white ${isExclusive? 'text-[#8E69B4]': 'text-[#007EAF]'} w-full h-10 rounded-md mt-4`}>
         {isLoading ? (
-              <LoadingOutlined className="text-white animate-spin" />
-            ) : (
+          <LoadingOutlined className={`${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} animate-spin`} /> ) : (
               "Create Password"
             )}
         </button>

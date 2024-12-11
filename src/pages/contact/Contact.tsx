@@ -8,10 +8,10 @@ const Contact = () => {
         <div className="w-full lg:w-[50%]">
           <div className="mx-auto max-w-md">
             <h2 className="mb-4 text-3xl font-semibold text-[#101828]">
-              Get in touch
+            We’re Here to Help
             </h2>
             <p className="mb-6 text-[#475467]">
-              Our friendly team would love to hear from you.
+            Whether you have questions about our platform or need assistance, contact our dedicated customer support team.
             </p>
             <form>
               <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -110,7 +110,7 @@ const Contact = () => {
           <span className="font-medium">Email:</span>  <a href="mailto:info@wedlock.au" className=" underline">info@wedlock.au</a>
         </p>
         <p className=" text-black ">
-          <span className="font-medium">Address:</span>  3 Pipit Close, Pakenham, VIC, 3810 Australia
+          <span className="font-medium">Address:</span>  Melbourne, Australia
         </p>
       </div>
       <div className="flex flex-col items-center justify-between bg-[#F9FAFB] px-6 py-10 md:px-10 lg:flex-row lg:px-20">

@@ -1,4 +1,5 @@
 import '../../font.css';
+import Aicard from './Aicard';
 
 const Ai = () => {
   return (
@@ -9,28 +10,39 @@ const Ai = () => {
           alt="Curve"
           className="absolute w-[40rem] rotate-12 -right-10 -top-32"
         />
-        <div className="relative space-y-48 text-white md:space-y-40 md:px-20 mt-10  ">
-          <div className="relative space-y-10 lg:pr-20">
+        <div className="relative space-y-48 text-white md:space-y-40 md:px-20 mt-10 px-4  ">
+          <div className="relative space-y-10 lg:pr-20 ">
             <h1
-              className="  text-[22px]  md:text-[42px]  xl:text-[64px] font-[Proxima-Nova-bold] w-full "
+              className=" text-[32px] md:text-[48px] xl:text-[64px]  xl:leading-[83.2px] font-[Proxima-Nova-Bold] tracking-[-0.02em] "
             >
-              AI-driven match <br /> recommendations to suit  <br className=" " /> your
-              preferences
+              Smarter connections with <br className='block max-md:hidden' />AI-Powered match suggestions
             </h1>
+            <p className=" text-[20px] sm:leading-[42px] md:text-[24px] lg:text-[26px] xl:text-[28px] text-balance  xl:leading-[44px] font-[Proxima-Nova-Regular] tracking-[-0.02em]">
+             Match recommendations to suit your preferences and interests. Our AI-powered algorithm ensures you connect with the right people.
+             
+
+            </p>
+
             <img
               src="/thunder.svg"
               alt="Thunder"
               className="absolute md:top-0 top-[-2.5rem] right-0 w-16 md:w-auto"
             />
           </div>
-          <div className="relative ">
-            <div className="bg-[#D3D3D380]  border-[#FFFFFF] border rounded-t-3xl  lg:w-[55rem] md:h-[23.5rem] h-[12rem] lg:h-[34rem] xl:h-[45rem]  relative mx-auto">
-              <img
-                src="/Ai.svg"
-                alt="AI"
-                className="absolute lg:left-40 left-1/4 top-[-2.5rem] w-52 md:w-[24rem] lg:w-auto   xl:h-[48rem]  2xl:h-[48rem] object-contain"
+          <div className="relative mt-10 flex justify-center">
+            <div className="bg-[#D3D3D380] md:mt-20 lg:mt-0  border-[#FFFFFF] border rounded-t-3xl   lg:w-[55rem] md:h-[28.5rem] h-[28rem] lg:h-a[34rem] xl:h-[38.5rem]  relative mx-auto">
+            <div className="relative  md:bottom-44 lg:bottom-10   bottom-14  max-md:left-7 md:h-[40rem]   left-12 h-[44rem] w-[85%] lg:left-40 md:w-[85%] xl:h-[41rem]">
+              <Aicard
+                name="Utkarsh Sinha"
+                description="Hi, I’m Utkarsh Sinha, a software developer based in Melbourne. I’ve joined Wedlock Australia to find a meaningful and lasting relationship. Outside of work, I love traveling, cooking, and staying active with fitness.
+I’m looking for a partner who values open communication, kindness, and the journey of growing together through life’s adventures. I believe that cultural harmony and mutual respect are the foundations of a strong and happy relationship.
+"
+                imageSrc="/utkarsh.svg"
               />
-              <div className="absolute top-1/6 right-[7%] md:right-[1.4rem] md:top-6  lg:top-20 lg:right-5 w-32 md:w-60  lg:w-80">
+            </div>
+
+              
+              <div className="absolute top-1/6  right-[1.4rem] top-6 md:-top-20   lg:top-20 lg:right-5 w-32 md:w-60  lg:w-80">
                 <img
                   src="/recomended.png"
                   alt="Recommended"
@@ -39,6 +51,7 @@ const Ai = () => {
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>

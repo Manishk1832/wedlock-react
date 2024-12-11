@@ -5,7 +5,7 @@ const question = [
     id: 3,
     text: "Have you tried looking for your life partner online before?",
     summary:
-      "Lorem ipsum dolor sit amet consectetur.Lorem ipsum dolor sit amet consectetur.",
+      "Understanding your experience with online matchmaking helps us tailor your journey for a smoother and more effective process",
     options: ["I am new to it", "Sometimes", "Prefer not to say"],
   },
 ];

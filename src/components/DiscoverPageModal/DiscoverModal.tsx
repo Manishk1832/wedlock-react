@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Modal,
   Form,
@@ -12,6 +12,9 @@ import {
 import { createStyles } from "antd-style";
 import { TbUsersPlus } from "react-icons/tb";
 import "../../font.css";
+import { RootState } from "./../../Redux/store";
+import { useSelector } from "react-redux";
+
 
 const useStyle = createStyles(({ token }) => ({
   "my-modal-body": {
@@ -49,7 +52,18 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
   const { styles } = useStyle();
   const [checkedValues, setCheckedValues] = useState<any[]>([]);
   const [selectedRadio, setSelectedRadio] = useState(null);
+  const {user } = useSelector((state: RootState) => state.userReducer) ;
 
+
+  const [isExclusive, setIsExclusive] = useState(false);
+
+  useEffect(() => {
+    const isExclusive = localStorage.getItem("isExclusive");
+    if (isExclusive === "true" || user?.usertype === "Exclusive") {
+      setIsExclusive(true);
+    }
+    [];
+  });
 
   
 
@@ -137,7 +151,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
           >
             Cancel
           </Button>
-          <Button onClick={() => form.submit()} className="w-44 bg-[#007EAF] text-white">
+          <Button onClick={() => form.submit()} className={`w-44 ${isExclusive? 'bg-[#60457E]': 'bg-[#007EAF]'} text-white`}>
           Find Members
          </Button>
         </div>
@@ -160,7 +174,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
           label={
             <label
               style={{
-                color: "#007EAF",
+                color: `${isExclusive ? "#60457E" : "#007EAF"}`,
                 fontStyle: "Proxima-Nova-Semibold",
                 fontWeight: "bold",
               }}
@@ -197,7 +211,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
           label={
             <label
               style={{
-                color: "#007EAF",
+                color: `${isExclusive ? "#60457E" : "#007EAF"}`,
                 fontStyle: "Proxima-Nova-Semibold",
                 fontWeight: "bold",
               }}
@@ -234,7 +248,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
           label={
             <label
               style={{
-                color: "#007EAF",
+                color: `${isExclusive ? "#60457E" : "#007EAF"}`,
                 fontStyle: "Proxima-Nova-Semibold",
                 fontWeight: "bold",
               }}
@@ -256,7 +270,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
           label={
             <label
               style={{
-                color: "#007EAF",
+                color: `${isExclusive ? "#60457E" : "#007EAF"}`,
                 fontStyle: "Proxima-Nova-Semibold",
                 fontWeight: "bold",
               }}
@@ -320,7 +334,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
           label={
             <label
               style={{
-                color: "#007EAF",
+                color: `${isExclusive ? "#60457E" : "#007EAF"}`,
                 fontStyle: "Proxima-Nova-Semibold",
                 fontWeight: "bold",
               }}
@@ -412,7 +426,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
               label={
                 <label
                   style={{
-                    color: "#007EAF",
+                    color: `${isExclusive ? "#60457E" : "#007EAF"}`,
                     fontStyle: "Proxima-Nova-Semibold",
                     fontWeight: "bold",
                   }}
@@ -491,7 +505,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
               label={
                 <label
                   style={{
-                    color: "#007EAF",
+                    color: `${isExclusive ? "#60457E" : "#007EAF"}`,
                     fontStyle: "Proxima-Nova-Semibold",
                     fontWeight: "bold",
                   }}
@@ -571,7 +585,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
           label={
             <label
               style={{
-                color: "#007EAF",
+                color: `${isExclusive ? "#60457E" : "#007EAF"}`,
                 fontStyle: "Proxima-Nova-Semibold",
                 fontWeight: "bold",
               }}
@@ -629,7 +643,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
               label={
                 <label
                   style={{
-                    color: "#007EAF",
+                    color: `${isExclusive ? "#60457E" : "#007EAF"}`,
                     fontStyle: "Proxima-Nova-Semibold",
                     fontWeight: "bold",
                   }}
@@ -719,7 +733,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
               label={
                 <label
                   style={{
-                    color: "#007EAF",
+                    color: `${isExclusive ? "#60457E" : "#007EAF"}`,
                     fontStyle: "Proxima-Nova-Semibold",
                     fontWeight: "bold",
                   }}
@@ -813,7 +827,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
               label={
                 <label
                   style={{
-                    color: "#007EAF",
+                    color: `${isExclusive ? "#60457E" : "#007EAF"}`,
                     fontStyle: "Proxima-Nova-Semibold",
                     fontWeight: "bold",
                   }}
@@ -902,7 +916,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
           label={
             <label
               style={{
-                color: "#007EAF",
+                color: `${isExclusive ? "#60457E" : "#007EAF"}`,
                 fontStyle: "Proxima-Nova-Semibold",
                 fontWeight: "bold",
               }}

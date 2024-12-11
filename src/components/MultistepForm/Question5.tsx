@@ -5,7 +5,7 @@ const question = [
         id: 6,
         text: "For whom are you looking?",
         summary:
-          "Lorem ipsum dolor sit amet consectetur.Lorem ipsum dolor sit amet consectetur.",
+          "Specifying for whom you are looking for helps our AI algorithm & matchmaking to be more accurate & intelligent",
         options: ["Child", "Myself", "Sibling", "Friend", "Relative"],
       },
 ];

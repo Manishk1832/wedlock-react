@@ -1,6 +1,7 @@
 
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useEffect,useState } from "react";
 import {usePersonalDetialsMutation} from "../../Redux/Api/form.api";
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,6 +38,15 @@ const personalDetailsSchema = z.object({
 
 
 const PersonalDetails  = () => {
+
+  const [isExclusive, setExclusive] = useState(false);
+
+  useEffect(()=>{
+    const isExclusive = localStorage.getItem("isExclusive");
+    if(isExclusive){
+      setExclusive(true)
+    }
+  },[])
 
   // const dispatch = useDispatch();
 
@@ -86,7 +96,6 @@ const navigate = useNavigate();
           displayName: data.displayName,
         })
         
-        
         // const isPersonalDetailsFormFilled = true
         toast.success(successData.message);
         // dispatch(setUser(isPersonalDetailsFormFilled));
@@ -101,7 +110,7 @@ const navigate = useNavigate();
   
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-[#007EAF] px-5 md:px-20 lg:px-40 3xl:px-60">
+    <div className={`flex min-h-screen flex-col items-center justify-center ${isExclusive? 'bg-[#60457E]': 'bg-[#007EAF]'} px-5 md:px-20 lg:px-40 3xl:px-60`}>
       <img
         src="/logowhite.png"
         alt="Wedlock Logo"
@@ -117,7 +126,7 @@ const navigate = useNavigate();
             Add your personal details
           </h1>
           <p className="text-sm leading-6 xl:text-xl">
-            Lorem ipsum dolor sit amet consectetur.
+          Share your details to build a tailored profile and connect with compatible matches.
           </p>
         </div>
 
@@ -245,9 +254,10 @@ const navigate = useNavigate();
           <div className="col-span-2 mt-2 mb-4 flex justify-end">
             <button
               type="submit"
-              className="w-full md:w-32 rounded bg-[#F9F5FFE5] px-4 py-2 text-[#007EAF]"
-            >
-                {isLoading ? <LoadingOutlined className="text-[#007EAF] animate-spin" /> : 'Save'}
+              className={`w-full rounded-[0.5rem] bg-[#F9F5FFE5] px-4 py-2 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'}
+              md:w-20 2xl:w-32`}
+                         >
+                {isLoading ? <LoadingOutlined className={`${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} animate-spin`} /> : 'Save'}
                 </button>
           </div>
         </form>

@@ -26,10 +26,22 @@ const Faqs = () => {
           </div>
 
           <div className="flex flex-col items-center justify-center gap-3 11xl:w-full">
-          <h1 className="text-xl font-semibold">Is there a free trial available?</h1>
+          <h1 className="text-xl font-semibold">What is Wedlock Australia?
+          </h1>
           <p className="text-[#475467] text-center">
-            Yes, you can try us for free for 30 days. Our friendly team will
-            work with you to get you up and running as soon as possible.
+          Wedlock Australia is an AI-powered matrimonial platform designed for individuals seeking meaningful, long-term relationships.
+          </p>
+          </div>
+        </div>
+        <div className="flex flex-col items-center justify-center gap-8 faqs_card">
+          <div className="rounded-full bg-[#F4EBFF] w-10 h-10 flex items-center justify-center">
+            <CiHeart className="text-[#007EAF] text-2xl"/>
+          </div>
+          <div className="flex flex-col items-center justify-center gap-3 text-center">
+          <h1 className="text-xl font-semibold">How does your matchmaking process work?
+          </h1>
+          <p className="text-[#475467] text-center">
+          Our AI algorithm considers your preferences, values, and goals to suggest compatible matches.
           </p>
           </div>
         </div>
@@ -38,10 +50,9 @@ const Faqs = () => {
             <CiHeart className="text-[#007EAF] text-2xl"/>
           </div>
           <div className="flex flex-col items-center justify-center gap-3">
-          <h1 className="text-xl font-semibold">Is there a free trial available?</h1>
+          <h1 className="text-xl font-semibold">Is Wedlock Australia free to use?</h1>
           <p className="text-[#475467] text-center">
-            Yes, you can try us for free for 30 days. Our friendly team will
-            work with you to get you up and running as soon as possible.
+          We offer a free Explorer plan with limited features and paid plans for enhanced matchmaking options.
           </p>
           </div>
         </div>
@@ -50,22 +61,9 @@ const Faqs = () => {
             <CiHeart className="text-[#007EAF] text-2xl"/>
           </div>
           <div className="flex flex-col items-center justify-center gap-3">
-          <h1 className="text-xl font-semibold">Is there a free trial available?</h1>
+          <h1 className="text-xl font-semibold">How do you ensure privacy and security?</h1>
           <p className="text-[#475467] text-center">
-            Yes, you can try us for free for 30 days. Our friendly team will
-            work with you to get you up and running as soon as possible.
-          </p>
-          </div>
-        </div>
-        <div className="flex flex-col items-center justify-center gap-8 faqs_card">
-          <div className="rounded-full bg-[#F4EBFF] w-10 h-10 flex items-center justify-center">
-            <CiHeart className="text-[#007EAF] text-2xl"/>
-          </div>
-          <div className="flex flex-col items-center justify-center gap-3">
-          <h1 className="text-xl font-semibold">Is there a free trial available?</h1>
-          <p className="text-[#475467] text-center">
-            Yes, you can try us for free for 30 days. Our friendly team will
-            work with you to get you up and running as soon as possible.
+          We use advanced encryption and rigorous profile verification to protect your personal information.
           </p>
           </div>
         </div>
@@ -74,10 +72,9 @@ const Faqs = () => {
             <CiHeart className="text-[#007EAF] text-2xl"/>
           </div>
           <div className="flex flex-col items-center justify-center gap-3">
-          <h1 className="text-xl font-semibold">Is there a free trial available?</h1>
+          <h1 className="text-xl font-semibold">Can I update my profile preferences?</h1>
           <p className="text-[#475467] text-center">
-            Yes, you can try us for free for 30 days. Our friendly team will
-            work with you to get you up and running as soon as possible.
+          Yes, you can modify your profile details and preferences anytime through your account settings.
           </p>
           </div>
         </div>
@@ -85,11 +82,10 @@ const Faqs = () => {
           <div className="rounded-full bg-[#F4EBFF] w-10 h-10 flex items-center justify-center">
             <CiHeart className="text-[#007EAF] text-2xl"/>
           </div>
-          <div className="flex flex-col items-center justify-center gap-3">
-          <h1 className="text-xl font-semibold">Is there a free trial available?</h1>
+          <div className="flex flex-col items-center justify-center gap-3 text-center">
+          <h1 className="text-xl font-semibold">How does Wedlock Australia handle cultural or religious preferences?</h1>
           <p className="text-[#475467] text-center">
-            Yes, you can try us for free for 30 days. Our friendly team will
-            work with you to get you up and running as soon as possible.
+          Our platform allows you to specify cultural or religious preferences in your profile. This ensures matches are tailored to align with your personal values and traditions.
           </p>
           </div>
         </div>

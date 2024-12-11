@@ -7,7 +7,7 @@ import "../../font.css";
 
 const Feature = () => {
   return (
-    <div className="w-100 h-auto 8xl:px-32 bg-[#007EAF]  sm:pt-0 3xl:px-48 xl:px-10 7xl:px-36">
+    <div className="w-100  h-auto 8xl:px-32 bg-[#007EAF]  sm:pt-0 3xl:px-48 xl:px-10 7xl:px-36">
       <div className="relative overflow-hidden container m-auto">
         <img
           src="/curvewhite.svg"
@@ -15,16 +15,16 @@ const Feature = () => {
           className="absolute  w-[42rem] left-10 -top-10 -rotate-[128deg]"
         />
 
-        <div className=" flex flex-col pt-6 lg:flex-row justify-between text-white xl:p-20 p-8  ">
+        <div className=" flex flex-col pt-6 lg:flex-row justify-between text-white xl:p-20 p-6  ">
           <div className="space-y-6 connect_match">
-            <h1 className=" text-[32px] md:text-[48px] xl:text-[64px]  xl:leading-[83.2px] font-[Proxima-Nova-Bold] tracking-[-0.02em]">
+            <h1 className="text-[32px] md:text-[48px] xl:text-[64px]  xl:leading-[83.2px] font-[Proxima-Nova-Bold] tracking-[-0.02em]">
               Connect with matches <br className=" hidden lg:block" /> the way
               you like
             </h1>
-            <p className=" text-[20px] sm:leading-[42px] md:text-[24px] lg:text-[26px] xl:text-[28px]  xl:leading-[64px] font-[Proxima-Nova-Regular] tracking-[-0.02em]">
-              Cras at pellentesque eros. Nullam vitae{" "}
-              <br className=" hidden lg:block" />
-              sapien et felis eleifend luctus. Nam ac dui
+            <p className=" text-[20px] sm:leading-[42px] md:text-[24px] lg:text-[26px] xl:text-[28px] text-balance  xl:leading-[44px] font-[Proxima-Nova-Regular] tracking-[-0.02em]">
+              At Wedlock Australia, we understand that building a meaningful connection happens at  your own pace.
+             
+
             </p>
 
             <div className="w-full">
@@ -44,8 +44,7 @@ const Feature = () => {
                       className="text-md mt-1 leading-7 text-slate-600 max-md:max-w-full lg:text-xl"
                       style={{ fontFamily: "Proxima-Nova-Regular, sans-serif" }}
                     >
-                      Etiam sed vulputate nisl, eu elementum arcu. Vivamus
-                      dignissim tortor in tellus dictum pellentesque.{" "}
+                      Our platform ensures a safe and private video experience, allowing you to build rapport and gauge compatibility in a more interactive way.
                     </div>
                   </div>
                 </div>
@@ -66,8 +65,7 @@ const Feature = () => {
                       style={{ fontFamily: "Proxima-Nova-Regular, sans-serif" }}
                       className="text-md mt-1 leading-7 text-slate-600 max-md:max-w-full lg:text-xl"
                     >
-                      Vivamus dignissim tortor in tellus dictum pellentesque.
-                      Praesent mauris metus, dictum quis velit non.
+                      Begin your conversations comfortably with our instant messaging feature, designed for natural, meaningful exchanges at your pace.
                     </div>
                   </div>
                 </div>
@@ -89,8 +87,7 @@ const Feature = () => {
                       style={{ fontFamily: "Proxima-Nova-Regular, sans-serif" }}
                       className="text-md mt-1 leading-7 text-slate-600 max-md:max-w-full lg:text-xl"
                     >
-                      Vivamus dignissim tortor in tellus dictum pellentesque.
-                      Praesent mauris metus, dictum quis velit non.
+                      Our voice call feature gives you the opportunity to connect more intimately and engage in conversations that feel authentic.
                     </div>
                   </div>
                 </div>
@@ -98,11 +95,11 @@ const Feature = () => {
             </div>
           </div>
 
-          <div className="relative w-full lg:w-1/2 h-[38.5rem] md:h-[74.5rem] lg:h-[52rem] mt-2 xl:h-[56rem]">
+          <div className="relative w-full lg:w-1/2 h-[38.5rem] md:h-[80.5rem] lg:h-[52rem] mt-2 xl:h-[56rem]">
             <img
               src="/main.svg"
               alt="Main visual"
-              className="absolute inset-0 w-full h-full object-fill md:object-cover lg:object-fill"
+              className="absolute inset-0 w-full h-full object-fill md:object-cover lg:object-contain xl:object-fill"
             />
           </div>
         </div>

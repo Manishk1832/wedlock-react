@@ -5,7 +5,7 @@ const question = [
     id: 12,
     text: "What are your interests and hobbies?",
     summary:
-      "Lorem ipsum dolor sit amet consectetur.Lorem ipsum dolor sit amet consectetur.",
+      "Tell us about the activities that you enjoy and are passionate about. Select all that apply.",
     options: [
       "Sports",
       "Photography",

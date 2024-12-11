@@ -3,6 +3,7 @@ import { getAuth } from 'firebase/auth';
 import { getMessaging } from 'firebase/messaging';
 import { getDatabase } from 'firebase/database';
 
+
 const firebaseConfig = {
     apiKey: "AIzaSyBOG_Yg-2kKeH1a0sdjc_zBvn_p7A_WaJE",
     authDomain: "wedlock-4f698.firebaseapp.com",
@@ -13,6 +14,7 @@ const firebaseConfig = {
     appId: "1:539956268610:web:f01a4dbc2ced2e96c027db",
     measurementId: "G-95Z5LR49PG"
 };
+
 
 const app = initializeApp(firebaseConfig);
 

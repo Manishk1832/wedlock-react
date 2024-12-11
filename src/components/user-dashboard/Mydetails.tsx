@@ -1,27 +1,84 @@
-import  { useState } from "react";
-import { Gauge } from "@mui/x-charts/Gauge";
+import  { useState, useEffect } from "react";
+import { Gauge,gaugeClasses } from "@mui/x-charts/Gauge";
 import { FaEdit } from "react-icons/fa";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { Switch } from "antd";
 import { CiMap } from "react-icons/ci";
 import { IoLanguage } from "react-icons/io5";
+// import {setNotificationData} from "../../Redux/Reducers/user.reducer";
 import { FaSmoking } from "react-icons/fa";
+// import { useDispatch } from "react-redux";
 import { FaWineGlassAlt } from "react-icons/fa";
 import Loading from "../Loading";
 import { FaUserGraduate } from "react-icons/fa";
-import { useMyDetailsQuery } from "../../Redux/Api/profile.api";
+import { useMyDetailsQuery, useGetProfilePercentageQuery } from "../../Redux/Api/profile.api";
+
+
 import "../../font.css";
 import ReligiouModel from "../user-dashboard-model/ReligiousModel";
 import FamilyModel from "../user-dashboard-model/FamilyModel";
 import PersonalBagroundModal from "../user-dashboard-model/PersonalBagroundModal";
 import EducationFinancialModal from "../user-dashboard-model/EducationFinancialModal";
 import LocationBackgroundModal from "../user-dashboard-model/LocationBackgroundModal";
+import { RootState } from "./../../Redux/store";
+import { useSelector } from "react-redux";
+
 // import InterestHobbiesModal from "../user-dashboard-model/InterestHobbiesModal";
-import LifestyleModel from "../user-dashboard-model/LifestyleModal";
+// import LifestyleModel from "../user-dashboard-model/LifestyleModal";
 // import '../app/globals.css'
 
 const MyDetails = () => {
+  // const dispatch = useDispatch();
+  const {user } = useSelector((state: RootState) => state.userReducer) ;
+
+
+  const [Percentage, setProfilePercentage] = useState(0);
   const { data: myDetails ,isLoading:isLoading} = useMyDetailsQuery<any>();
+ 
+
+// type ProfilePercentage = {
+//   percentage: number;
+// };
+
+const [isExclusive, setIsExclusive] = useState(false);
+
+  useEffect(() => {
+    const isExclusive = localStorage.getItem("isExclusive");
+    if (isExclusive === "true" || user?.usertype === "Exclusive") {
+      setIsExclusive(true);
+    }
+    [];
+  });
+
+
+  const { data: profileData, isLoading: isprofileDataLoading ,refetch} = useGetProfilePercentageQuery();
+  console.log(myDetails?.data?.[0], "myDetails");
+
+  // useEffect(() => {
+  //   if (myDetails?.data?.[0]) {
+  //     const notificationData = {
+  //       userId: myDetails.data[0].userId,
+  //       profileImage: myDetails.data[0].profileImage[0],
+  //       name: `${myDetails.data[0].basic_and_lifestye?.firstName} ${myDetails.data[0].basic_and_lifestye?.lastName}`,
+  //       fcmToken: myDetails.data[0].fcmToken,
+  //     };
+  //     dispatch(setNotificationData(notificationData));
+  //   }
+  // }, [myDetails, dispatch]);
+
+
+  useEffect(() => {
+    const notificationData = {
+      userId: myDetails?.data[0].userId,
+      profileImage: myDetails?.data[0].profileImage[0],
+      name: `${myDetails?.data[0].basic_and_lifestye?.firstName} ${myDetails?.data[0].basic_and_lifestye?.lastName}`,
+      fcmToken: myDetails?.data[0].fcmToken,
+    };
+
+    localStorage.setItem("notificationData", JSON.stringify(notificationData));
+
+  }, [myDetails]);
+  
 
   const [religiousModelOpen, setReligiousModelOpen] = useState(false);
   const [familyModelOpen, setFamilyModelOpen] = useState(false);
@@ -33,45 +90,64 @@ const MyDetails = () => {
     useState(false);
   // const [interestHobbiesModalOpen, setInterestHobbiesModalOpen] =
   //   useState(false);
-  const [lifestyleModelOpen, setLifestyleModelOpen] = useState(false);
+  // const [lifestyleModelOpen, setLifestyleModelOpen] = useState(false);
 
   const openReligiousModel = () => {
     setReligiousModelOpen(true);
+    refetch();
+
   };
 
   const closeReligiousModel = () => {
     setReligiousModelOpen(false);
+    refetch();
+
   };
 
   const openFamilyModel = () => {
     setFamilyModelOpen(true);
+    refetch();
+
   };
 
   const closeFamilyModel = () => {
     setFamilyModelOpen(false);
+    refetch();
   };
 
   const openPersonalBagroundModal = () => {
     setPersonalBagroundModalOpen(true);
+    refetch();
+
   };
 
   const closePersonalBagroundModal = () => {
     setPersonalBagroundModalOpen(false);
+    refetch();
   };
 
   const openEducationFinancialModal = () => {
     setEducationFinancialModalOpen(true);
+    refetch();
+
+
   };
 
   const closeEducationFinancialModal = () => {
     setEducationFinancialModalOpen(false);
+    refetch();
   };
 
   const openLocationBackgroundModal = () => {
     setLocationBackgroundModalOpen(true);
+    refetch();
+
+
   };
   const closeLocationBackgroundModal = () => {
     setLocationBackgroundModalOpen(false);
+    refetch();
+
   };
 
   // const openInterestHobbiesModal = () => {
@@ -81,31 +157,46 @@ const MyDetails = () => {
   //   setInterestHobbiesModalOpen(false);
   // };
 
-  const openLifestyleModel = () => {
-    setLifestyleModelOpen(true);
-  };
+  // const openLifestyleModel = () => {
+  //   setLifestyleModelOpen(true);
+  //   refetch();
 
-  const closeLifestyleModel = () => {
-    setLifestyleModelOpen(false);
-  };
+  // };
+
+  // const closeLifestyleModel = () => {
+  //   setLifestyleModelOpen(false);
+  //   refetch();
+
+  // };
+
+
+
+  useEffect(() => {
+    if (profileData && profileData.percentage) {
+      setProfilePercentage(profileData.percentage);
+
+
+    }
+  }, [profileData, refetch]);
+  
 
   return (
     
     <div>
-      {isLoading ? (
+      {isLoading || isprofileDataLoading ? (
         <div className="flex items-center justify-center">
         <Loading />
         </div>
       ) : (
       <div className="min-w-screen flex min-h-screen flex-col gap-4 md:gap-10 lg:flex-row">
-        <div className="mb-4 md:grid grid-cols-1 gap-2 md:mb-0  auto-rows-[10rem] ">
+        <div className="mb-4 lg:grid grid-cols-1 gap-2 md:mb-0  auto-rows-[10rem] ">
           {myDetails?.data[0]?.profileImage.map(
             (imageUrl: string, index: number) => (
               <img
                 key={index}
                 src={imageUrl}
                 alt="profile image"
-                className="object-cover w-full h-full rounded-md"
+                className="max-lg:object-cover w-full h-full rounded-md"
               />
             )
           )}
@@ -118,24 +209,24 @@ const MyDetails = () => {
                 <div className="flex items-center justify-between self-start  text-xl font-semibold leading-5 text-zinc-900">
                   Basic & Lifestyle
                   <div className="flex gap-4 text-cyan-600">
-                    <button
+                    {/* <button
                       className="w-2 text-2xl"
                       onClick={openLifestyleModel}
                     >
                       <FaEdit />
-                    </button>
-                    <LifestyleModel
+                    </button> */}
+                    {/* <LifestyleModel
                       isVisible={lifestyleModelOpen}
                       onClose={closeLifestyleModel}
                     />
 
                     <div>
                       <Switch defaultChecked />
-                    </div>
+                    </div> */}
                   </div>
                 </div>
                 <div className="mt-2.5 flex flex-wrap py-6 items-center gap-2.5 self-start text-base font-medium  leading-4 text-slate-900">
-                  <div className="self-stretch text-xl font-bold leading-10 text-cyan-600 lg:text-3xl">
+                  <div className={ `self-stretch text-xl font-bold leading-10 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} lg:text-3xl`}>
                     {myDetails?.data[0]?.basic_and_lifestye?.firstName +
                       " " +
                       myDetails?.data[0]?.basic_and_lifestye?.lastName}
@@ -193,23 +284,37 @@ const MyDetails = () => {
                   <Gauge
                     width={230}
                     height={150}
-                    value={40}
+                    value={Percentage}
                     startAngle={-90}
                     endAngle={90}
                     text={({ valueMax }) =>
-                      `Completed  ${(40 / valueMax) * 100}%`
+                      `Completed ${(Math.round((Percentage / valueMax) * 100)).toFixed(0)}%`
                     }
-                    sx={{ color: "#007EAF", fontSize: 20, fontWeight: "bold" }}
-                  />
+                    sx={(theme) => ({
+                      [`& .${gaugeClasses.valueText}`]: {
+                        fontSize: 20,
+                        fontWeight: 'bold',
+                      },
+                      [`& .${gaugeClasses.valueArc}`]: {
+                        fill: `${isExclusive? '#60457E': '#007EAF'}`,
+                      },
+                      [`& .${gaugeClasses.referenceArc}`]: {
+                        fill: theme.palette.text.disabled,
+                      },
+                    })}
+                  
+                  
+            
+                    />
                 </div>
 
                 <p className="text-lg font-[Proxima-Nova-Regular] text-center">
                   Complete at least 50% of your profile to unlock messaging. Our
                   tip: Answer more profile questions.
                 </p>
-                <div className="mt-2 text-center text-lg text-[#007EAF] underline">
+                {/* <div className="mt-2 text-center text-lg text-[#007EAF] underline">
                   <Link to={"/questions"}> Click to complete profile</Link>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -219,7 +324,7 @@ const MyDetails = () => {
           <div className="w-75% mb-4  xl:mb-0 flex flex-col rounded-xl bg-white md:w-auto h-[17rem]">
             {/* <div className="flex flex-col pb-6 bg-white rounded-xl shadow-sm max-md:max-w-full"> */}
             <div
-              className="w-full justify-center border-b border-solid border-zinc-300 px-6 py-4 text-lg leading-6 tracking-wide text-cyan-600 max-md:max-w-full max-md:px-5 md:text-xl"
+              className={`w-full justify-center border-b border-solid border-zinc-300 px-6 py-4 text-lg leading-6 tracking-wide ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} max-md:max-w-full max-md:px-5 md:text-xl`}
               style={{ fontFamily: "Proxima-Nova-Bold, sans-serif" }}
             >
               <div className="flex items-center justify-between">
@@ -280,7 +385,7 @@ const MyDetails = () => {
           <div className="row-span-3 lg:row-span-3 mb-4  xl:mb-0 rounded-xl bg-white ">
             <div className="flex flex-col rounded-xl bg-white pb-6 shadow-sm">
               <div
-                className="justify-center border-b border-solid border-zinc-300 px-6 py-4 text-lg leading-6 tracking-wide text-cyan-600 max-md:px-5 md:text-xl"
+                className={`justify-center border-b border-solid border-zinc-300 px-6 py-4 text-lg leading-6 tracking-wide ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} max-md:px-5 md:text-xl`}
                 style={{ fontFamily: "Proxima-Nova-Bold, sans-serif" }}
               >
                 <div className="flex items-center justify-between">
@@ -304,40 +409,40 @@ const MyDetails = () => {
               </div>
               <div className="mt-6 flex flex-col px-6 max-md:px-5 xl:gap-3 ">
                 <div className="flex items-center gap-1 whitespace-nowrap">
-                  <div className="text-xl leading-8 text-cyan-600 md:text-3xl">
+                  <div className={`text-xl leading-8 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} md:text-3xl`}>
                     <CiMap />
                   </div>
                   <div className="text-lg leading-8 text-slate-600 md:text-xl">
                     Height
                   </div>
                 </div>
-                <div className="text-md ml-8 mt-2 justify-center self-start rounded-[100px] bg-blue-50 px-3 py-1.5 text-center font-medium capitalize leading-7 text-cyan-600 max-md:ml-2.5 md:text-xl">
+                <div className={`text-md ml-8 mt-2 justify-center self-start rounded-[100px] bg-blue-50 px-3 py-1.5 text-center font-medium capitalize leading-7 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} max-md:ml-2.5 md:text-md`}>
                   {myDetails?.data[0]?.personal_background?.height}
                 </div>
                 <div className="mt-6 flex items-center gap-1 whitespace-nowrap">
-                  <div className="text-xl leading-8 text-cyan-600 md:text-3xl">
+                  <div className={`text-xl leading-8 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} md:text-3xl`}>
                     <CiMap />
                   </div>
                   <div className="text-lg leading-8 tracking-wide text-slate-600 md:text-xl">
                     Weight
                   </div>
                 </div>
-                <div className="text-md ml-8 mt-2 justify-center self-start rounded-[100px] bg-blue-50 px-3 py-1.5 text-center font-medium capitalize leading-7 text-cyan-600 max-md:ml-2.5 md:text-md">
+                <div className={`text-md ml-8 mt-2 justify-center self-start rounded-[100px] bg-blue-50 px-3 py-1.5 text-center font-medium capitalize leading-7 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} max-md:ml-2.5 md:text-md`}>
                   {myDetails?.data[0]?.personal_background?.weight}
                 </div>
                 <div className="mt-6 flex items-center gap-1">
-                  <div className="text-xl leading-8 text-cyan-600 md:text-3xl">
+                  <div className={`text-xl leading-8 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} md:text-3xl`}>
                     <CiMap />
                   </div>
                   <div className="text-lg leading-8 tracking-wide text-slate-600 md:text-xl">
                     Body Type
                   </div>
                 </div>
-                <div className="text-md ml-8 mt-2 flex justify-center gap-1.5 self-start rounded-[100px] border border-solid border-gray-200 bg-blue-50 bg-opacity-50 px-5 py-2 font-medium capitalize leading-7 text-cyan-600 max-md:ml-2.5 md:py-4 md:text-md">
+                <div className={`text-md ml-8 mt-2 flex justify-center gap-1.5 self-start rounded-[100px] border border-solid border-gray-200 bg-blue-50 bg-opacity-50 px-5 py-2 font-medium capitalize leading-7 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} max-md:ml-2.5 md:py-4 md:text-md`}>
                   {myDetails?.data[0]?.personal_background?.bodyType}
                 </div>
                 <div className="mt-6 flex items-center gap-1 whitespace-nowrap text-xl leading-8 tracking-wide text-slate-600">
-                  <div className="text-xl leading-8 text-cyan-600 md:text-3xl">
+                  <div className={`text-xl leading-8 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} md:text-3xl`}>
                     <IoLanguage />
                   </div>
 
@@ -349,7 +454,7 @@ const MyDetails = () => {
                   {myDetails?.data[0]?.personal_background?.language}
                 </div>
                 <div className="mt-6 flex items-center gap-1 text-xl leading-8 tracking-wide text-slate-600">
-                  <div className="text-xl leading-8 text-cyan-600 md:text-3xl">
+                  <div className={`text-xl leading-8 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} md:text-3xl`}>
                     {" "}
                     <FaSmoking />
                   </div>
@@ -362,7 +467,7 @@ const MyDetails = () => {
                   {myDetails?.data[0]?.personal_background?.smokingHabbit}
                 </div>
                 <div className="mt-6 flex items-center gap-1 text-xl leading-8 tracking-wide text-slate-600">
-                  <div className="text-xl leading-8 text-cyan-600 md:text-3xl">
+                  <div className={`text-xl leading-8 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} md:text-3xl`}>
                     {" "}
                     <FaWineGlassAlt />{" "}
                   </div>
@@ -376,7 +481,7 @@ const MyDetails = () => {
                   {myDetails?.data[0]?.personal_background?.drinkingHabbit}
                 </div>
                 <div className="mt-6 flex items-center gap-1 whitespace-nowrap">
-                  <div className="text-xl leading-8 text-cyan-600 md:text-3xl">
+                  <div className={`text-xl leading-8 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} md:text-3xl`}>
                     <CiMap />
                   </div>
                   <div className="text-lg leading-8 tracking-wide text-slate-600 md:text-xl">
@@ -387,7 +492,7 @@ const MyDetails = () => {
                   {myDetails?.data[0]?.personal_background?.diet}
                 </div>
                 <div className="mt-6 flex items-center gap-2 whitespace-nowrap">
-                  <div className="text-xl leading-8 text-cyan-600 md:text-3xl">
+                  <div className={`text-xl leading-8 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} md:text-3xl`}>
                     <CiMap />
                   </div>
                   <div className="text-lg leading-8 tracking-wide text-slate-600 md:text-xl">
@@ -405,7 +510,7 @@ const MyDetails = () => {
           <div className="h-[31rem] md:h-[28rem] mb-4 xl:mb-0 rounded-xl bg-white">
             <div className="flex h-[28rem] flex-col rounded-xl bg-white pb-6 shadow-sm max-md:max-w-full">
               <div
-                className="justify-center border-b border-solid border-zinc-300 px-6 py-4 text-lg leading-6 tracking-wide text-cyan-600 max-md:max-w-full max-md:px-5 md:text-xl"
+                className={`justify-center border-b border-solid border-zinc-300 px-6 py-4 text-lg leading-6 tracking-wide ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} max-md:max-w-full max-md:px-5 md:text-xl`}
                 style={{ fontFamily: "Proxima-Nova-Bold, sans-serif" }}
               >
                 <div className="flex items-center justify-between">
@@ -506,7 +611,7 @@ const MyDetails = () => {
 
           <div className="h-auto py-4  rounded-xl mb-4 xl:mb-0 bg-white">
             <div
-              className="justify-center border-b border-solid border-zinc-300 px-6 py-4 text-lg leading-6 tracking-wide text-cyan-600 max-md:max-w-full max-md:px-5 md:text-xl"
+              className={`justify-center border-b border-solid border-zinc-300 px-6 py-4 text-lg leading-6 tracking-wide ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} max-md:max-w-full max-md:px-5 md:text-xl`}
               style={{ fontFamily: "Proxima-Nova-Bold, sans-serif" }}
             >
               <div className="flex items-center justify-between">
@@ -576,9 +681,9 @@ const MyDetails = () => {
           {/* Interest and hobbies */}
           <div className="h-auto py-4 rounded-xl">
             <div className=" flex max-w-[499px] flex-col pb-9 leading-8 text-slate-900">
-              <div className="flex items-center justify-between text-lg font-semibold leading-[110%] text-cyan-600 md:text-xl">
+              <div className={`flex items-center justify-between text-lg font-semibold leading-[110%] ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} md:text-xl`}>
                 Interest and hobbies
-                {/* <div className="flex gap-4 text-cyan-600">
+                {/* <div className="flex gap-4 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'}">
                   <button
                     className="w-2 text-2xl"
                     onClick={openInterestHobbiesModal}
@@ -614,7 +719,7 @@ const MyDetails = () => {
           <div className="h-auto  rounded-xl bg-white">
             <div className="flex flex-col rounded-xl border border-solid border-gray-200 bg-white pb-6 shadow-sm">
               <div
-                className="justify-center border-b border-solid border-zinc-300 px-6 py-4 text-lg leading-6 tracking-wide text-cyan-600 max-md:px-5 md:text-xl"
+                className={`justify-center border-b border-solid border-zinc-300 px-6 py-4 text-lg leading-6 tracking-wide ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} max-md:px-5 md:text-xl`}
                 style={{ fontFamily: "Proxima-Nova-Bold, sans-serif" }}
               >
                 <div className="flex items-center justify-between">
@@ -640,7 +745,7 @@ const MyDetails = () => {
               <div className="mt-6 flex flex-col px-6 max-md:px-5">
                 <div className="flex justify-between gap-2 whitespace-nowrap pr-8 max-md:pr-5">
                   <div className="text-md flex items-center justify-between gap-2 self-start leading-8 tracking-wide text-slate-600 md:text-xl">
-                    <span className="text-[#007EAF]">
+                    <span className={`${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'}`}>
                       <FaUserGraduate />
                     </span>
                     <div>Qualification</div>
@@ -652,7 +757,7 @@ const MyDetails = () => {
 
                 <div className="mt-4 flex justify-between gap-2 whitespace-nowrap pr-8 max-md:pr-5">
                   <div className="text-md flex items-center justify-between gap-2 self-start leading-8 tracking-wide text-slate-600 md:text-xl">
-                    <span className="text-[#007EAF]">
+                    <span className={`${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'}`}>
                       <FaUserGraduate />
                     </span>
                     <div>Education</div>
@@ -664,7 +769,7 @@ const MyDetails = () => {
 
                 <div className="mt-4 flex justify-between gap-2 whitespace-nowrap pr-8 max-md:pr-5">
                   <div className="text-md flex items-center justify-between gap-2 self-start leading-8 tracking-wide text-slate-600 md:text-xl">
-                    <span className="text-[#007EAF]">
+                    <span className={`${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'}`}>
                       <FaUserGraduate />
                     </span>
                     <div>Working Status</div>
@@ -676,7 +781,7 @@ const MyDetails = () => {
 
                 <div className="mt-4 flex justify-between gap-2 pr-8 max-md:pr-5">
                   <div className="text-md flex items-center justify-around gap-2 self-start whitespace-nowrap leading-8 tracking-wide text-slate-600 md:text-xl">
-                    <span className="text-[#007EAF]">
+                    <span className={`${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'}`}>
                       <FaUserGraduate />
                     </span>
                     <div>Income</div>

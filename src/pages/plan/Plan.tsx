@@ -1,31 +1,37 @@
-import React, { useState } from "react";
-import FAQ from "../../components/faqs/Faq3";
+import  { useState } from "react";
+import FAQ from "../../components/faqs/Faqs.tsx";
 import Subscription from "../../components/Subscription/Subscription";
 import "../../font.css";
 import { useGetPlansQuery } from "../../Redux/Api/plan.api";
 import PlanCard from "../../components/PlanCard/PlanCard";
 import Loading from "../../components/Loading";
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
-import {useCreateCheckoutSessionMutation} from "../../Redux/Api/checkout.api";
-import { toast } from 'sonner'
+import { useCreateCheckoutSessionMutation } from "../../Redux/Api/checkout.api";
+import { toast } from 'sonner';
+import { RootState } from "./../../Redux/store";
+import { useSelector } from "react-redux";
+
 
 const PricingPage = () => {
+  const {user } = useSelector((state: RootState) => state.userReducer) ;
   const [activeTab, setActiveTab] = useState("Monthly");
 
+  const currentPlan = user?.usertype;
+
   const { data: planData, isLoading, error } = useGetPlansQuery<any>();
-
-  const [createCheckoutSession, { isLoading: isSessionLoading }] = useCreateCheckoutSessionMutation();
-
+  const [createCheckoutSession] = useCreateCheckoutSessionMutation();
 
   const getPlanDuration = () =>
     activeTab === "Monthly" ? "Per Month" : "Per Year";
 
-  // Filter plans based on activeTab (either 'Monthly' or 'Yearly')
-  const filteredPlans = planData?.data?.filter((plan: any) =>
-    activeTab === "Monthly"
-      ? plan.planName.includes("Monthly")
-      : plan.planName.includes("Yearly")
-  );
+const filteredPlans = planData?.data?.filter((plan: any) => {
+  if (activeTab === "Monthly" && plan.planType !== "Monthly") return false;
+  if (activeTab === "Yearly" && plan.planType !== "Yearly") return false;
+
+  if (currentPlan === "Exclusive" && plan.planName === "Premium") return false;
+
+  return true;
+});
 
   if (isLoading) return <div><Loading /></div>;
   if (error || !planData?.data) return <div>Error loading plans</div>;
@@ -36,18 +42,14 @@ const PricingPage = () => {
     url: string;
   };
 
-  
   type FetchBaseQueryErrorWithData = FetchBaseQueryError & {
     data: ApiResponse;
   };
 
-
   const handleCheckout = async(id: string) => {
-    try{
-      const planId = id;
-
-      const res = await createCheckoutSession(planId);
-      if("error" in res && res.error){
+    try {
+      const res = await createCheckoutSession(id);
+      if ("error" in res && res.error) {
         const errorData = res.error as FetchBaseQueryErrorWithData;
         if (errorData.data?.success === false) {
           toast.error(errorData.data.message);
@@ -56,22 +58,19 @@ const PricingPage = () => {
       }
       const successData = res.data as ApiResponse;
       window.location.href = successData.url;
-
-    }
-    catch(error){
+    } catch(error) {
       toast.error("An error occurred");
     }
   };
 
   return (
-    <div className="space-y-20 xl:space-y-20">
+    <div className="space-y-20 xl:space-y-20 ">
       <div className="px-2">
         <div className="flex flex-col items-center justify-between md:flex-row">
-          <div className="flex flex-col space-y-4 p-4 md:p-8">
-            <h3 className="text-3xl font-semibold">Our pricing plan</h3>
+          <div className="flex flex-col space-y-4 p-4 md:p-8 ">
+            <h3 className="text-3xl font-semibold">Choose the Right Plan for Your Journey to Love</h3>
             <p className="mt-4 text-md text-[#061C3D] md:mt-0">
-              Donec ligula ligula, porta at urna non, faucibus congue urna.
-              Nullam nulla purus, facilisis vitae odio ac, tempus aliquet dolor.
+              Wedlock offers three subscription levels to suit your needs:
             </p>
           </div>
 
@@ -108,38 +107,19 @@ const PricingPage = () => {
           </div>
         </div>
 
-        <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3 md:px-5 lg:gap-8 xl:mt-4 xl:gap-24 2xl:gap-32 3xl:gap-36 3xl:px-60">
-          <PlanCard
-            title="Standard"
-            price="Free"
-            duration={getPlanDuration()}
-            features={[
-              "Unlimited likes",
-              "Unlimited Rewinds",
-              "Passport™ to any location",
-              "Hide advertisements",
-              "Go Incognito",
-            ]}
-            id=""
-            onClick={() => handleCheckout}
-          />
+        <div className="mt-5 grid grid-cols-1 justify-items-center content-center gap-4 md:grid-cols-2 lg:gap-8 xl:gap-24">
+
           {filteredPlans.map((plan: any) => (
             <PlanCard
               key={plan.id}
-              title={plan.planName.split(" ")[0]}
+              title={plan.planName}
               price={plan.price}
               duration={getPlanDuration()}
-              isHighlighted={plan.planName.includes("Exclusive")} 
-
-              features={[
-                "See who likes you",
-                "New Top Picks every day",
-                "Weekly Super Likes",
-                "1 Free Boost a month",
-                "And everything from Wedlock Basic",
-              ]}
+              isHighlighted={plan.planName === "Exclusive"}
+              features={plan.featureList}
+              isDisabled={plan.planName === currentPlan }
               id={plan.id}
-              onClick={handleCheckout}
+              onClick={() => handleCheckout(plan.id)}
             />
           ))}
         </div>

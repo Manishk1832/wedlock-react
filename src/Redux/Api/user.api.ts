@@ -108,14 +108,18 @@ export const userApi = createApi({
         method: 'DELETE',
         
       })
-    })
-    
+    }),
 
-
-
+    updateFcmToken:builder.mutation({
+      query:(data) => ({
+        url: 'updateFcmToken',
+        method: 'POST',
+        body: data
+      })
+    }),
 
   }),
 
 });
 
-export const { useRegisterUserMutation,useVerifyOtpMutation,useSetPasswordMutation,useLoginMutation,useLogoutUserMutation,useForgotpasswordMutation,useVerifyMutation,useResetpasswordMutation,useDeleteUserMutation} = userApi;
+export const { useRegisterUserMutation,useVerifyOtpMutation,useSetPasswordMutation,useLoginMutation,useLogoutUserMutation,useForgotpasswordMutation,useVerifyMutation,useResetpasswordMutation,useDeleteUserMutation,useUpdateFcmTokenMutation} = userApi;

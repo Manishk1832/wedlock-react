@@ -1,6 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../store';
 
+export interface ProfilePercentage {
+  percentage: number;
+}
+
 
  export const profileApi = createApi({
   reducerPath: 'profileApi',
@@ -112,10 +116,28 @@ import { RootState } from '../store';
         body: data,
       }),
       providesTags: ['profile'],
+    }),
+    getUserImage:builder.query<void, void>({
+      query:()=> ({
+        url:'/getuserImage',
+        method:'GET',
+
+      }),
+      providesTags: ['profile'],
+    }),
+    
+  getProfilePercentage:builder.query<ProfilePercentage, void>({
+    query:()=> ({
+      url:'/getProfilePercentage',
+      method:'GET',
     })
+    
+  })
+
+
   }),
  
 });
 
- export const { useMyDetailsQuery,useUpdateEducationAndFinancialDetailsMutation,useUpdateFamilyDetailsMutation,useUpdateLocationDetailsMutation,useUpdatePersonalBackgroundMutation,useUpdatePersonalDetailsMutation,useUpdateReligiousBackgroundMutation,useGetProfilesQuery,useUserByidMutation ,useFilterProflesMutation,useFilterFieldCountQuery} = profileApi;
+ export const { useMyDetailsQuery,useUpdateEducationAndFinancialDetailsMutation,useUpdateFamilyDetailsMutation,useUpdateLocationDetailsMutation,useUpdatePersonalBackgroundMutation,useUpdatePersonalDetailsMutation,useUpdateReligiousBackgroundMutation,useGetProfilesQuery,useUserByidMutation ,useFilterProflesMutation,useFilterFieldCountQuery,useGetUserImageQuery,useGetProfilePercentageQuery} = profileApi;
 

@@ -1,33 +1,97 @@
 import { Link } from "react-router-dom";
-import { Popover, Avatar,Skeleton } from 'antd';
+import { memo } from "react";
+// import { useState } from "react";
+import { useState,useEffect } from "react";
+import { Popover,  Skeleton } from "antd";
 import { IoIosLogOut } from "react-icons/io";
 import { AiOutlineUserDelete } from "react-icons/ai";
-import { useLogoutUserMutation,useDeleteUserMutation } from "../../Redux/Api/user.api";
-import { useMyDetailsQuery } from "../../Redux/Api/profile.api";
+import {
+  useLogoutUserMutation,
+  useDeleteUserMutation,
+} from "../../Redux/Api/user.api";
+import { useGetUserImageQuery } from "../../Redux/Api/profile.api";
+import { IoNotifications } from "react-icons/io5";
+import { ref, onValue, update,get } from "firebase/database";
+import { database } from "../../../utils/firebaseConfig";
+
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
 import { toast } from "sonner";
 import { logout } from "../../Redux/Reducers/user.reducer";
+import { RootState } from "./../../Redux/store";
+import { useSelector } from "react-redux";
 
-const Header = () => {
+
+const Header = memo(() => {
+  const {user } = useSelector((state: RootState) => state.userReducer) ;
+
+  const [isExclusive, setIsExclusive] = useState(false);
+  const [notificationCount, setNotificationCount] = useState(0);
+
+
+  const notificationCountRef = ref(database, `users/${user?.uid}/notificationCount`);
+
+  useEffect(() => {
+    const unsubscribe = onValue(notificationCountRef, (snapshot) => {
+      const count = snapshot.exists() ? snapshot.val() : 0;
+      setNotificationCount(count);
+    });
+
+    return () => unsubscribe(); 
+  }, [notificationCountRef]);
+
+
+  
+
+  const updateNotificationCount = async () => {
+    try {
+      const notificationCountRef = ref(
+        database,
+        `users/${user?.uid}/notificationCount`
+      );
+      const snapshot = await get(notificationCountRef);
+      const currentCount = snapshot.exists() ? snapshot.val() : 0;
+
+      await update(ref(database, `users/${user?.uid}`), {
+        notificationCount: currentCount + 1,
+      });
+    } catch {
+      toast.error("Failed to update notification count.");
+    }
+  };
+
+  
+
+  
+
+  useEffect(() => {
+    const isExclusive = localStorage.getItem("isExclusive");
+    if (isExclusive === "true" || user?.usertype === "Exclusive") {
+      setIsExclusive(true);
+    }
+    [];
+  });
+
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [logoutUser] = useLogoutUserMutation();
   const [deleteUser] = useDeleteUserMutation();
 
   interface LogoutResponse {
-     
-      success: boolean;
-      message: string;
-  
+    success: boolean;
+    message: string;
   }
 
   interface DeleteResponse {
-      success: boolean;
-      message: string;
+    success: boolean;
+    message: string;
   }
 
+  const handleNotificationClick = () => {
+    navigate(`/user-dashboard?Notifications=${6}`);
+  };
 
   const handleDelete = async () => {
     try {
@@ -41,24 +105,27 @@ const Header = () => {
         Cookies.remove("isQualificationFormFilled");
         Cookies.remove("isOtherFormFilled");
         Cookies.remove("isPersonalFormFilled");
+        Cookies.remove("persist:user");
+        Cookies.remove("fcmToken");
+        Cookies.remove("uid");
         dispatch(logout());
+        localStorage.clear();
         navigate("/");
         window.location.reload();
       } else {
-        toast.error("Logout failed. Please try again.");
+        toast.error("Delete failed. Please try again.");
       }
     } catch (error) {
       toast.error("An error occurred while logging out");
     }
   };
 
-
-
   const handleLogout = async () => {
     try {
       const response: LogoutResponse = await logoutUser().unwrap();
       console.log(response);
       if (response?.success === true) {
+        localStorage.clear();
         toast.success(response?.message);
         Cookies.remove("isImageFormFilled");
         Cookies.remove("isProfileFormFilled");
@@ -77,22 +144,30 @@ const Header = () => {
     }
   };
 
-  const { data: myDetails, isLoading } = useMyDetailsQuery<any>();
+  const { data: myDetails, isLoading } = useGetUserImageQuery<any>();
+
+  console.log(myDetails);
 
   const profile = (
     <div className="flex flex-col gap-4">
       <button className="flex items-center gap-2" onClick={handleLogout}>
-        <span><IoIosLogOut /></span> Logout
+        <span>
+          <IoIosLogOut />
+        </span>{" "}
+        Logout
       </button>
       <button className="flex items-center gap-2" onClick={handleDelete}>
-        <span><AiOutlineUserDelete /></span>Delete Account
+        <span>
+          <AiOutlineUserDelete />
+        </span>
+        Delete Account
       </button>
     </div>
   );
 
   return (
-    <div className="fixed z-10 h-20 w-full bg-[#007EAF]">
-      <div className="flex h-full items-center justify-between px-4 md:px-10 lg:px-20">
+    <div className={`fixed z-10 h-20 w-full ${isExclusive? 'bg-[#60457E]': 'bg-[#007EAF]'}`}>
+      <div className="flex h-full items-center justify-between px-4 md:px-10 ">
         <div className="">
           <Link to="/user-dashboard">
             <img
@@ -104,29 +179,39 @@ const Header = () => {
         </div>
 
         <div className="flex items-center justify-between gap-2 md:gap-4">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white md:h-12 md:w-12">
-  <Popover content={profile}>
-    <button>
-      <Skeleton
-        loading={isLoading}
-        avatar={true}
-        active={true}
-        className="flex items-center ml-4 justify-center h-10 w-10 "
-      />
-      {myDetails?.data[0]?.profileImage && (
-        <img
-          src={
-            Array.isArray(myDetails.data[0].profileImage)
-              ? myDetails.data[0].profileImage[0]
-              : myDetails.data[0].profileImage
-          }
-          alt="profile"
-          className="h-10 w-10 rounded-full md:h-10 md:w-10"
-        />
-      )}
-    </button>
-  </Popover>
-</div>
+          <div className="relative">
+            <button
+              onClick={handleNotificationClick}
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-white md:h-12 md:w-12"
+            >
+              <IoNotifications size={28} />
+            </button>
+
+            {/* Notification badge */}
+            <span className="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-white text-xs">
+              {notificationCount} 
+            </span>
+          </div>
+
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white md:h-12 md:w-12">
+            <Popover content={profile}>
+              <button>
+                <Skeleton
+                  loading={isLoading}
+                  avatar={true}
+                  active={true}
+                  className="flex items-center ml-4 justify-center h-10 w-10 "
+                />
+                {myDetails?.data && (
+                  <img
+                    src={myDetails?.data}
+                    alt="profile"
+                    className="h-10 w-10 rounded-full md:h-10 md:w-10"
+                  />
+                )}
+              </button>
+            </Popover>
+          </div>
 
           <div className="">
             <button>
@@ -141,6 +226,6 @@ const Header = () => {
       </div>
     </div>
   );
-};
+});
 
 export default Header;

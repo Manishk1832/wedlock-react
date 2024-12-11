@@ -7,7 +7,10 @@ import { apiSlice } from "./Api/apiSlice";
 import { checkoutApi } from "./Api/checkout.api";
 import { planApi } from "./Api/plan.api";
 import { connectionApi } from "./Api/connection.api";
+import { favApi } from "./Api/fav.api";
 import { persistStore, persistReducer } from 'redux-persist';
+import { billingApi } from "./Api/billing.api";
+import {notificationApi} from './Api/notification.api';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
 // Create a persist configuration for the user reducer
@@ -30,14 +33,17 @@ export const store = configureStore({
         [apiSlice.reducerPath]: apiSlice.reducer,
         [planApi.reducerPath]: planApi.reducer,
         [checkoutApi.reducerPath]: checkoutApi.reducer,
-        [connectionApi.reducerPath]: connectionApi.reducer
+        [connectionApi.reducerPath]: connectionApi.reducer,
+        [favApi.reducerPath]: favApi.reducer,
+        [billingApi.reducerPath]: billingApi.reducer,
+        [notificationApi.reducerPath]: notificationApi.reducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {
                 ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
             },
-        }).concat(userApi.middleware, profileApi.middleware, formApi.middleware,apiSlice.middleware, planApi.middleware, checkoutApi.middleware,connectionApi.middleware),
+        }).concat(userApi.middleware, profileApi.middleware, formApi.middleware,apiSlice.middleware, planApi.middleware, checkoutApi.middleware,connectionApi.middleware,favApi.middleware,billingApi.middleware,notificationApi.middleware),
 });
 
 // Create a persistor to handle persisting the store

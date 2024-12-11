@@ -1,4 +1,4 @@
-
+import { useState,useEffect } from 'react';
 import Input from '../../components/input/Input';
 import {useRegisterUserMutation} from "../../Redux/Api/user.api";
 import { setActivationToken } from "../../Redux/Reducers/user.reducer";
@@ -6,6 +6,7 @@ import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { useDispatch } from "react-redux";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Link } from 'react-router-dom';
 import {LoadingOutlined} from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
 import { toast } from 'sonner'
@@ -23,6 +24,19 @@ type FormData = z.infer<typeof schema>;
 
 
 const register = () => {
+  const [isExclusive, setExclusive] = useState(false);
+
+  useEffect(()=>{
+    const isExclusive = localStorage.getItem("isExclusive");
+    if(isExclusive){
+      setExclusive(true)
+    }
+
+  })
+
+
+
+
     const navigate = useNavigate();
     
     const dispatch = useDispatch();
@@ -73,9 +87,11 @@ const register = () => {
     
 
   return (
-    <div className="min-w-screen min-h-screen flex flex-col items-center justify-center bg-[#007EAF]">
+    <div className={`min-w-screen min-h-screen flex flex-col items-center justify-center ${isExclusive? 'bg-[#60457E]': 'bg-[#007EAF]'}`}>
       <div className="flex items-center justify-center mb-14">
-        <img src="/logowhite.png" alt="Logo"  className="w-72 h-24 mx-auto mb-2 fixed top-10" />
+        <Link to={"/"} className='mx-auto mb-2 fixed top-10'>
+        <img src="/logowhite.png" alt="Logo"  className="w-72 h-24 " />
+        </Link>
       </div>
       <div className="flex flex-col items-center justify-center mt-8 mb-2">
         <div className="bg-white flex items-center justify-center rounded-md w-10 h-10">
@@ -99,10 +115,10 @@ const register = () => {
 
           <button
             type="submit"
-            className="w-full py-2 px-4 text-[#007EAF] rounded bg-[#ffffff]"
+            className={`w-full py-2 px-4 ${isExclusive? 'text-[#8E69B4]': 'text-[#60457E]'} rounded bg-[#ffffff]`}
             disabled={isSubmitting}
           >
-            {isLoading ? <LoadingOutlined className="text-[#007EAF] animate-spin" /> : '         Create an account'}
+            {isLoading ? <LoadingOutlined className={`${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} animate-spin`} /> : '         Create an account'}
           </button>
         </form>
       </div>

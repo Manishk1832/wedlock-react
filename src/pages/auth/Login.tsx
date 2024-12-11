@@ -4,6 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {useLoginMutation} from "../../Redux/Api/user.api";
 import {setUser} from "../../Redux/Reducers/user.reducer";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { useState ,useEffect} from "react";
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { toast } from 'sonner'
 import { useNavigate } from "react-router-dom";
@@ -21,6 +23,15 @@ type FormData = z.infer<typeof loginSchema>;
 
 
 const Login = () => {
+  const [isExclusive, setExclusive] = useState(false);
+
+
+  useEffect(()=>{
+    const isExclusive = localStorage.getItem("isExclusive");
+    if(isExclusive){
+      setExclusive(true)
+    }
+  },[])
 
     const navigate = useNavigate();
 
@@ -112,9 +123,12 @@ const Login = () => {
     
 
   return (
-    <div className="min-w-screen h-screen flex flex-col items-center justify-center  bg-[#007EAF] ">
+    <div className={`min-w-screen h-screen flex flex-col items-center justify-center  ${isExclusive? 'bg-[#60457E]': 'bg-[#007EAF]'}
+} `}>
     <div className="flex items-center justify-center mb-10  ">
-      <img src="/logowhite.png" alt=""  className='w-48 md:w-60 lg:w-70 h-24 fixed top-2' />
+      <Link to="/" className="fixed top-2">
+      <img src="/logowhite.png" alt=""  className='w-48 md:w-60 lg:w-70 h-24 ' />
+      </Link>
     </div>
 
     <div className="flex flex-col items-center justify-center  mt-12">
@@ -153,9 +167,9 @@ const Login = () => {
           </div>
 
           
-            <button type="submit" className="bg-white text-[#007EAF] w-full h-12 rounded-md">
+            <button type="submit" className={`bg-white ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'}  w-full h-12 rounded-md`}>
                
-              {isLoading ? <LoadingOutlined className="text-[#007EAF] animate-spin" /> : 'Confirm'}
+              {isLoading ? <LoadingOutlined className={`${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} animate-spin`} /> : 'Confirm'}
 
             </button>
 

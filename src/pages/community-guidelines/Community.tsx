@@ -11,9 +11,8 @@ const Community = () => {
         </h3>
         <h1 className=" text-2xl md:text-4xl font-semibold">Wedlock Community Guidelines</h1>
         <p className="text-[#475467] text-md md:text-xl text-balance">
-          Your privacy is important to us at Untitled. We respect your privacy
-          regarding any <br /> information we may collect from you across our
-          website.
+        To ensure a positive experience for everyone, we ask that all users adhere to our Community Guidelines. These guidelines are here to promote respect, <br /> integrity, and inclusivity on the platform and to protect the safety and privacy of all members.
+
         </p>
       </div>
       <div className="px-4 py-4 flex md:flex-row flex-col gap-7">
