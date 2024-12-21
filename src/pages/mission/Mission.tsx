@@ -41,19 +41,16 @@ const Mission = () => {
               <div className="bg-white  rounded-lg p-6 shadow-lg flex justify-center items-center flex-col">
                 <h2 className="text-2xl font-semibold mb-4 text-[#007EAF]">Authenticity</h2>
                 <p className="mb-4 text-[#42526B]">Wedlock values genuine connections by encouraging members to bring their true selves to every interaction</p>
-                <a href="#" className="text-[#007EAF] ">Learn More →</a>
               </div>
               <div className="bg-white rounded-lg p-6 shadow-lg h-[336px] flex justify-center items-center flex-col">
                 <h2 className="text-2xl font-semibold mb-4 text-[#007EAF]">Courage</h2>
                 <p className="mb-4 text-[#42526B]">We honor the courage it takes to pursue a lifelong partnership, supporting each step with confidence.</p>
-                <a href="#" className="text-[#007EAF]">Learn More →</a>
               </div>
               <div className="bg-white text-[#007EAF] rounded-lg p-6 shadow-lg flex justify-center items-center flex-col">
                 <h2 className="text-2xl font-semibold mb-4 text-[#007EAF]">Inclusivity</h2>
                 <p className="mb-4 text-[#42526B]">
                   We are committed to inclusivity, creating a space where all individuals can find their perfect match, regardless of their cultural background or personal preferences
                 </p>
-                <a href="#" className="text-[#007EAF]">Learn More →</a>
               </div>
             </div>
           </div>

@@ -1,59 +1,44 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./Reducers/user.reducer";
-import { userApi } from "./Api/user.api";
-import { profileApi } from "./Api/profile.api";
-import {formApi} from  "./Api/form.api";
+import connectionSlice from "./Reducers/connection.reducer";
 import { apiSlice } from "./Api/apiSlice";
-import { checkoutApi } from "./Api/checkout.api";
-import { planApi } from "./Api/plan.api";
-import { connectionApi } from "./Api/connection.api";
-import { favApi } from "./Api/fav.api";
-import { persistStore, persistReducer } from 'redux-persist';
-import { billingApi } from "./Api/billing.api";
-import {notificationApi} from './Api/notification.api';
-import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+import { persistStore, persistReducer } from "redux-persist";
+import { notificationReducer } from "./Reducers/notification.reducers";
+import storage from "redux-persist/lib/storage";
 
-// Create a persist configuration for the user reducer
 const persistConfig = {
-    key: 'user',
-    storage, // Use localStorage to persist the user state
-    whitelist: ['accessToken', 'refreshToken', 'user', 'isPersonalFormFilled', 'isQualificationFormFilled', 'isOtherFormFilled', 'isLocationFormFilled', 'isImageFormFilled'], 
+  key: "user",
+  storage,
+  whitelist: [
+    "accessToken",
+    "refreshToken",
+    "user",
+    "isPersonalFormFilled",
+    "isQualificationFormFilled",
+    "isOtherFormFilled",
+    "isLocationFormFilled",
+    "isImageFormFilled",
+  ],
 };
-        
-// Create a persisted reducer for the user state
+
 const persistedUserReducer = persistReducer(persistConfig, userReducer.reducer);
 
-// Configure the Redux store
 export const store = configureStore({
-    reducer: { 
-        [profileApi.reducerPath]: profileApi.reducer,
-        userReducer: persistedUserReducer, 
-        [userApi.reducerPath]: userApi.reducer,
-        [formApi.reducerPath]: formApi.reducer,
-        [apiSlice.reducerPath]: apiSlice.reducer,
-        [planApi.reducerPath]: planApi.reducer,
-        [checkoutApi.reducerPath]: checkoutApi.reducer,
-        [connectionApi.reducerPath]: connectionApi.reducer,
-        [favApi.reducerPath]: favApi.reducer,
-        [billingApi.reducerPath]: billingApi.reducer,
-        [notificationApi.reducerPath]: notificationApi.reducer
-    },
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({
-            serializableCheck: {
-                ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
-            },
-        }).concat(userApi.middleware, profileApi.middleware, formApi.middleware,apiSlice.middleware, planApi.middleware, checkoutApi.middleware,connectionApi.middleware,favApi.middleware,billingApi.middleware,notificationApi.middleware),
+  reducer: {
+    [apiSlice.reducerPath]: apiSlice.reducer,
+    userReducer: persistedUserReducer,
+    connectionReducer: connectionSlice.reducer,
+    notificationReducer: notificationReducer.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ["persist/PERSIST", "persist/REHYDRATE"],
+      },
+    }).concat(apiSlice.middleware),
 });
 
-// Create a persistor to handle persisting the store
 export const persistor = persistStore(store);
-
-const initializeApp = async () => {
-    await store.dispatch(apiSlice.endpoints.refreshToken.initiate({}, { forceRefetch: true }));
-};
-
-initializeApp();
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

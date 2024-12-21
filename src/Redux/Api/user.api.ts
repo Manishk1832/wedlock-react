@@ -1,6 +1,5 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { RootState } from '../store';
 
+import { apiSlice } from './apiSlice';
 
 interface LogoutResponse {
 
@@ -14,30 +13,14 @@ interface DeleteResponse {
 }
 
 
-console.log(import.meta.env.VITE_BASE_URL, 'url');
 
 
 
-export const userApi = createApi({
-  reducerPath: 'userApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${import.meta.env.VITE_BASE_URL}/api/v1/user/`,
-    credentials: 'include',  
-    prepareHeaders: (headers, { getState }) => {
-      const accessToken = (getState() as RootState).userReducer.accessToken;
-      if (accessToken) {
-        headers.set('Authorization', accessToken);
-      }
-   
-      return headers;
-    }, 
-  }),
-  tagTypes: ['User'],
-
+export const userApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     registerUser: builder.mutation({
       query: (user) => ({
-        url: 'registration',
+        url: 'user/registration',
         method: 'POST',
         body: user,
       }),
@@ -46,7 +29,7 @@ export const userApi = createApi({
 
     verifyOtp:builder.mutation({
       query : (data)=> ({
-        url:'activate-user',
+        url:'user/activate-user',
         method:'POST',
         body: data
       })
@@ -54,7 +37,7 @@ export const userApi = createApi({
 
     setPassword:builder.mutation({
       query : (data)=> ({
-        url:'set-password',
+        url:'user/set-password',
         method:'POST',
         body: data
       })
@@ -62,7 +45,7 @@ export const userApi = createApi({
 
      login: builder.mutation({
       query: (user) => ({
-        url: 'login',
+        url: 'user/login',
         method: 'POST',
         body: user, 
       }),
@@ -70,7 +53,7 @@ export const userApi = createApi({
 
     forgotpassword:builder.mutation({
       query:(email)=>({
-        url: 'forgot-password',
+        url: 'user/forgot-password',
         method: 'POST',
         body: email
       })
@@ -78,7 +61,7 @@ export const userApi = createApi({
 
     verify:builder.mutation({
       query:(data) => ({
-        url: 'verify-otp',
+        url: 'user/verify-otp',
         method: 'POST',
         body: data
 
@@ -87,7 +70,7 @@ export const userApi = createApi({
 
     resetpassword:builder.mutation({
       query:(data) =>({
-        url: 'reset-password',
+        url: 'user/reset-password',
         method: 'POST',
         body: data
 
@@ -97,14 +80,14 @@ export const userApi = createApi({
 
     logoutUser: builder.mutation<LogoutResponse, void>({
       query: () => ({
-        url: 'logout',
+        url: 'user/logout',
         method: 'GET',
       }),
     }),
 
     deleteUser: builder.mutation<DeleteResponse, void>({
       query:() => ({
-        url: 'delete-user',
+        url: 'user/delete-user',
         method: 'DELETE',
         
       })
@@ -112,7 +95,7 @@ export const userApi = createApi({
 
     updateFcmToken:builder.mutation({
       query:(data) => ({
-        url: 'updateFcmToken',
+        url: 'user/updateFcmToken',
         method: 'POST',
         body: data
       })

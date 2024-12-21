@@ -7,6 +7,9 @@ import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoadingOutlined } from '@ant-design/icons';
 import Cookies from 'js-cookie';
+// import { useDispatch } from "react-redux";
+// import {useForgotpasswordMutation} from "../../Redux/Api/user.api";
+// import { setActivationToken } from "../../Redux/Reducers/user.reducer";
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import { z } from 'zod';
@@ -25,6 +28,9 @@ const verificationSchema = z.object({
 const Verify = () => {
   const [isExclusive, setExclusive] = useState(false);
 
+  // const dispatch = useDispatch();
+
+
   useEffect(()=>{
     const isExclusive = localStorage.getItem("isExclusive");
     if(isExclusive){
@@ -37,6 +43,8 @@ const Verify = () => {
 
   const navigate = useNavigate();
   const [verify, { isLoading }] = useVerifyMutation();
+
+  // const [forgotpassword, { isLoading: forgotpasswordLoading }] = useForgotpasswordMutation();
 
   const { register, handleSubmit, formState: { errors } } = useForm<VerificationInputs>({
     resolver: zodResolver(verificationSchema),
@@ -56,11 +64,49 @@ const Verify = () => {
   type ApiResponse = {
     success: boolean;
     message: string;
+    activationToken?: string;
   };
 
   type FetchBaseQueryErrorWithData = FetchBaseQueryError & {
     data: ApiResponse;
   };
+
+
+  // const resendOtp = async () => {
+  //   try {
+
+  //     const email = localStorage.getItem("email");
+
+  //     if(email){
+
+  //     const res = await forgotpassword({ email: email });
+    
+      
+  //         if ('error' in res && res.error) {
+  //           const errorData = res.error as FetchBaseQueryErrorWithData;
+      
+  //           if (errorData.data?.success === false) {
+  //             toast.error(errorData.data.message); 
+  //             return;
+  //           }
+  //         }
+
+          
+  //       const successData = res?.data as ApiResponse;
+  //       toast.success(successData.message);
+  //       dispatch(setActivationToken(successData.activationToken!));
+         
+  //       }
+     
+  //   } catch (error) {
+  //     toast.error("An error occurred");
+  //   }
+  // };
+
+
+
+
+
 
   const onSubmit: SubmitHandler<VerificationInputs> = async (data) => {
    try{
@@ -87,6 +133,9 @@ const Verify = () => {
     toast.error("An error occurred");
    }
   };
+
+
+
 
 
   return (
@@ -132,10 +181,13 @@ const Verify = () => {
                 </div>
               ))}
             </div>
-            <div className="flex items-center justify-center mt-8 text-[#F9F5FF] gap-1 text-lg">
+            {/* <div className="flex items-center justify-center mt-8 text-[#F9F5FF] gap-1 text-lg">
               <p>Did you not receive code? </p>
-              <button type="button">Click to resend.</button>
-            </div>
+              <button onClick={resendOtp}>Click to resend.</button>
+            </div> */}
+            
+
+
             <button className={`bg-white ${isExclusive? 'text-[#8E69B4]': 'text-[#007EAF]'} w-full h-12 rounded-xl mt-6`}>
               {isLoading ? <LoadingOutlined className={`${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} animate-spin`} /> : 'Verify'}
             </button>

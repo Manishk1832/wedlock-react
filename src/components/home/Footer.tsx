@@ -70,7 +70,7 @@ const Footer = () => {
               <li><Link to="/mission">Mission</Link></li>
               <li><Link to="/advice">Advice</Link></li>
               <li><Link to="/services">Services</Link></li>
-              <li><Link to="/plan">Subscription Tiers </Link></li>
+              <li><Link to="/subscription-tiers">Subscription Tiers </Link></li>
               <li><Link to="/help">Help</Link></li>
               <li><Link to="/faqs">FAQs</Link></li>
               <li><Link to="/contact-us">Contact Us</Link></li>

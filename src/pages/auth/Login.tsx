@@ -6,6 +6,7 @@ import {setUser} from "../../Redux/Reducers/user.reducer";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { useState ,useEffect} from "react";
+import {connectSocket} from "../../services/socketservice";
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { toast } from 'sonner'
 import { useNavigate } from "react-router-dom";
@@ -37,7 +38,6 @@ const Login = () => {
 
     const dispatch = useDispatch();
 
-    // const { isLocationFormFilled,isOtherFormFilled,isQualificationFormFilled,isPersonalFormFilled,isImageFormFilled } = useSelector((state: RootState) => state.userReducer);
   
   
     const [login, { isLoading }] = useLoginMutation();
@@ -75,6 +75,8 @@ const Login = () => {
         }
     
         dispatch(setUser(res.data));
+        connectSocket();
+
     
         const successData = res.data as ApiResponse;
         toast.success(successData.message);

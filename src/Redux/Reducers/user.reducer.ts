@@ -41,6 +41,7 @@ interface InitialState {
   isOtherFormFilled: boolean;
   isLocationFormFilled: boolean;
   isImageFormFilled: boolean;
+  myDetails: Array<any> | null;
 }
 
 
@@ -58,6 +59,7 @@ const initialState : InitialState = {
   isOtherFormFilled: false,
   isLocationFormFilled: false,
   isImageFormFilled: false,
+  myDetails: null,
 };
 
 const userSlice = createSlice({
@@ -95,12 +97,16 @@ const userSlice = createSlice({
 
     },
 
-    setRefreshToken: (state, action) => {
-      state.refreshToken = action.payload;
+    setCredentials: (state, action) => {
+      state.accessToken = action.payload;
     },
 
     setNotificationData: (state, action) => {
       state.notificationData = action.payload;
+    },
+
+    setMyDetails: (state, action) => {
+      state.myDetails = action.payload;
     },
 
     setUserType: (state, action) => {
@@ -113,10 +119,13 @@ const userSlice = createSlice({
       state.user = initialState.user;
       state.accessToken = null;
       state.refreshToken = null;
+      Cookies.remove("access_token");
+      Cookies.remove("refresh_token");
+      localStorage.clear();
     },
   },
 });
 
-export const { setUser, setRefreshToken, logout, setActivationToken ,setNotificationData,setUserType} =
+export const { setUser,setCredentials,  logout, setActivationToken ,setNotificationData,setUserType,setMyDetails} =
   userSlice.actions;
 export default userSlice;

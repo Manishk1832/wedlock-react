@@ -1,3 +1,60 @@
+import AdviceCard from "../../components/AdviceCard/AdviceCard";
+
+
+
+const adviceCardData = [
+  {
+    imageSrc: '/ProjectPh.svg',
+    title: 'Attraction vs. Compatibility',
+    hoverContent: `Attraction can be instant and exciting, drawing two people together through physical appeal or an emotional connection. However, true compatibility goes deeper—it’s the glue that keeps a relationship thriving over time. Compatibility is about aligning on key life aspects such as values, long-term goals, lifestyles, and emotional needs. For example, you might feel attracted to someone’s charm or humour, but compatibility ensures you share common ground on crucial topics like financial planning, family values, or future aspirations.
+A successful relationship balances attraction with compatibility. Attraction may fluctuate, but compatibility fosters stability and mutual respect, helping partners weather challenges together. At Wedlock Australia, we prioritise compatibility in our matchmaking by using advanced AI to consider personality traits, interests, and goals, ensuring you connect with someone who truly complements you beyond the initial spark.
+`,
+  },
+  {
+    imageSrc: '/ProjectPh.svg',
+    title: 'Finding Yourself First',
+    hoverContent: `Before you can form a strong relationship with someone else, you need to have a clear understanding of who you are. Self-awareness forms the foundation of a healthy partnership. It’s about recognising your values, passions, and life goals while identifying what you want and need in a partner. Ask yourself questions like: What makes me happy? What are my non-negotiables in a relationship?
+When you have a strong sense of self, you bring confidence and clarity to a relationship. You’re less likely to settle for less or lose yourself trying to meet someone else’s expectations. Invest in your personal growth by pursuing hobbies, learning new skills, and building a fulfilling life on your own. At Wedlock Australia, we support you in this journey by encouraging self-reflection and helping you identify the qualities that matter most in a partner, ensuring your relationship starts on a solid foundation.
+`,
+  },
+  {
+    imageSrc: '/ProjectPh.svg',
+    title: 'Effective Communication in Relationships',
+    hoverContent:  `Effective communication isn’t just about talking; it’s about connecting. Communication allows couples to build trust, resolve conflicts, and understand each other’s needs and perspectives. Good communication involves active listening—truly hearing your partner without interrupting or dismissing their feelings. It also requires honesty, vulnerability, and the courage to share your emotions, even when it feels uncomfortable.
+Misunderstandings are inevitable, but how you navigate them defines the strength of your relationship. Avoid blame and focus on solutions, using "I" statements to express your feelings without accusing your partner. For example, say, “I feel hurt when you cancel plans without notice” instead of, “You’re always unreliable.”
+
+Wedlock Australia recognises the importance of communication and provides advice on fostering constructive conversations. From setting boundaries to discussing long-term goals, we empower couples to grow together by mastering the art of meaningful dialogue.
+`,
+  },
+  {
+    imageSrc: '/ProjectPh.svg',
+    title: 'Setting Realistic Expectations',
+    hoverContent: `It’s natural to have a vision of your ideal partner, but rigid expectations can prevent you from recognising genuine connections. A healthy relationship thrives on realistic expectations, rooted in mutual respect, shared values, and open-mindedness. While it’s important to uphold your standards, remember that no one is perfect—including you.
+Rather than focusing on superficial traits like looks or status, prioritise qualities like kindness, emotional intelligence, and compatibility in life goals. At the same time, recognise that relationships require effort and compromise. For example, one partner might need more alone time while the other craves constant connection. Learning to balance these differences can strengthen your bond.
+Wedlock Australia encourages you to set achievable goals for your relationships and embrace imperfections, helping you build a partnership that balances dreams with practical realities.
+`,
+  },
+  {
+    imageSrc: '/ProjectPh.svg',
+    title: 'Building Emotional Intimacy ',
+    hoverContent:  `Emotional intimacy is what transforms a relationship from superficial to profound. It’s about creating a safe space where both partners feel seen, heard, and valued. This level of connection requires vulnerability—sharing your fears, dreams, and deepest thoughts without fear of judgment.
+To build emotional intimacy, prioritise quality time together. Engage in activities that promote connection, such as meaningful conversations, shared hobbies, or moments of quiet companionship. Express appreciation regularly to make your partner feel cherished, and practice empathy by validating their feelings, even if you don’t fully understand them.
+Building emotional intimacy takes time and patience, but the rewards are immense—a stronger bond, greater trust, and a relationship that can weather any storm. At Wedlock Australia, we provide tools and guidance to help couples cultivate emotional closeness, turning initial matches into lifelong partnerships.
+`, 
+  },
+  {
+    imageSrc: '/ProjectPh.svg',
+    title: `How to Know if They're ‘The One’`,
+    hoverContent: `Determining if someone is “The One” isn’t about waiting for a perfect person or a magical moment; it’s about recognising a sense of alignment and ease in the relationship. The right partner is someone who makes you feel safe, valued, and inspired to be your best self. They support your goals, celebrate your achievements, and stand by you during challenges.
+Pay attention to how your potential partner communicates, resolves conflicts, and aligns with your values. Do they share your vision for the future? Do they respect your individuality and encourage your growth? Trust your instincts while considering practical compatibility—shared life goals, family expectations, and mutual respect are key indicators of a lasting relationship.
+Wedlock Australia helps you identify these qualities through personalised matchmaking, ensuring you connect with someone who feels like the perfect fit for your unique journey.
+`, 
+  }
+];
+
+
+
+
 
 const Advice = () => {
   return (
@@ -13,7 +70,7 @@ const Advice = () => {
             </p>
           </div>
           <div className="grid grid-cols-2 gap-5 xl:px-6 2xl:px-28">
-
+{/* 
             <div
                 className="rounded border-2  border-[#E6E8EC] hover:border-none  hover:shadow-2xl px-4 space-y-[8px]">
               <img src="/ProjectPh.svg" alt="" className="xl:w-[100%]"/>
@@ -62,7 +119,18 @@ const Advice = () => {
               <div className="text-[#007EAF] underline pb-3 text-[16px]">
                 <h1>Read More →</h1>
               </div>
-            </div>
+            </div> */}
+
+            {adviceCardData.map((card, index) => (
+              <AdviceCard
+                key={index}
+                imageSrc={card.imageSrc}
+                title={card.title}
+                hoverContent={card.hoverContent}
+              />
+            ))}
+
+
           </div>
         </div>
         {/* attration */}

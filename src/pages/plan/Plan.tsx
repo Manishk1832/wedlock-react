@@ -1,6 +1,5 @@
 import  { useState } from "react";
 import FAQ from "../../components/faqs/Faqs.tsx";
-import Subscription from "../../components/Subscription/Subscription";
 import "../../font.css";
 import { useGetPlansQuery } from "../../Redux/Api/plan.api";
 import PlanCard from "../../components/PlanCard/PlanCard";
@@ -125,10 +124,7 @@ const filteredPlans = planData?.data?.filter((plan: any) => {
         </div>
       </div>
 
-      <div className="md:px-10">
-        <Subscription />
-      </div>
-      <div>
+          <div>
         <FAQ />
       </div>
     </div>

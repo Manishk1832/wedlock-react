@@ -115,7 +115,7 @@ const Stories = () => {
           {stories.map((story, index) => {
             // Calculate the range of visible cards
             const startIndex = currentSlide * cardsPerSlide;
-            const endIndex = startIndex + cardsPerSlide;
+            // const endIndex = startIndex + cardsPerSlide;
 
             // Adjust to show the second card on the third slide
             const adjustedStartIndex =

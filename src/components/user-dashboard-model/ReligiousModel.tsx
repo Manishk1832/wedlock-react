@@ -118,9 +118,6 @@ const ReligiousModel: React.FC<ReligiousModalProps> = ({
             <Input placeholder="Enter Religion" />
           </Form.Item>
 
-          <Form.Item name="caste" label="Caste" rules={[{ required: false , message: "Please enter your Caste"}]}  >
-            <Input placeholder="Enter Caste" />
-          </Form.Item>
 
           <Form.Item name="subCommunity" label="Sub Community"  rules={[{ required: false , message: "Please enter your sub community"}]}>
             <Input placeholder="Enter Sub Community" />

@@ -1,38 +1,36 @@
 import React from "react";
-// import { IoIosCheckmark } from "react-icons/io";
-// import { RxCross1 } from "react-icons/rx";
 
 const Subscription: React.FC = () => {
   return (
-    <div className="container mx-auto p-6">
-      <h2 className="text-3xl font-semibold text-center mb-4">
+    <div className="  p-6 mt-12 max-md:mx-0 mx-24 ">
+      <h2 className="text-3xl font-semibold text-center mb-4  pt-10  ">
         Subscription Plan Comparison
       </h2>
 
       <hr className="my-4" />
 
       <div>
-        <div className="overflow-x-auto">
-          <table className="w-full  table-fixed border-collapse">
+        <div className="overflow-x-auto ">
+          <table className="w-full   border-collapse table-auto ">
             <thead className="border-b-2">
-              <tr className="border-b-2 text-md text-left  md:text-2xl">
+              <tr className="border-b-2  max-md:text-md text-left  text-2xl ">
                 <th className="text-left">
                   <div className="pt-5 pb-5">Features</div>
                 </th>
                 <th>
-                  <div className="pt-5 pb-5">Explorer</div>
+                  <div className="pt-5 pb-5 mr-10">Standard</div>
                 </th>
                 <th>
                   <div className="pt-5 pb-5">Advanced ($9.99/month)</div>
                 </th>
                 <th>
-                  <div className="pt-5 pb-5">Elite ($29.99/month)</div>
+                  <div className="pt-5 pb-5">Premium ($29.99/month)</div>
                 </th>
               </tr>
             </thead>
             <tbody className="text-left">
               <tr className="border-b-2 ">
-                <td className="font-normal text-xl font-[Proxima-Nova-bold]  text-left pt-5 pb-5 ">
+                <td className="font-normal text-xl  max-md:text-md font-[Proxima-Nova-bold]  text-left pt-5 pb-5 ">
                   Price
                 </td>
                 <td className="font-normal pt-5 pb-5">Free</td>
@@ -41,7 +39,7 @@ const Subscription: React.FC = () => {
               </tr>
 
               <tr className="border-b-2">
-                <td className="pt-5 pb-5 text-xl font-[Proxima-Nova-bold]">Match Access </td>
+                <td className="pt-5 pb-5 text-xl max-md:text-md font-[Proxima-Nova-bold]">Match Access </td>
                 <td className="pt-5 pb-5 text-md">
                   Limited matches
                 </td>
@@ -54,7 +52,7 @@ const Subscription: React.FC = () => {
               </tr>
 
               <tr className="border-b-2 ">
-                <td className="text-xl font-[Proxima-Nova-bold]">Search Filters</td>
+                <td className="text-xl max-md:text-md font-[Proxima-Nova-bold]">Search Filters</td>
                 <td className="pt-5 pb-5  text-md   ">
                   {" "}
                   Basic filters
@@ -69,8 +67,8 @@ const Subscription: React.FC = () => {
               </tr>
 
               <tr className="border-b-2">
-                <td className="text-xl font-[Proxima-Nova-bold]">Visibility</td>
-                <td className="pt-5 pb-5 pt-5 pb-5 text-md  ">
+                <td className="text-xl max-md:text-md font-[Proxima-Nova-bold]">Visibility</td>
+                <td className=" pt-5 pb-5 text-md  ">
                   {" "}
                   Standard visibility
                 </td>
@@ -85,7 +83,7 @@ const Subscription: React.FC = () => {
               </tr>
 
               <tr className="border-b-2">
-                <td className="text-xl font-[Proxima-Nova-bold]">Events/Workshops</td>
+                <td className="text-xl max-md:text-md font-[Proxima-Nova-bold]">Events/Workshops</td>
                 <td className="pt-5 pb-5  text-md ">
                   {" "}
                   Community forums only
@@ -100,7 +98,7 @@ const Subscription: React.FC = () => {
                 </td>
               </tr>
               <tr className="border-b-2">
-                <td className="text-xl font-[Proxima-Nova-bold]">Customer Support</td>
+                <td className="text-xl max-md:text-md font-[Proxima-Nova-bold]">Customer Support</td>
                 <td className="pt-5 pb-5 text-md  ">
                   {" "}
                   Basic support

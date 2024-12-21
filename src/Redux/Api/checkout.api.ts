@@ -1,25 +1,12 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { RootState } from '../store';
+import { apiSlice } from './apiSlice';
 
 
-export const checkoutApi = createApi({
-    reducerPath: 'checkoutApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl:  `${import.meta.env.VITE_BASE_URL}/api/v1/subscription/`,
-        credentials: 'include', 
-        prepareHeaders: (headers, { getState }) => {
-            const accessToken = (getState() as RootState).userReducer.accessToken;
-            if (accessToken) {
-              headers.set('Authorization', accessToken);
-            }
-            return headers;
-          },
-    }),
-    tagTypes: ['checkout'],
+export const checkoutApi = apiSlice.injectEndpoints({
+  
     endpoints: (builder) => ({
         createCheckoutSession: builder.mutation({
             query: (planId: string) => ({
-                url: 'createCheckoutSession',
+                url: 'subscription/createCheckoutSession',
                 method: 'POST',
                 body: { planId },
             }),
@@ -27,14 +14,14 @@ export const checkoutApi = createApi({
 
         paymentSuccess:builder.query({
             query: (session_id: string) => ({
-                url: `payment-success/${session_id}`,
+                url: `subscription/payment-success/${session_id}`,
                 method: 'GET',
             }),
         }),
 
         getSubscriptionHistory: builder.query<void, void>({
             query: () => ({
-                url: 'getSubscriptionHistory',
+                url: 'subscription/getSubscriptionHistory',
                 method: 'GET',
             }),
         })

@@ -1,41 +1,38 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { RootState } from '../store';
+import { apiSlice } from './apiSlice';
 
 
-export const notificationApi = createApi({
-
-    reducerPath: 'notificationApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl:  `${import.meta.env.VITE_BASE_URL}/api/v1/notifications/`,
-        credentials: 'include',  // send cookies with request
-        prepareHeaders: (headers, {getState}) => {
-            const accessToken = (getState() as RootState).userReducer.accessToken;
-
-            if (accessToken) {
-                headers.set('Authorization', accessToken);
-              }
-              return headers;
-            
-        },
-    }),
-    tagTypes: ['notification'],
+export const notificationApi = apiSlice.injectEndpoints({
 
     endpoints: (builder) => ({
 
         sendNotifcation: builder.mutation({
             query: (data) => ({
-                url: 'sendNotification',
+                url: 'notifications/sendNotification',
                 method: 'POST',
                 body: data 
             
             }),
-            invalidatesTags: ['notification']
+        }),
+
+        getNotification: builder.query<void, void>({
+            query: () => ({
+                url: 'notifications/getAllNotification',
+                method: 'GET',
+            }),
+        }),
+
+        removeNotification: builder.mutation({
+            query: (notificationId) => ({
+                url: 'notifications/deleteNotification',
+                method: 'DELETE',
+                body: {notificationId: notificationId}
+            }),
         }),
        
 
     }),
 });
 
-export const { useSendNotifcationMutation } = notificationApi;
+export const { useSendNotifcationMutation, useGetNotificationQuery, useRemoveNotificationMutation } = notificationApi;
 
 

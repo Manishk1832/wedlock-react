@@ -34,6 +34,8 @@ const Navbar: React.FC = () => {
     "/about-us",
     "/plan",
     "/services",
+    "/subscription-tiers"
+
   ].includes(pathname);
   const hiddenRoutes = [
     "/verification",

@@ -11,6 +11,9 @@ import {useUpdateFcmTokenMutation} from "./Redux/Api/user.api";
 import Navbar from "./components/home/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Loading from "./components/Loading";
+import { connectSocket,disconnectSocket } from "./services/socketservice";
+
+
 
 const Home = lazy(() => import("./pages/home/Home"));
 const Mission = lazy(() => import("./pages/mission/Mission"));
@@ -23,6 +26,7 @@ const Community_Guidelines = lazy(() => import("./pages/community-guidelines/Com
 const Login = lazy(() => import("./pages/auth/Login"));
 const Register = lazy(() => import("./pages/auth/Register"));
 const Faqs = lazy(() => import("./pages/faqs/Faqs"));
+const Comparison = lazy(() => import("./pages/comparsion/comparison"));
 const Questions = lazy(() => import("./pages/questionare/Questionare"));
 const CreatePassword = lazy(() => import("./pages/auth/CreatePassword"));
 const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"))
@@ -44,10 +48,23 @@ const Profile = lazy(() => import("./pages/profile/Profile"))
 const Sucessfull = lazy(() => import("./pages/sucessfull/Sucessfull"))
 const Exclusive = lazy(()=>import("./pages/exclusive-matching/exclusive"))
 const Cancel = lazy(() => import("./pages/paymentCancelPage/PaymentCancelPage"))
-// const ExclusiveUserPlan = lazy(() => import("./pages/exclusiveUserPlan/exclusiveUserPlan")) 
 
 const App = () => {
   const { accessToken ,user  } = useSelector((state: RootState) => state.userReducer) ;
+
+  useEffect(() => {
+    if(accessToken){
+      connectSocket();
+      
+    }
+    else{
+      disconnectSocket();
+    }
+  },[accessToken])
+
+
+
+  
   
 
 
@@ -113,6 +130,7 @@ useEffect(() => {
           <Route path="/advice" element={<Advice />} />
           <Route path="/help" element={<Help />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/subscription-tiers" element={<Comparison />} />
           <Route path="/cookies-policy" element={<Cookies_Policy />} />
           <Route path="/privacy-policy" element={<Privacy_Policy />} />
           <Route path="/terms-conditions" element={<Terms_Conditions />} />
@@ -137,7 +155,7 @@ useEffect(() => {
 
          
 
-{/* 
+ {/* 
           <Route path="/personal-details" element={<Personal/>} />
           <Route path="/location-details" element={<Location />} />
           <Route path="/other-details" element={<Other />} />

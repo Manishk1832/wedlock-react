@@ -6,6 +6,9 @@ import { FaWineGlassAlt } from "react-icons/fa";
 import { useUserByidMutation } from "../../Redux/Api/profile.api";
 import { FaUserGraduate } from "react-icons/fa";
 import {
+  setConnectionStatus,
+} from "../../Redux/Reducers/connection.reducer";
+import {
   useGetConnectionStatusMutation,
   useCancelConnectionMutation,
   useRemoveConnectionMutation,
@@ -15,9 +18,6 @@ import { useSendNotifcationMutation } from "../../Redux/Api/notification.api";
 import { IoPersonAdd } from "react-icons/io5";
 import { FaSpinner } from "react-icons/fa6";
 import { useCreateConnectionMutation } from "../../Redux/Api/connection.api";
-import { database } from "../../../utils/firebaseConfig";
-import { ref, push, child, set, update, get } from "firebase/database";
-
 import { FaUserXmark } from "react-icons/fa6";
 import "../../font.css";
 import Loading from "../Loading";
@@ -25,6 +25,7 @@ import { toast } from "sonner";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
 import { RootState } from "./../../Redux/store";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 interface MatchProps {
   userId: string;
@@ -33,19 +34,23 @@ interface MatchProps {
 const Match: React.FC<MatchProps> = ({ userId }) => {
   const { user } = useSelector((state: RootState) => state.userReducer);
 
+  const dispatch = useDispatch();
+
+  const { connectionStatus, connectionType } = useSelector(
+    (state: RootState) => state.connectionReducer
+  );
+ 
+
   const [profileData, setProfileData] = useState<any>([]);
-  const [connection, setConnectionStatus] = useState<string>("");
-  const [connectionType, setConnectionType] = useState<string>("");
   const [isExclusive, setIsExclusive] = useState(false);
 
-  // Hooks for API mutations
   const [userByid, { isLoading, isSuccess, isError }] = useUserByidMutation();
-  const [cancel] = useCancelConnectionMutation();
-  const [remove] = useRemoveConnectionMutation();
-  const [accept] = useAcceptConnectionMutation();
-  const [create] = useCreateConnectionMutation();
+  const [cancel,{isLoading:isLoadingCancel}] = useCancelConnectionMutation();
+  const [remove, { isLoading: isLoadingRemove }] = useRemoveConnectionMutation();
+  const [accept, { isLoading: isLoadingAccept }] = useAcceptConnectionMutation();
+  const [create, { isLoading: isLoadingConnection }] = useCreateConnectionMutation();
   const [sendNotification] = useSendNotifcationMutation();
-  const [connectionStatus, { isLoading: isLoadingConnectionStatus }] =
+  const [getConnectionStatus, { isLoading: isLoadingConnectionStatus }] =
     useGetConnectionStatusMutation();
 
   useEffect(() => {
@@ -80,14 +85,6 @@ const Match: React.FC<MatchProps> = ({ userId }) => {
     return "";
   };
 
-  // const { notificationData } = useSelector((state: RootState) => state.userReducer) as {
-  //   notificationData: {
-  //     userId: string;
-  //     profileImage: string;
-  //     fcmToken: string;
-  //     name: string;
-  //   } | null;
-  // };
 
   interface NotificationData {
     userId: string;
@@ -117,15 +114,16 @@ const Match: React.FC<MatchProps> = ({ userId }) => {
 
   const getStatus = async (userId: string) => {
     try {
-      const response = await connectionStatus(userId);
+      const response = await getConnectionStatus(userId);
+      console.log(response.data.data);
       if (response.error) {
         const errorData = response.error as FetchBaseQueryError;
         toast.error((errorData.data as ApiResponse).message);
         return;
       }
-      if (response.data.success) {
-        setConnectionStatus(response.data.data.connection_status);
-        setConnectionType(response.data.data.connectionType);
+
+      if (response.data.success === true) {
+        dispatch(setConnectionStatus(response.data.data));
       }
     } catch (error) {
       console.error("Failed to fetch connection status:", error);
@@ -138,8 +136,8 @@ const Match: React.FC<MatchProps> = ({ userId }) => {
 
   const createConnection = async (userId: string) => {
     try {
-      // Send a connection request
       const response = await create(userId);
+
       if (response.error) {
         const errorData = response.error as FetchBaseQueryError;
         toast.error((errorData.data as ApiResponse).message);
@@ -151,46 +149,21 @@ const Match: React.FC<MatchProps> = ({ userId }) => {
         return;
       }
 
-
       await sendNotification({
-        fcmToken: profileData[0]?.fcmToken,
-        message: "Connection Request",
+        token: profileData[0]?.fcmToken,
+        title: "Connection Request",
+        body: "U have a new connection request",
         data: {
           type: "connection",
-          title: "Connection Request",
-          body:
-            "You have a new connection request from " + notificationData?.name,
           receiverId: String(userId),
           receiverFCM: String(profileData[0]?.fcmToken),
-          senderId: String(userId),
+          senderId: String(user?.userId),
           senderImage: String(notificationData?.profileImage),
           senderFCM: String(notificationData?.fcmToken),
           senderName: String(notificationData?.name),
         },
       });
 
-      const notificationsRef = ref(
-        database,
-        `users/${profileData[0]?.uid}/notifications`
-      );
-      const notificationId = new Date().getTime().toString();
-
-      // Add notification to the database
-      const notificationRef = child(notificationsRef, notificationId);
-      await set(notificationRef, {
-        id: notificationId,
-        title: "Connection Request",
-        body: "You have a new connection request from " + notificationData.name,
-        type: "connection",
-        senderId: String(userId),
-        senderImage: String(notificationData?.profileImage),
-        senderFCM: String(notificationData?.fcmToken),
-        receiverFCM: String(profileData[0]?.fcmToken),
-        senderName: String(notificationData?.name),
-        timestamp: new Date().toISOString(),
-      });
-
- 
       toast.success("Connection request sent successfully!");
       getStatus(userId);
     } catch (error) {
@@ -198,7 +171,6 @@ const Match: React.FC<MatchProps> = ({ userId }) => {
     }
   };
 
-  // Cancel connection
   const cancelConnection = async (userId: string) => {
     try {
       const recieverId = userId;
@@ -232,7 +204,7 @@ const Match: React.FC<MatchProps> = ({ userId }) => {
     }
   };
 
-  const acceptConnection = async (userId: string) => {
+const acceptConnection = async (userId: string) => {
     try {
       const senderId = userId;
       const response = await accept(senderId);
@@ -241,49 +213,7 @@ const Match: React.FC<MatchProps> = ({ userId }) => {
         toast.error((errorData.data as ApiResponse).message);
         return;
       }
-      const notificationId = new Date().getTime().toString();
-      const uid = localStorage.getItem("uid");
-      if (!uid) {
-        toast.error("User ID is missing. Please try again.");
-        return;
-      }
-      if (!notificationData || !profileData[0]?.fcmToken) {
-        toast.error("Incomplete notification data. Cannot send notification.");
-        return;
-      }
-      if (notificationData) {
-        await sendNotification({
-          token: user?.fcmToken,
-          body: "Now you can connect with ",
-          title: "Connection accepted",
-          data: {
-            type: "connection received",
-            senderId: String(profileData[0].userId),
-            senderUid:String(user?.uid),
-            receiverId: String(notificationData?.userId),
-            senderImage: String(notificationData?.profileImage),
-            senderName: String(notificationData?.name),
-          },
-        });
-
-        const notificationsRef = ref(
-          database,
-          `users/${uid}/notifications/${notificationId}`
-        );
-
-        await push(notificationsRef, {
-          id: notificationId,
-          title: "Connection Request",
-          type: "connection recieved",
-          body: `Now connected with`,
-          senderId: String(userId),
-          senderImage: String(notificationData?.profileImage),
-          senderFCM: String(notificationData?.fcmToken),
-          senderName: String(notificationData?.name),
-          timeStamp: new Date().toISOString(),
-        });
-      }
-
+      
       toast.success("Connection accepted successfully!");
     } catch (error) {
       toast.error("Failed to accept connection. Please try again later.");
@@ -351,19 +281,29 @@ const Match: React.FC<MatchProps> = ({ userId }) => {
             <div>
               {connectionType === "receiver" && (
                 <div className="flex items-center justify-center gap-2">
-                  {connection === "pending" && (
+                  {connectionStatus === "pending" && (
                     <>
                       <button
                         onClick={() => acceptConnection(userId)}
                         className="rounded-[0.5rem] bg-[#007EAF] px-4 py-2 text-white"
                       >
-                        Confirm request
+                        {
+                          isLoadingAccept ? (
+                            <FaSpinner className="animate-spin" />
+                          ): (
+
+                             "Confirm request"
+                            
+                          )
+
+                        }
+
                       </button>
                       <button
                         onClick={() => removeConnection(userId)}
                         className="rounded-full bg-red-600 px-4 py-2 text-white w-12"
                       >
-                        {isLoadingConnectionStatus ? (
+                        {isLoadingRemove ? (
                           <FaSpinner className="animate-spin" />
                         ) : (
                           <FaUserXmark />
@@ -376,16 +316,18 @@ const Match: React.FC<MatchProps> = ({ userId }) => {
 
               {connectionType === "sender" && (
                 <div className="flex items-center justify-center gap-2">
-                  {connection === "pending" && (
+                  {connectionStatus === "pending" && (
                     <>
                       <div className="rounded-[0.5rem] bg-gray-400 px-4 py-2 text-white">
-                        Request Sent
+                        
+                       Request Sent
+
                       </div>
                       <button
                         onClick={() => cancelConnection(userId)}
                         className="rounded-full bg-red-600 px-4 py-2 text-white w-12"
                       >
-                        {isLoadingConnectionStatus ? (
+                        {isLoadingCancel ? (
                           <FaSpinner className="animate-spin" />
                         ) : (
                           <FaUserXmark />
@@ -397,16 +339,22 @@ const Match: React.FC<MatchProps> = ({ userId }) => {
               )}
 
               {(connectionType === "receiver" || connectionType === "sender") &&
-                connection === "accepted" && (
+                connectionStatus === "accepted" && (
                   <div className="flex items-center justify-center gap-2">
                     <div className="rounded-[0.5rem] bg-gray-400 px-4 py-2 text-white">
+                    {
+                          isLoadingConnectionStatus && (
+                            <FaSpinner className="animate-spin" /> 
+                          )
+                          
+                        }
                       Connected
                     </div>
                     <button
                       onClick={() => removeConnection(userId)}
                       className="rounded-full bg-red-600 px-4 py-2 text-white w-12"
                     >
-                      {isLoadingConnectionStatus ? (
+                      {isLoadingRemove ? (
                         <FaSpinner className="animate-spin" />
                       ) : (
                         <FaUserXmark />
@@ -416,15 +364,15 @@ const Match: React.FC<MatchProps> = ({ userId }) => {
                 )}
 
               {connectionType === "none" &&
-                connection !== "pending" &&
-                connection !== "accepted" && (
+                connectionStatus !== "pending" &&
+                connectionStatus !== "accepted" && (
                   <button
                     onClick={() => createConnection(userId)}
                     className={`rounded-[0.5rem] ${
                       isExclusive ? "bg-[#60457E]" : "bg-[#007EAF]"
                     } px-4 py-2 text-white`}
                   >
-                    {isLoadingConnectionStatus ? (
+                    {isLoadingConnection  ? (
                       <FaSpinner className="animate-spin" />
                     ) : (
                       <div className="flex items-center gap-2">

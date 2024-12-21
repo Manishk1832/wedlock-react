@@ -21,6 +21,7 @@ import PersonalBagroundModal from "../user-dashboard-model/PersonalBagroundModal
 import EducationFinancialModal from "../user-dashboard-model/EducationFinancialModal";
 import LocationBackgroundModal from "../user-dashboard-model/LocationBackgroundModal";
 import { RootState } from "./../../Redux/store";
+
 import { useSelector } from "react-redux";
 
 // import InterestHobbiesModal from "../user-dashboard-model/InterestHobbiesModal";
@@ -36,9 +37,6 @@ const MyDetails = () => {
   const { data: myDetails ,isLoading:isLoading} = useMyDetailsQuery<any>();
  
 
-// type ProfilePercentage = {
-//   percentage: number;
-// };
 
 const [isExclusive, setIsExclusive] = useState(false);
 
@@ -54,17 +52,6 @@ const [isExclusive, setIsExclusive] = useState(false);
   const { data: profileData, isLoading: isprofileDataLoading ,refetch} = useGetProfilePercentageQuery();
   console.log(myDetails?.data?.[0], "myDetails");
 
-  // useEffect(() => {
-  //   if (myDetails?.data?.[0]) {
-  //     const notificationData = {
-  //       userId: myDetails.data[0].userId,
-  //       profileImage: myDetails.data[0].profileImage[0],
-  //       name: `${myDetails.data[0].basic_and_lifestye?.firstName} ${myDetails.data[0].basic_and_lifestye?.lastName}`,
-  //       fcmToken: myDetails.data[0].fcmToken,
-  //     };
-  //     dispatch(setNotificationData(notificationData));
-  //   }
-  // }, [myDetails, dispatch]);
 
 
   useEffect(() => {
@@ -75,7 +62,13 @@ const [isExclusive, setIsExclusive] = useState(false);
       fcmToken: myDetails?.data[0].fcmToken,
     };
 
-    localStorage.setItem("notificationData", JSON.stringify(notificationData));
+    if(myDetails?.data){
+
+      localStorage.setItem("notificationData", JSON.stringify(notificationData));
+
+
+    }
+
 
   }, [myDetails]);
   
@@ -88,9 +81,7 @@ const [isExclusive, setIsExclusive] = useState(false);
     useState(false);
   const [locationBackgroundModalOpen, setLocationBackgroundModalOpen] =
     useState(false);
-  // const [interestHobbiesModalOpen, setInterestHobbiesModalOpen] =
-  //   useState(false);
-  // const [lifestyleModelOpen, setLifestyleModelOpen] = useState(false);
+  
 
   const openReligiousModel = () => {
     setReligiousModelOpen(true);
@@ -339,7 +330,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                   />
 
                   <div>
-                    <Switch defaultChecked />
+                    <Switch defaultChecked disabled />
                   </div>
                 </div>
               </div>
@@ -402,7 +393,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                       onClose={closePersonalBagroundModal}
                     />
                     <div>
-                      <Switch defaultChecked />
+                      <Switch defaultChecked disabled />
                     </div>
                   </div>
                 </div>
@@ -528,7 +519,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                     />
 
                     <div>
-                      <Switch defaultChecked />
+                      <Switch defaultChecked disabled />
                     </div>
                   </div>
                 </div>
@@ -628,7 +619,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                     onClose={closeLocationBackgroundModal}
                   />
                   <div>
-                    <Switch defaultChecked />
+                    <Switch defaultChecked  disabled/>
                   </div>
                 </div>
               </div>
@@ -737,7 +728,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                     />
 
                     <div>
-                      <Switch defaultChecked />
+                      <Switch defaultChecked disabled />
                     </div>
                   </div>
                 </div>

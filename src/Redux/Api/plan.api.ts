@@ -1,27 +1,12 @@
 
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { RootState } from '../store';
+import { apiSlice } from './apiSlice';
 
 
-export const planApi = createApi({
-    reducerPath: 'planApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl:  `${import.meta.env.VITE_BASE_URL}/api/v1/plan/`,
-        credentials: 'include', 
-        prepareHeaders: (headers, { getState }) => {
-            const accessToken = (getState() as RootState).userReducer.accessToken;
-            if (accessToken) {
-              headers.set('Authorization', accessToken);
-            }
-            return headers;
-          },
-    }),
-    tagTypes: ['plan'],
-
+export const planApi = apiSlice.injectEndpoints({
+   
     endpoints: (builder) => ({
         getPlans: builder.query<void, void> ({
-            query: () => 'getAllPlans',
-            providesTags: ['plan'],
+            query: () => 'plan/getAllPlans',
         }),
     }),
 })

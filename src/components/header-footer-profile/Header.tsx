@@ -11,9 +11,6 @@ import {
 } from "../../Redux/Api/user.api";
 import { useGetUserImageQuery } from "../../Redux/Api/profile.api";
 import { IoNotifications } from "react-icons/io5";
-import { ref, onValue, update,get } from "firebase/database";
-import { database } from "../../../utils/firebaseConfig";
-
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
@@ -25,41 +22,18 @@ import { useSelector } from "react-redux";
 
 const Header = memo(() => {
   const {user } = useSelector((state: RootState) => state.userReducer) ;
+  const {notifacations } = useSelector((state: RootState) => state.notificationReducer) ;
 
   const [isExclusive, setIsExclusive] = useState(false);
-  const [notificationCount, setNotificationCount] = useState(0);
 
 
-  const notificationCountRef = ref(database, `users/${user?.uid}/notificationCount`);
 
-  useEffect(() => {
-    const unsubscribe = onValue(notificationCountRef, (snapshot) => {
-      const count = snapshot.exists() ? snapshot.val() : 0;
-      setNotificationCount(count);
-    });
-
-    return () => unsubscribe(); 
-  }, [notificationCountRef]);
 
 
   
 
-  const updateNotificationCount = async () => {
-    try {
-      const notificationCountRef = ref(
-        database,
-        `users/${user?.uid}/notificationCount`
-      );
-      const snapshot = await get(notificationCountRef);
-      const currentCount = snapshot.exists() ? snapshot.val() : 0;
+  
 
-      await update(ref(database, `users/${user?.uid}`), {
-        notificationCount: currentCount + 1,
-      });
-    } catch {
-      toast.error("Failed to update notification count.");
-    }
-  };
 
   
 
@@ -189,7 +163,7 @@ const Header = memo(() => {
 
             {/* Notification badge */}
             <span className="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-white text-xs">
-              {notificationCount} 
+              {notifacations?.length?? 0} 
             </span>
           </div>
 

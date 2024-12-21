@@ -1,26 +1,11 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { RootState } from '../store';
 
-export const formApi = createApi({
-    reducerPath: 'formApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl:  `${import.meta.env.VITE_BASE_URL}/api/v1/form/`,
-        credentials: 'include',   // send cookies with request
-        prepareHeaders: (headers, { getState }) => {
-          const accessToken = (getState() as RootState).userReducer.accessToken;
-          if (accessToken) {
-            headers.set('Authorization', accessToken);
-          }
-          return headers;
-        }
- }),
-    
-    tagTypes: ['form'],
+import { apiSlice } from './apiSlice';
 
+export const formApi = apiSlice.injectEndpoints({
     endpoints: (build) => ({
       personalDetials: build.mutation({
         query: (data) => ({
-          url: 'personalDetails',
+          url: 'form/personalDetails',
           method: 'POST',
           body: data
         }),
@@ -28,7 +13,7 @@ export const formApi = createApi({
       }),
       qualificationDetails: build.mutation({
         query: (data) => ({
-          url: 'qualificationDetails',
+          url: 'form/qualificationDetails',
           method: 'POST',
           body: data
         }),
@@ -37,7 +22,7 @@ export const formApi = createApi({
 
         locationDetails: build.mutation({
           query: (data) => ({
-            url: 'locationDetails',
+            url: 'form/locationDetails',
             method: 'POST',
             body: data
           }),
@@ -45,7 +30,7 @@ export const formApi = createApi({
 
         otherDetails: build.mutation({
           query: (data) => ({
-            url: 'otherDetails',
+            url: 'form/otherDetails',
             method: 'POST',
             body: data
           }),
@@ -53,7 +38,7 @@ export const formApi = createApi({
 
           profileImageUpload: build.mutation({
             query: (data) => ({
-              url: 'profileImageUpload',
+              url: 'form/profileImageUpload',
               method: 'POST',
               body: data
             }),

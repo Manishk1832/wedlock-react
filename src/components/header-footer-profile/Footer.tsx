@@ -14,13 +14,13 @@ const Footer = () => {
               <div className="w-full md:w-auto">
                 <ul className="text-md flex flex-wrap items-center justify-center gap-6 md:justify-start">
                  <li><Link to="/mission">Mission</Link></li>
-                 <li><Link to="#">Carrers</Link></li>
-                 <li><Link to="#">Success Stories</Link></li>
-                  <li><Link to="/contact/">Contact</Link></li>
-                  <li><Link to="#">Safe Matrimonial Tips</Link></li>
-                  <li><Link to="/faqs/">FAQs</Link></li>
-                  <li><Link to="/privacy-policy/">Privacy</Link></li>
-                  <li><Link to="/cookies-policy/">Cookies Policy</Link></li>
+                 <li><Link to="/advice">Advice</Link></li>
+                 <li><Link to="/help">Help</Link></li>
+                  <li><Link to="/contact-us">Contact</Link></li>
+                  <li><Link to="/services">Services</Link></li>
+                  <li><Link to="/faqs">FAQs</Link></li>
+                  <li><Link to="/privacy-policy">Privacy</Link></li>
+                  <li><Link to="/cookies-policy">Cookies Policy</Link></li>
                 </ul>
               </div>
 
@@ -47,11 +47,12 @@ const Footer = () => {
                     fontFamily: "Proxima-Nova-ExtraBold-Italic, sans-serif",
                   }}
                 >
-                  Married at First Sight
-                </h4>
+              Connecting Hearts Worldwide
+            </h4>
                 <p className="text-sm">
-                This website is strictly for matrimonial purposes only and not a dating website.                
-                </p>
+                This website is strictly for matrimonial purposes only and not a dating website.
+
+</p>
               </div>
               <div className="text-center md:text-right">
                 <span className="text-sm">© 2024. Wedlock Global Service(Australia) Pty Ltd.   All rights reserved</span>
