@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import Welcome from "./Welcome";
 
 import Question1 from "./Question1";
 import Question2 from "./Question2";
@@ -19,6 +20,7 @@ import Question11 from "./Question11";
 
 const Multistep = () => {
   const [isExclusive, setExclusive] = useState(false);
+  const [isWelcome, setWelcome] = useState(true);
   
    const navigate = useNavigate();
 
@@ -161,6 +163,10 @@ const Multistep = () => {
   
 
   const handleNext = () => {
+
+
+    
+
     if (page === 0) {
       const has1AnsweredAll = selectedOptions.some(
         (sel) => sel.questionId === 1
@@ -298,6 +304,11 @@ const Multistep = () => {
       navigate("/register");
     }
   };
+
+  const handleWelcomeContinue = () => {
+    setWelcome(false);
+    setPage(0);
+  };
   
 
 
@@ -330,6 +341,9 @@ const Multistep = () => {
         />
         </Link>
       </div>
+      {
+        isWelcome ? <Welcome handleNext={handleWelcomeContinue}/> :
+      <div>
 
       <div className="mt-10 w-full text-center xl:w-[40vw]">
         <h2 className="text-2xl" style={{ fontFamily: "Proxima-Nova-Bold, sans-serif" }}>
@@ -363,6 +377,8 @@ const Multistep = () => {
           </div>
         </div>
       </div>
+      </div>
+      }
     </div>
   );
 };

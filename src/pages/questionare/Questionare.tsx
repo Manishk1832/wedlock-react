@@ -1,4 +1,4 @@
-import Multistep from "../../components/MultistepForm/Multistep";
+import Multistep from "../../components/MultistepForm/Multistep"
 
 
 const Questionare = () => {
