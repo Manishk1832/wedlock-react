@@ -1,6 +1,6 @@
 import "../../font.css";
 import { useForm } from "react-hook-form";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useOtherDetailsMutation } from "../..//Redux/Api/form.api";
@@ -8,8 +8,10 @@ import { useOtherDetailsMutation } from "../..//Redux/Api/form.api";
 // import { setUser } from "../../Redux/Reducers/user.reducer";
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { useNavigate } from "react-router-dom";
-import {toast} from 'sonner'
+import { toast } from 'sonner'
 import { LoadingOutlined } from '@ant-design/icons';
+import { useGetReligionQuery, useGetCommunityQuery ,useGetCasteQuery} from "../../Redux/Api/dropdown.api";
+
 
 
 // caste, community, dateOfBirth, timeOfBirth, religion, placeOfBirth
@@ -26,43 +28,52 @@ const otherDetailsSchema = z.object({
 const OtherDetails = () => {
 
   const [isExclusive, setExclusive] = useState(false);
+  // const [selectedReligion, setSelectedReligion] = useState("");
+  // const [availableCastes, setAvailableCastes] = useState<{ id: string; name: string }[]>([]);
 
-  useEffect(()=>{
+  const [religion ,setSelectedReligionData] = useState<{ id: string; value: string }[]>([]);
+  const [community ,setSelectedCommunityData] = useState<{ id: string; value: string }[]>([]);
+  const [caste ,setSelectedCasteData] = useState<{ id: string; value: string }[]>([]);
+
+
+  const { data: religiondata } = useGetReligionQuery();
+  const { data: communitydata} = useGetCommunityQuery();
+  const { data: castedata } = useGetCasteQuery();
+
+
+
+
+  useEffect(() => {
     const isExclusive = localStorage.getItem("isExclusive");
-    if(isExclusive){
+    if (isExclusive) {
       setExclusive(true)
     }
-  },[])
+  }, [])
+
+
+  useEffect(() => {
+    if (religiondata ) {
+      setSelectedReligionData((religiondata as any).data);
+    }
+
+    if (communitydata) {
+      setSelectedCommunityData((communitydata as any).data);
+    }
+
+    if(castedata){
+      setSelectedCasteData((castedata as any).data);
+    }
+
+
+
+  }, [religiondata, communitydata, castedata]);
 
 
 
 
-  const casteOptions = [
-    {
-      Varna: "Brahmins",
-      Jatis: ["Saraswat", "Gaur", "Iyer", "Iyengar"],
-    },
-    {
-      Varna: "Kshatriyas",
-      Jatis: ["Rajput", "Maratha", "Nair"],
-    },
-    {
-      Varna: "Vaishyas",
-      Jatis: ["Agrawal", "Khandelwal", "Reddy"],
-    },
-    {
-      Varna: "Shudras",
-      Jatis: ["Yadav", "Jat", "Kurmi", "Teli"],
-    },
-    {
-      Group: "Dalits",
-      Jatis: ["Chamar", "Mahar", "Matang"],
-    },
-    {
-      Group: "Adivasis",
-      Tribes: ["Gond", "Santhal", "Bhil"],
-    },
-  ];
+
+
+
 
   const [otherDetails, { isLoading }] = useOtherDetailsMutation();
   const navigate = useNavigate();
@@ -89,39 +100,40 @@ const OtherDetails = () => {
     data: ApiResponse;
   };
 
-  const onSubmit =  async(data:any) => {
-    try{
+
+  const onSubmit = async (data: any) => {
+    try {
 
       const res = await otherDetails(data);
-      
+
       if ('error' in res && res.error) {
         const errorData = res.error as FetchBaseQueryErrorWithData;
-  
+
         if (errorData.data?.success === false) {
           console.log(errorData.data.message);
-          toast.error(errorData.data.message); 
+          toast.error(errorData.data.message);
           return;
         }
-      }else{
-        // const  isOtherDetailsFormFilled = true
-      
-      const successData = res.data as ApiResponse;
-      toast.success(successData.message);
-      // dispatch(setUser(isOtherDetailsFormFilled));
-      navigate('/success');
-    }
-      
-    } catch(error){
+      } else {
+
+        const successData = res.data as ApiResponse;
+        toast.success(successData.message);
+        navigate('/success');
+      }
+
+    } catch (error) {
       console.log(error);
-       toast.error("An unexpected error occurred");
-      
+      toast.error("An unexpected error occurred");
+
     }
     console.log(data);
   };
 
+
+
   return (
 
-    <div className={`flex min-h-screen flex-col items-center justify-center ${isExclusive? 'bg-[#60457E]': 'bg-[#007EAF]'} px-5 md:px-20 lg:px-40 3xl:px-60`}>
+    <div className={`flex min-h-screen flex-col items-center justify-center ${isExclusive ? 'bg-[#60457E]' : 'bg-[#007EAF]'} px-5 md:px-20 lg:px-40 3xl:px-60`}>
       <img
         src="/logowhite.png"
         alt="Wedlock Logo"
@@ -136,32 +148,33 @@ const OtherDetails = () => {
             Other Details
           </h1>
           <p className="text-sm leading-6 xl:text-xl">
-          Including additional details enriches your profile, making it easier to find meaningful and compatible connections.         
-           </p>
+            Including additional details enriches your profile, making it easier to find meaningful and compatible connections.
+          </p>
         </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="md:px-30 mt-5 grid grid-cols-1 md:grid-cols-2 md:gap-2 md:px-20 xl:px-40 2xl:px-60 3xl:mt-20 3xl:px-60"
         >
           <div>
-            <label className="block text-white">Caste</label>
+            <label className="block text-white">Religion</label>
             <div className="mb-4">
               <select
-                {...register("caste")}
+                {...register("religion")}
                 className="h-10 w-full rounded border bg-[#F9F5FFE5] p-2 text-[#838E9E]"
+              
+           
               >
-                <option value="" disabled selected>
-                  Caste
-                </option>
-                {casteOptions.map((caste, i) => (
-                  <option key={i} value={caste.Varna}>
-                    {caste.Varna}
+               {
+                religion.map((religion) => (
+                  <option value={religion.value} key={religion.id} >
+                    {religion.value}
                   </option>
-                ))}
+                ))
+               }
               </select>
-              {errors.caste && (
+              {errors.religion && (
                 <span className="text-orange-200">
-                  {errors.caste.message?.toString()}
+                  {errors.religion.message?.toString()}
                 </span>
               )}
             </div>
@@ -175,15 +188,13 @@ const OtherDetails = () => {
                 className="h-10 w-full rounded border bg-[#F9F5FFE5] p-2 text-[#838E9E]"
               >
                 <option value="" disabled selected>
-                  Community
+                  select community
                 </option>
-                {casteOptions.flatMap((community) =>
-                  community.Jatis?.map((jati) => (
-                    <option value={jati} key={jati}>
-                      {jati}
-                    </option>
-                  ))
-                )}
+                {community.map((community) => (
+                  <option value={community.value} key={community.id}>
+                    {community.value}
+                  </option>
+                ))}
               </select>
               {errors.community && (
                 <span className="text-orange-200">
@@ -197,7 +208,7 @@ const OtherDetails = () => {
             <label className="block text-white">Date of Birth</label>
             <div className="mb-4">
               <input
-                type="text"
+                type="date"
                 {...register("dateOfBirth")}
                 placeholder="Date"
                 className="h-10 w-full rounded border bg-[#F9F5FFE5] p-2 text-[#838E9E]"
@@ -214,7 +225,7 @@ const OtherDetails = () => {
             <label className="block text-white">Time of Birth</label>
             <div className="mb-4">
               <input
-                type="text"
+                type="time"
                 {...register("timeOfBirth")}
                 placeholder="Time"
                 className="h-10 w-full rounded border bg-[#F9F5FFE5] p-2 text-[#838E9E]"
@@ -227,27 +238,33 @@ const OtherDetails = () => {
             </div>
           </div>
 
+
+
           <div>
-            <label className="block text-white">Religion</label>
+            <label className="block text-white">Caste</label>
             <div className="mb-4">
               <select
-                {...register("religion")}
+                {...register("caste")}
                 className="h-10 w-full rounded border bg-[#F9F5FFE5] p-2 text-[#838E9E]"
               >
-                <option value="" disabled selected>
-                  Religion
+                <option value="" disabled>
+                  Caste
                 </option>
-                <option value="Hindu">Hindu</option>
-                <option value="Muslim">Muslim</option>
-                <option value="Christian">Christian</option>
+                {caste.map((caste) => (
+                  <option value={caste.value} key={caste.id}>
+                    {caste.value}
+                  </option>
+                ))}
               </select>
-              {errors.religion && (
+              {errors.caste && (
                 <span className="text-orange-200">
-                  {errors.religion.message?.toString()}
+                  {errors.caste.message?.toString()}
                 </span>
               )}
             </div>
           </div>
+
+
 
           <div>
             <label className="block text-white">Place of Birth</label>
@@ -265,16 +282,16 @@ const OtherDetails = () => {
               )}
             </div>
           </div>
-          
+
           {/* Submit Button */}
           <div className="md:col-span-2 flex justify-end">
             <button
               type="submit"
-              className={`w-full rounded-[0.5rem] bg-[#F9F5FFE5] px-4 py-2 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'}
+              className={`w-full rounded-[0.5rem] bg-[#F9F5FFE5] px-4 py-2 ${isExclusive ? 'text-[#60457E]' : 'text-[#007EAF]'}
               md:w-20 2xl:w-32`}
-                         >
-                {isLoading ? <LoadingOutlined className={`${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} animate-spin`} /> : 'Save'}
-                </button>
+            >
+              {isLoading ? <LoadingOutlined className={`${isExclusive ? 'text-[#60457E]' : 'text-[#007EAF]'} animate-spin`} /> : 'Save'}
+            </button>
           </div>
         </form>
       </div>

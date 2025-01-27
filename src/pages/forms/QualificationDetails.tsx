@@ -3,13 +3,12 @@ import { z } from "zod";
 import { useEffect,useState } from "react";
 import {useQualificationDetailsMutation} from "../../Redux/Api/form.api";
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
-// import { useDispatch } from "react-redux";
-// import{ setUser } from "../../Redux/Reducers/user.reducer";
 import { useNavigate } from "react-router-dom";
 import {LoadingOutlined} from '@ant-design/icons';
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from 'sonner'
+import { useGetQualificationQuery,useGetOccupationQuery,useGetIncomeQuery } from "../../Redux/Api/dropdown.api";
 
 
 // Define the Zod schema for form validation
@@ -24,6 +23,14 @@ type QualificationDetailsFormData = z.infer<typeof qualificationDetailsSchema>;
 
 const QualificationDetails = () => {
   const [isExclusive, setExclusive] = useState(false);
+  const [qualifications, setQualifications] = useState<{ id: string; value: string }[]>([]);
+  const [occupations, setOccupations] = useState<{ id: string; value: string }[]>([]);
+  const [incomes, setIncomes] = useState<{ id: string; value: string }[]>([]);
+
+
+  const { data: qualificationData ,isLoading: isQualificationLoading} = useGetQualificationQuery();
+  const { data: occupationData ,isLoading: isOccupationLoading} = useGetOccupationQuery();
+  const { data: incomeData ,isLoading: isIncomeLoading} = useGetIncomeQuery();
 
   useEffect(()=>{
     const isExclusive = localStorage.getItem("isExclusive");
@@ -42,6 +49,15 @@ const QualificationDetails = () => {
   } = useForm<QualificationDetailsFormData>({
     resolver: zodResolver(qualificationDetailsSchema),
   });
+
+
+  useEffect(() => {
+   if(qualificationData && occupationData && incomeData){
+    setQualifications((qualificationData as any).data);
+    setOccupations((occupationData as any).data);
+    setIncomes((incomeData as any).data);
+   }
+  }, [qualificationData, occupationData, incomeData]);
 
     
   type ApiResponse = {
@@ -113,23 +129,17 @@ const QualificationDetails = () => {
                 {...register("qualification")}
                 className="w-full rounded-[0.5rem] border bg-[#F9F5FFE5] p-2 text-[#838E9E]"
               >
+                
                 <option value="" disabled selected>
                   Select your highest qualification
                 </option>
-                <option value="high-school">
-                  High School Diploma or equivalent
-                </option>
-                <option value="associate">Associate&apos;s Degree</option>
-                <option value="bachelor">Bachelor&apos;s Degree</option>
-                <option value="master">Master&apos;s Degree</option>
-                <option value="doctorate">Doctorate (Ph.D.)</option>
-                <option value="professional">
-                  Professional Degree (e.g., JD, MD)
-                </option>
-                <option value="vocational">
-                  Vocational Training or Certification
-                </option>
-                <option value="some-college">Some College, No Degree</option>
+                {isQualificationLoading && <p>Loading...</p>}
+                
+                {qualifications.map((qualification) => (
+                  <option key={qualification.id} value={qualification.value}>
+                    {qualification.value}
+                  </option>
+                ))}
               </select>
               {errors.qualification && (
                 <p className="text-orange-200 text-sm mt-1">
@@ -170,9 +180,12 @@ const QualificationDetails = () => {
               <option value="" disabled selected>
                 Select your occupation
               </option>
-              <option value="student">Student</option>
-              <option value="unemployed">Unemployed</option>
-              <option value="employed">Employed</option>
+              {isOccupationLoading && <p>Loading...</p>}
+              {occupations.map((occupation) => (
+                <option key={occupation.id} value={occupation.value}>
+                  {occupation.value}
+                </option>
+              ))}
             </select>
             {errors.occupation && (
               <p className="text-orange-200 text-sm mt-1">
@@ -190,18 +203,12 @@ const QualificationDetails = () => {
               <option value="" disabled selected >
                 Select your income
               </option>
-              <option value="Less than 5,000">Less than $5,000</option>
-              <option value="5,000 -  10,000">$5,000 - $10,000</option>
-              <option value="10,000 - 15,000">$10,000 - $15,000</option>
-              <option value="15,000 - 20,000">$15,000 - $20,000</option>
-              <option value="20,000 - 25,000">$20,000 - $25,000</option>
-              <option value="25,000 - 30,000">$25,000 - $30,000</option>
-              <option value="30,000 - 35,000">$30,000 - $35,000</option>
-              <option value="35,000 - 40,000">$35,000 - $40,000</option>
-              <option value="40,000 - 45,000">$40,000 - $45,000</option>
-              <option value="45,000 - 50,000">$45,000 - $50,000</option>
-              <option value="50,000 - 55,000">$50,000 - $55,000</option>
-              <option value="55,000 - 60,000">$55,000 - $60,000</option>
+              {isIncomeLoading && <p>Loading...</p>}
+              {incomes.map((income) => (
+                <option key={income.id} value={income.value}>
+                  {income.value}
+                </option>
+              ))}
             </select>
             {errors.income && (
               <p className="text-orange-200 text-sm mt-1">

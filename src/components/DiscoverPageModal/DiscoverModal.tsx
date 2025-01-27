@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   Form,
@@ -14,6 +14,17 @@ import { TbUsersPlus } from "react-icons/tb";
 import "../../font.css";
 import { RootState } from "./../../Redux/store";
 import { useSelector } from "react-redux";
+
+
+import {
+  useGetCommunityQuery, useGetDietQuery, useGetEthnicsQuery, useGetHeightQuery, useGetIncomeQuery,
+  useGetOccupationQuery, useGetQualificationQuery, useGetReligionQuery, useGetSmokingHabbitQuery,
+  useGetMaritalStatusQuery
+} from "../../Redux/Api/dropdown.api";
+import Loading from "../Loading";
+
+
+
 
 
 const useStyle = createStyles(({ token }) => ({
@@ -52,7 +63,35 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
   const { styles } = useStyle();
   const [checkedValues, setCheckedValues] = useState<any[]>([]);
   const [selectedRadio, setSelectedRadio] = useState(null);
-  const {user } = useSelector((state: RootState) => state.userReducer) ;
+  const { user } = useSelector((state: RootState) => state.userReducer);
+
+  const { data: communityData, isLoading: isCommunityLoading } = useGetCommunityQuery();
+  const { data: dietData, isLoading: isDietLoading } = useGetDietQuery();
+  const { data: ethnicityData, isLoading: isEthnicityLoading } = useGetEthnicsQuery();
+  const { data: heightData, isLoading: isHeightLoading } = useGetHeightQuery();
+  const { data: incomeData, isLoading: isIncomeLoading } = useGetIncomeQuery();
+  const { data: religionData, isLoading: isReligionLoading } = useGetReligionQuery();
+  const { data: smokingHabbitData, isLoading: isSmokingHabbitLoading } = useGetSmokingHabbitQuery();
+  const { data: occupationData, isLoading: isOccupationLoading } = useGetOccupationQuery();
+  const { data: qualificationData, isLoading: isQualificationLoading } = useGetQualificationQuery();
+  const {data: maritalStatusData , isLoading:isMaritalStatusLoading} = useGetMaritalStatusQuery();
+
+
+
+
+
+
+  const [communities, setcommunities] = useState<{ id: string; value: string }[]>([]);
+  const [diet, setDiet] = useState<{ id: string; value: string }[]>([]);
+  const [ethnicity, setEthnicity] = useState<{ id: string; value: string }[]>([]);
+  const [height, setHeight] = useState<{ id: string; value: string }[]>([]);
+  const [income, setIncome] = useState<{ id: string; value: string }[]>([]);
+  const [maritalStatus, setMaritalStatus] = useState<{ id: string; value: string }[]>([]);
+  const [religion, setReligion] = useState<{ id: string; value: string }[]>([]);
+  const [smokingHabits, setSmokingHabits] = useState<{ id: string; value: string }[]>([]);
+  const [qualification, setQualification] = useState<{ id: string; value: string }[]>([]);
+  const [occupation, setOccupation] = useState<{ id: string; value: string }[]>([]);
+
 
 
   const [isExclusive, setIsExclusive] = useState(false);
@@ -65,7 +104,56 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
     [];
   });
 
-  
+
+
+  useEffect(() => {
+
+    if (communityData) {
+      setcommunities((communityData as any).data);
+
+    }
+
+    if (dietData) {
+      setDiet((dietData as any).data);
+    }
+
+    if (ethnicityData) {
+      setEthnicity((ethnicityData as any).data)
+    }
+
+    if (heightData) {
+      setHeight((heightData as any).data)
+    }
+
+    if (incomeData) {
+      setIncome((incomeData as any).data)
+    }
+
+    if (religionData) {
+      setReligion((religionData as any).data)
+    }
+
+    if (smokingHabbitData) {
+      setSmokingHabits((smokingHabbitData as any).data)
+    }
+
+    if (occupationData) {
+      setOccupation((occupationData as any).data)
+    }
+
+    if (qualificationData) {
+      setQualification((qualificationData as any).data)
+    }
+
+    if(maritalStatusData){
+      setMaritalStatus((maritalStatusData as any).data)
+    }
+
+
+
+  }, [communityData, dietData, ethnicityData, heightData, incomeData, religionData, smokingHabbitData, occupationData, qualificationData,maritalStatusData])
+
+
 
   const handleCheckboxChange = (checkedValues: any[]) => {
     setCheckedValues(checkedValues);
@@ -73,7 +161,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
 
   const handleRadioChange = (e: any) => {
     setSelectedRadio(e.target.value);
-  };
+  }; 
 
 
   const classNames = {
@@ -84,7 +172,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
     title: styles["my-modal-title"],
   };
 
-  
+
 
   const [form] = Form.useForm();
 
@@ -92,23 +180,23 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
 
   const handleFormSubmit = async (values: any) => {
 
-  const data = {
-    ageRange: `${values.ageMin} - ${values.ageMax}`,
-    heightRange: `${values.heightMin} - ${values.heightMax}`,
-    income: values.income,
-    religion: values.religion,
-    ethnicity: values.ethnicity,
-    highestQualification: values.highestQualification,
-    smokingHabbit: values.smokingHabits,
-    workingWith: values.workingWith,
-    maritalStatus: values.maritalStatus,
-    eatingHabbits: values.eatingHabits,
-    community: values.community,
-  };
-  
-   onFormSubmit(data);
-   onClose();
-  
+    const data = {
+      ageRange: `${values.ageMin} - ${values.ageMax}`,
+      heightRange: `${values.heightMin} - ${values.heightMax}`,
+      income: values.income,
+      religion: values.religion,
+      ethnicity: values.ethnicity,
+      highestQualification: values.highestQualification,
+      smokingHabbit: values.smokingHabits,
+      workingWith: values.workingWith,
+      maritalStatus: values.maritalStatus,
+      eatingHabbits: values.eatingHabits,
+      community: values.community,
+    };
+
+    onFormSubmit(data);
+    onClose();
+
   };
 
 
@@ -151,9 +239,9 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
           >
             Cancel
           </Button>
-          <Button onClick={() => form.submit()} className={`w-44 ${isExclusive? 'bg-[#60457E]': 'bg-[#007EAF]'} text-white`}>
-          Find Members
-         </Button>
+          <Button onClick={() => form.submit()} className={`w-44 ${isExclusive ? 'bg-[#60457E]' : 'bg-[#007EAF]'} text-white`}>
+            Find Members
+          </Button>
         </div>
       }
     >
@@ -168,6 +256,14 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
           The following users have access to this project:
         </p>
       </div>
+
+      {
+         (isCommunityLoading  && isDietLoading && isEthnicityLoading && isHeightLoading && isMaritalStatusLoading  && isOccupationLoading && isOccupationLoading && isReligionLoading && isSmokingHabbitLoading && isIncomeLoading && isOccupationLoading && isQualificationLoading) ? (
+          <Loading/>
+        ) : 
+
+
+     
 
       <Form form={form} onFinish={handleFormSubmit} layout="vertical">
         <Form.Item
@@ -187,20 +283,33 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
           <Row gutter={2}>
             <Col span={12}>
               <Form.Item name="ageMin">
-                <Select defaultValue="18">
-                  <Select.Option value="18">18</Select.Option>
-                  <Select.Option value="19">19</Select.Option>
-                  <Select.Option value="20">20</Select.Option>
+                <Select placeholder="Select minimum age" className="w-full">
+                  {
+                    Array.from({ length: 67 }, (_, index) => index + 18).map(
+                      (number) => (
+                        <Select.Option key={number} value={number.toString()}>
+                          {number}
+                        </Select.Option>
+                      )
+                    )
+
+                  }
                 </Select>
               </Form.Item>
             </Col>
 
             <Col span={12}>
               <Form.Item name="ageMax">
-                <Select defaultValue="18" className="w-full">
-                  <Select.Option value="18">18</Select.Option>
-                  <Select.Option value="19">19</Select.Option>
-                  <Select.Option value="20">20</Select.Option>
+                <Select placeholder="Select maximum age" className="w-full">
+                  {
+                    Array.from({ length: 67 }, (_, index) => index + 18).map(
+                      (number) => (
+                        <Select.Option key={number} value={number.toString()}>
+                          {number}
+                        </Select.Option>
+                      )
+                    )
+                  }
                 </Select>
               </Form.Item>
             </Col>
@@ -224,19 +333,29 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
           <Row gutter={2} className="w-full">
             <Col span={12}>
               <Form.Item name="heightMin">
-                <Select defaultValue="18" className="w-full">
-                  <Select.Option value="18">18</Select.Option>
-                  <Select.Option value="19">19</Select.Option>
-                  <Select.Option value="20">20</Select.Option>
+                <Select placeholder="Select minimum height" className="w-full">
+                  {
+                    height.map((value) => (
+                      <Select.Option key={value.id} value={value.value}>
+                        {value.value}
+                      </Select.Option>
+                    ))
+
+                  }
                 </Select>
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item name="heightMax">
-                <Select defaultValue="18" className="w-full">
-                  <Select.Option value="18">18</Select.Option>
-                  <Select.Option value="19">19</Select.Option>
-                  <Select.Option value="20">20</Select.Option>
+                <Select placeholder="Select maximum height" className="w-full">
+                  {
+                    height.map((value) => (
+                      <Select.Option key={value.id} value={value.value}>
+                        {value.value}
+                      </Select.Option>
+                    ))
+
+                  }
                 </Select>
               </Form.Item>
             </Col>
@@ -244,7 +363,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
         </Form.Item>
 
         <Form.Item
-        name={"income"}
+          name={"income"}
           label={
             <label
               style={{
@@ -257,11 +376,14 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
             </label>
           }
         >
-          <Select>
-            <Select.Option value="any">Any</Select.Option>
-            <Select.Option value="low">Low</Select.Option>
-            <Select.Option value="medium">Medium</Select.Option>
-            <Select.Option value="high">High</Select.Option>
+          <Select placeholder="Select  income">
+            {
+              income.map((value) => (
+                <Select.Option key={value.id} value={value.value}>
+                  {value.value}
+                </Select.Option>
+              ))
+            }
           </Select>
         </Form.Item>
 
@@ -284,45 +406,31 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
             <Radio
               value="no"
               style={{ flexDirection: "row-reverse", alignItems: "center" }}
-              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                selectedRadio === "no"
-                  ? "border border-[#007EAF] text-[#53389E]"
-                  : ""
-              }`}
+              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${selectedRadio === "no"
+                ? "border border-[#007EAF] text-[#53389E]"
+                : ""
+                }`}
             >
               I don&apos;t mind
             </Radio>
             <Radio
               value="yes"
               style={{ flexDirection: "row-reverse", alignItems: "center" }}
-              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                selectedRadio === "yes"
-                  ? "border border-[#007EAF] text-[#53389E]"
-                  : ""
-              }`}
+              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${selectedRadio === "yes"
+                ? "border border-[#007EAF] text-[#53389E]"
+                : ""
+                }`}
             >
               No, matches shouldn&apos;t have children
             </Radio>
-            <Radio
-              value="dontMind"
-              style={{ flexDirection: "row-reverse", alignItems: "center" }}
-              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                selectedRadio === "dontMind"
-                  ? "border border-[#007EAF] text-[#53389E]"
-                  : ""
-              }`}
-            >
-              I don&apos;t mind as long as the children don&apos;t live in the
-              household
-            </Radio>
+
             <Radio
               value="notInHousehold"
               style={{ flexDirection: "row-reverse", alignItems: "center" }}
-              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                selectedRadio === "notInHousehold"
-                  ? "border border-[#007EAF] text-[#53389E]"
-                  : ""
-              }`}
+              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${selectedRadio === "notInHousehold"
+                ? "border border-[#007EAF] text-[#53389E]"
+                : ""
+                }`}
             >
               Yes, matches should have children
             </Radio>
@@ -348,81 +456,31 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
             className="space-x-2 space-y-2"
             onChange={handleCheckboxChange}
           >
-            <Checkbox
-              value="all"
-              style={{ flexDirection: "row-reverse", alignItems: "center" }}
-              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                checkedValues.includes("all")
-                  ? "border border-[#007EAF] text-[#53389E]"
-                  : ""
-              }`}
-            >
-              All
-            </Checkbox>
 
-            <Checkbox
-              value="hinduism"
-              style={{ flexDirection: "row-reverse", alignItems: "center" }}
-              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                checkedValues.includes("hinduism")
-                  ? "border border-[#007EAF] text-[#53389E]"
-                  : ""
-              }`}
-            >
-              Hinduism(1637)
-            </Checkbox>
+            {
+              [
+                { name: "All", value: "all" },
+                ...religion
+              ].map((rel) => (
+                <Checkbox
+                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
+                  value={rel.value}
+                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${checkedValues.includes(rel.value)
+                    ? "border border-[#007EAF] text-[#53389E]"
+                    : ""
+                    }`}
+                >
+                  {rel.value}
+                </Checkbox>
+              ))
+            }
 
-            <Checkbox
-              style={{ flexDirection: "row-reverse", alignItems: "center" }}
-              value={"islamic"}
-              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                checkedValues.includes("islamic")
-                  ? "border border-[#007EAF] text-[#53389E]"
-                  : ""
-              }`}
-            >
-              Islamic(441)
-            </Checkbox>
-
-            <Checkbox
-              style={{ flexDirection: "row-reverse", alignItems: "center" }}
-              value={"buddhism"}
-              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                checkedValues.includes("buddhism")
-                  ? "border border-[#007EAF] text-[#53389E]"
-                  : ""
-              }`}
-            >
-              Buddhism(412)
-            </Checkbox>
-            <Checkbox
-              style={{ flexDirection: "row-reverse", alignItems: "center" }}
-              value={"Christianity"}
-              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                checkedValues.includes("Christianity")
-                  ? "border border-[#007EAF] text-[#53389E]"
-                  : ""
-              }`}
-            >
-              Christianity(397)
-            </Checkbox>
-            <Checkbox
-              style={{ flexDirection: "row-reverse", alignItems: "center" }}
-              value={"judaism"}
-              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                checkedValues.includes("judaism")
-                  ? "border border-[#007EAF] text-[#53389E]"
-                  : ""
-              }`}
-            >
-              Judaism(57)
-            </Checkbox>
           </Checkbox.Group>
         </Form.Item>
-        <Row gutter={14}>
-          <Col span={12}>
+        <Row >
+          <Col >
             <Form.Item
-            name={"ethnicity"}
+              name={"ethnicity"}
               label={
                 <label
                   style={{
@@ -440,68 +498,35 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
                 className="gap-4"
                 onChange={handleCheckboxChange}
               >
-                <Checkbox
-                  value={"all-ethnic"}
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("all-ethnic")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  All
-                </Checkbox>
-                <Checkbox
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  value={"indian"}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("indian")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  Indian
-                </Checkbox>
-                <Checkbox
-                  value={"american"}
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("american")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  American
-                </Checkbox>
-                <Checkbox
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  value={"afrikaners"}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("afrikaners")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  Afrikaners
-                </Checkbox>
 
-                <Checkbox
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  value={"japanese"}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("japanese")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  Japanese
-                </Checkbox>
+                {
+                  [
+
+                    { value: "All" },
+                    ...ethnicity
+
+                  ].map((eth) => (
+                    <Checkbox
+                      style={{ flexDirection: "row-reverse", alignItems: "center" }}
+                      value={eth.value}
+                      className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${checkedValues.includes(eth.value)
+                        ? "border border-[#007EAF] text-[#53389E]"
+                        : ""
+                        }`}
+                    >
+                      {eth.value}
+                    </Checkbox>
+                  ))
+                }
+
+
+
               </Checkbox.Group>
             </Form.Item>
           </Col>
-          <Col span={12}>
+          <Col >
             <Form.Item
-            name={"highestQualification"}
+              name={"highestQualification"}
               label={
                 <label
                   style={{
@@ -519,62 +544,33 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
                 className="gap-4"
                 onChange={handleCheckboxChange}
               >
-                <Checkbox
-                  value={"all-qualification"}
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("all-qualification")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  All
-                </Checkbox>
-                <Checkbox
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  value={"bachelor"}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("bachelor")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  Bachelor&apos;s
-                </Checkbox>
-                <Checkbox
-                  value={"master"}
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("master")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  Master&apos;s
-                </Checkbox>
-                <Checkbox
-                  value={"10th"}
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("10th")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  10th
-                </Checkbox>
 
-                <Checkbox
-                  value={"12th"}
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("12th")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  12th
-                </Checkbox>
+
+                {
+                  [
+                    { value : "All" },
+                    ...qualification.filter(value => !value.value.startsWith("--"))
+
+                  ]
+                    .map((qual) => (
+
+                      <Checkbox
+                        style={{ flexDirection: "row-reverse", alignItems: "center" }}
+                        value={qual.value}
+                        className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${checkedValues.includes(qual.value)
+                          ? "border border-[#007EAF] text-[#53389E]"
+                          : ""
+                          }`}
+                      >
+                        {qual.value}
+                      </Checkbox>
+
+
+                    ))
+
+                }
+
+
               </Checkbox.Group>
             </Form.Item>
           </Col>
@@ -596,136 +592,86 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
           className="h-auto rounded bg-[#EAF2FF] p-4"
         >
           <Radio.Group className="space-y-2" onChange={handleRadioChange}>
-            <Radio
-              value="nonSmoker"
-              style={{ flexDirection: "row-reverse", alignItems: "center" }}
-              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                selectedRadio === "nonSmoker"
-                  ? "border border-[#007EAF] text-[#53389E]"
-                  : ""
-              }`}
-            >
-              Non-Smoker
-            </Radio>
-            <Radio
-              value="occasionalSmoker"
-              style={{ flexDirection: "row-reverse", alignItems: "center" }}
-              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                selectedRadio === "occasionalSmoker"
-                  ? "border border-[#007EAF] text-[#53389E]"
-                  : ""
-              }`}
-            >
-              Occasional Smoker
-            </Radio>
-            <Radio
-              value="smoker"
-              style={{ flexDirection: "row-reverse", alignItems: "center" }}
-              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                selectedRadio === "smoker"
-                  ? "border border-[#007EAF] text-[#53389E]"
-                  : ""
-              }`}
-            >
-              Smoker
-            </Radio>
+
+            {
+              [
+                {
+                  value: "All",
+                },
+                ...smokingHabits
+              ]
+                .map((smoke) => (
+                  <Radio
+                    value={smoke.value}
+                    style={{ flexDirection: "row-reverse", alignItems: "center" }}
+                    className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${selectedRadio === smoke.value
+                      ? "border border-[#007EAF] text-[#53389E]"
+                      : ""
+                      }`}
+                  >
+                    {smoke.value}
+                  </Radio>
+                ))
+            }
           </Radio.Group>
         </Form.Item>
-        <Row gutter={20} style={{ display: "flex", flexWrap: "wrap" }}>
-          <Col
-            xs={24}
-            sm={12}
-            md={8}
-            style={{ display: "flex", flexDirection: "column" }}
-          >
-            <Form.Item
-              name={"workingWith"}
-              label={
-                <label
-                  style={{
-                    color: `${isExclusive ? "#60457E" : "#007EAF"}`,
-                    fontStyle: "Proxima-Nova-Semibold",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Working With
-                </label>
-              }
-              className="h-full flex-grow rounded bg-[#EAF2FF] p-4"
-            >
-              <Checkbox.Group
-                className="gap-4"
-                onChange={handleCheckboxChange}
+
+        <Col
+
+          style={{ display: "flex", flexDirection: "column" }}
+        >
+          <Form.Item
+            name={"workingWith"}
+            label={
+              <label
+                style={{
+                  color: `${isExclusive ? "#60457E" : "#007EAF"}`,
+                  fontStyle: "Proxima-Nova-Semibold",
+                  fontWeight: "bold",
+                }}
               >
-                <Checkbox
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  className="rounded-md bg-[#ffff] p-1 text-[#344054]"
-                  value={"all"}
-                >
-                  All
-                </Checkbox>
-                <Checkbox
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  value={"privateCompanies"}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("privateCompanies")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  Private Companies(2000+)
-                </Checkbox>
-                <Checkbox
-                  value={"nonWorking"}
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("nonWorking")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  Non Working(200)
-                </Checkbox>
-                <Checkbox
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  value={"business"}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("business")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  Business / selfemployed(192)
-                </Checkbox>
-                <Checkbox
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  value={"government"}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("government")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  Government / Public Sector(89)
-                </Checkbox>
-                <Checkbox
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  value={"defenseCivilServices"}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("defenseCivilServices")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  Defense / Civil Services(2)
-                </Checkbox>
-              </Checkbox.Group>
-            </Form.Item>
-          </Col>
+                Working With
+              </label>
+            }
+            className="h-full flex-grow rounded bg-[#EAF2FF] p-4"
+          >
+            <Checkbox.Group
+              className="gap-4"
+              onChange={handleCheckboxChange}
+            >
+
+              {
+                [
+                  { value: "All" },
+                  ...occupation.filter(value => !value.value.startsWith("FREQUENTLY USED") && !value.value.startsWith("--"))
+                ]
+                  .map((occ) => (
+                    <Checkbox
+                      style={{ flexDirection: "row-reverse", alignItems: "center" }}
+                      value={occ.value}
+                      className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${checkedValues.includes(occ.value)
+                        ? "border border-[#007EAF] text-[#53389E]"
+                        : ""
+                        }`}
+                    >
+                      {occ.value}
+                    </Checkbox>
+                  ))
+
+              }
+
+
+            </Checkbox.Group>
+          </Form.Item>
+        </Col>
+
+
+        <Row gutter={20} style={{ display: "flex", flexWrap: "wrap" }}>
+
           <Col
             xs={24}
             sm={12}
-            md={8}
+            md={16}
             style={{ display: "flex", flexDirection: "column" }}
           >
             <Form.Item
@@ -747,72 +693,24 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
                 className="gap-4"
                 onChange={handleCheckboxChange}
               >
-                <Checkbox
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  value={"all-maritalStatus"}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("all-maritalStatus")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  All
-                </Checkbox>
-                <Checkbox
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  value={"neverMarried"}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("neverMarried")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  Never Married(2000+)
-                </Checkbox>
-                <Checkbox
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  value={"divorced"}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("divorced")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  Divorced(88)
-                </Checkbox>
-                <Checkbox
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  value={"widowed"}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("widowed")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  Widowed(7)
-                </Checkbox>
-                <Checkbox
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  value={"Awaiting-Divorce"}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("Awaiting-Divorce")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  Awaiting Divorce(21)
-                </Checkbox>
-                <Checkbox
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  value={"annulled"}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("annulled")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  Annulled(21)
-                </Checkbox>
+
+                {
+                  [
+                    { value: "All" },
+                    ...maritalStatus
+                  ].map((marital) => (
+                    <Checkbox
+                      style={{ flexDirection: "row-reverse", alignItems: "center" }}
+                      value={marital.value}
+                      className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${checkedValues.includes(marital.value)
+                        ? "border border-[#007EAF] text-[#53389E]"
+                        : ""
+                        }`}
+                    >
+                      {marital.value}
+                    </Checkbox>
+                  ))
+                }
               </Checkbox.Group>
             </Form.Item>
           </Col>
@@ -823,7 +721,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
             style={{ display: "flex", flexDirection: "column" }}
           >
             <Form.Item
-            name={"eatingHabits"}
+              name={"eatingHabits"}
               label={
                 <label
                   style={{
@@ -841,71 +739,24 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
                 className="gap-4"
                 onChange={handleCheckboxChange}
               >
-                <Checkbox
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  value={"all-eatingHabits"}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("all-eatingHabits")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  All
-                </Checkbox>
-                <Checkbox
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  value={"veg"}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("veg")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  Veg(2000+)
-                </Checkbox>
-                <Checkbox
-                  value={"eggetarian"}
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("eggetarian")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  Eggetarian(66)
-                </Checkbox>
-                <Checkbox
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  value={"non-veg"}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("non-veg")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  Non-Veg(48)
-                </Checkbox>
-                <Checkbox
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  value={"jain"}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("jain")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  Jain(22)
-                </Checkbox>
-                <Checkbox
-                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
-                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                    checkedValues.includes("Vegan")
-                      ? "border border-[#007EAF] text-[#53389E]"
-                      : ""
-                  }`}
-                >
-                  Vegan(11)
-                </Checkbox>
+
+                {
+                  [
+                    { value: "All" },
+                    ...diet
+                  ].map((diet) => (
+                    <Checkbox
+                      style={{ flexDirection: "row-reverse", alignItems: "center" }}
+                      value={diet.value}
+                      className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${checkedValues.includes(diet.value)
+                        ? "border border-[#007EAF] text-[#53389E]"
+                        : ""
+                        }`}
+                    >
+                      {diet.value}
+                    </Checkbox>
+                  ))
+                }
               </Checkbox.Group>
             </Form.Item>
           </Col>
@@ -927,92 +778,26 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
           className="h-auto rounded bg-[#EAF2FF] p-4"
         >
           <Checkbox.Group className=" gap-4" onChange={handleCheckboxChange}>
-            <Checkbox
-              style={{ flexDirection: "row-reverse", alignItems: "center" }}
-              className="rounded-md bg-[#ffff] p-1 text-[#344054]"
-              value={"all"}
-            >
-              All
-            </Checkbox>
-            <Checkbox
-              style={{ flexDirection: "row-reverse", alignItems: "center" }}
-              value={"gujrati"}
-              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                checkedValues.includes("gujrati")
-                  ? "border border-[#007EAF] text-[#53389E]"
-                  : ""
-              }`}
-            >
-              Gujrati(37)
-            </Checkbox>
-            <Checkbox
-              style={{ flexDirection: "row-reverse", alignItems: "center" }}
-              value={"vaishnav"}
-              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                checkedValues.includes("vaishnav")
-                  ? "border border-[#007EAF] text-[#53389E]"
-                  : ""
-              }`}
-            >
-              Vaishnav - Van...(441)
-            </Checkbox>
-            <Checkbox
-              style={{ flexDirection: "row-reverse", alignItems: "center" }}
-              value={"Brahmin"}
-              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                checkedValues.includes("Brahmin")
-                  ? "border border-[#007EAF] text-[#53389E]"
-                  : ""
-              }`}
-            >
-              Brahmin - Audi...(412)
-            </Checkbox>
-            <Checkbox
-              style={{ flexDirection: "row-reverse", alignItems: "center" }}
-              value={"patel"}
-              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                checkedValues.includes("patel")
-                  ? "border border-[#007EAF] text-[#53389E]"
-                  : ""
-              }`}
-            >
-              Patel - Leva(397)
-            </Checkbox>
-            <Checkbox
-              style={{ flexDirection: "row-reverse", alignItems: "center" }}
-              value={"lohana"}
-              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                checkedValues.includes("lohana")
-                  ? "border border-[#007EAF] text-[#53389E]"
-                  : ""
-              }`}
-            >
-              Lohana(385)
-            </Checkbox>
 
-            <Checkbox
-              style={{ flexDirection: "row-reverse", alignItems: "center" }}
-              value={"Vania"}
-              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                checkedValues.includes("Vania")
-                  ? "border border-[#007EAF] text-[#53389E]"
-                  : ""
-              }`}
-            >
-              Vania(100)
-            </Checkbox>
-            
-            <Checkbox
-              style={{ flexDirection: "row-reverse", alignItems: "center" }}
-              value={"suthar"}
-              className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${
-                checkedValues.includes("suthar")
-                  ? "border border-[#007EAF] text-[#53389E]"
-                  : ""
-              }`}
-            >
-              Suthar(32)
-            </Checkbox>
+            {
+              [
+                { value: "All" },
+                ...communities.filter((value) => !value.value.includes("Frequently used Communities")),
+              ].map((community) => (
+                <Checkbox
+                  key={community.value}
+                  style={{ flexDirection: "row-reverse", alignItems: "center" }}
+                  value={community.value}
+                  className={`rounded-md bg-[#ffff] p-1 text-[#344054] ${checkedValues.includes(community.value)
+                    ? "border border-[#007EAF] text-[#53389E]"
+                    : ""
+                    }`}
+                >
+                  {community.value}
+                </Checkbox>
+              ))
+            }
+
           </Checkbox.Group>
         </Form.Item>
         {/* <Form.Item className="rounded-md border border-[#E4E7EC] p-4">
@@ -1043,6 +828,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
           </Row>
         </Form.Item> */}
       </Form>
+       }
     </Modal>
   );
 };

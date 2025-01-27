@@ -28,6 +28,71 @@ interface User {
   updatedAt: string; // Same as above
 }
 
+
+interface MyDetails {
+ 
+  fcmToken: string;
+  profileImage: string[];
+  basic_and_lifestye: {
+    firstName: string;
+    lastName: string;
+    displayName: string;
+    gender: string;
+    age: string;
+    about: string;
+    religion: string;
+    maritalStatus: string;
+    numberOfChildren: number;
+    postedBy: string;
+  };
+  family_details: {
+    fatherOccupation: string;
+    motherOccupation: string;
+    numberOfSiblings: number;
+    livingWithFamily: string;
+  };
+  personal_background: {
+    height: string;
+    weight: string;
+    bodyType: string;
+    language: string;
+    smokingHabbit: string;
+    drinkingHabbit: string;
+    diet: string;
+    complexion: string;
+  };
+  religious_background: {
+    religion: string;
+    community: string;
+    subCommunity?: string;
+    gotra?: string;
+    timeOfBirth?: string;
+    dateOfBirth?: string;
+    placeOfBirth?: string;
+    motherTongue?: string;
+  };
+  location_background: {
+    country: string;
+    state: string;
+    currentLocation:string;
+    cityOfResidence:string;
+    nationality: string;
+    citizenShip: string;
+    residencyVisaStatus: string;
+  };
+  education_and_financial: {
+    qualification: string;
+    occupation: string;
+    workingStatus: string;
+    income: string;
+  };
+  interest_and_hobbies: string[];
+}
+
+
+
+
+
 interface InitialState {
   loading: boolean;
   user: User | null;
@@ -41,7 +106,7 @@ interface InitialState {
   isOtherFormFilled: boolean;
   isLocationFormFilled: boolean;
   isImageFormFilled: boolean;
-  myDetails: Array<any> | null;
+  myDetails: MyDetails | null;
 }
 
 
@@ -61,6 +126,8 @@ const initialState : InitialState = {
   isImageFormFilled: false,
   myDetails: null,
 };
+
+console.log(initialState.myDetails,"initialState");
 
 const userSlice = createSlice({
   name: "userReducer",
@@ -106,8 +173,39 @@ const userSlice = createSlice({
     },
 
     setMyDetails: (state, action) => {
+      console.log(action.payload,"action.payload");
+     
       state.myDetails = action.payload;
     },
+    updateFamilyDetail: (state, action) => {
+      if (state.myDetails) {
+        state.myDetails.family_details = action.payload;
+      }
+    },
+    updatePersonalDetails: (state, action) => {
+      if (state.myDetails) {
+        state.myDetails.personal_background = action.payload;
+      }
+    },
+
+    updateReligiousBackgroundDetails: (state, action) => {
+      if (state.myDetails) {
+        console.log(action.payload,"action.payload");
+        state.myDetails.religious_background = action.payload;
+      }
+    },
+    updateLocationDetail: (state, action) => {
+      if (state.myDetails) {
+        state.myDetails.location_background = action.payload;
+      }
+    },
+
+    updateEducationDetails: (state, action) => {
+      if (state.myDetails) {
+        state.myDetails.education_and_financial = action.payload;
+      }
+    },
+
 
     setUserType: (state, action) => {
       if (state.user) {
@@ -115,6 +213,9 @@ const userSlice = createSlice({
       }
     },
 
+
+
+    
     logout: (state) => {
       state.user = initialState.user;
       state.accessToken = null;
@@ -126,6 +227,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUser,setCredentials,  logout, setActivationToken ,setNotificationData,setUserType,setMyDetails} =
+export const { setUser,setCredentials,  logout, setActivationToken ,setNotificationData,setUserType,setMyDetails,
+  updateFamilyDetail,updatePersonalDetails,updateReligiousBackgroundDetails,updateLocationDetail,updateEducationDetails} =
   userSlice.actions;
 export default userSlice;

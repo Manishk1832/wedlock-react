@@ -1,9 +1,17 @@
-import React from "react";
-import { Modal, Select, Form, Input, Col, Row } from "antd";
+import React, { useEffect, useState } from "react";
+import { Modal, Select, Form,  Col, Row } from "antd";
 import { createStyles } from "antd-style";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
 import { useUpdatePersonalBackgroundMutation } from "../../Redux/Api/profile.api";
 import { toast } from "sonner";
+// import { bodyType, Complexions, Diet, DrinkingHabbit, Heights, motherTongue, SmokingHabbit, } from "../../data/data";
+import { useGetBodyTypeQuery,useGetComplexionQuery,useGetDietQuery,useGetDrinkingHabbitQuery,useGetHeightQuery,useGetMotherToungueQuery,useGetSmokingHabbitQuery } from "../../Redux/Api/dropdown.api";
+import { RootState } from "./../../Redux/store";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { updatePersonalDetails } from "../../Redux/Reducers/user.reducer";
+
+
 
 
 const useStyle = createStyles(({ token }) => ({
@@ -37,6 +45,57 @@ const ReligiouModel: React.FC<PersonalBagroundModelProps> = ({
   isVisible,
   onClose,
 }) => {
+  const [bodyType, setBodyType] = useState<{ id: string; value: string }[]>([]);
+  const [complexion,setComplexion] = useState<{id:string; value: string}[]>([]);
+  const [diet,setDiet] = useState<{id:string; value: string}[]>([]);
+  const [drinkingHabbit,setDrinkingHabbit] = useState<{id:string; value: string}[]>([]);
+  const [height,setHeight] = useState<{id:string; value: string}[]>([]);
+  const [motherTongue,setMotherTongue] = useState<{id:string; value: string}[]>([]);
+  const [smokingHabbit,setSmokingHabbit] = useState<{id:string; value: string}[]>([]);
+
+  const dispatch = useDispatch();
+  const {myDetails } = useSelector((state: RootState) => state.userReducer) ;
+
+
+
+
+  const { data: bodyTypeData } = useGetBodyTypeQuery();
+  const { data: complexionData} = useGetComplexionQuery();
+  const { data: dietData} = useGetDietQuery();
+  const { data: drinkingHabbitData} = useGetDrinkingHabbitQuery();
+  const { data: heightData } = useGetHeightQuery();
+  const { data: motherTongueData } = useGetMotherToungueQuery();
+  const { data: smokingHabbitData } = useGetSmokingHabbitQuery();
+
+  useEffect(()=>{
+    if(bodyTypeData){
+      setBodyType((bodyTypeData as any).data)
+    }
+    if(complexionData){
+      setComplexion((complexionData as any).data)
+    }
+  
+    if(drinkingHabbitData){
+      setDrinkingHabbit((drinkingHabbitData as any).data)
+    }
+    
+    if(heightData){
+      setHeight((heightData as any).data)
+    }
+    if(motherTongueData){
+      setMotherTongue((motherTongueData as any).data)
+    }
+    if(smokingHabbitData){
+      setSmokingHabbit((smokingHabbitData as any).data)
+    }
+    if(dietData){
+      setDiet((dietData as any).data)
+    }
+
+  },[bodyTypeData,complexionData,drinkingHabbitData,heightData,dietData,motherTongueData,smokingHabbitData])
+
+
+
   const { styles } = useStyle();
 
   type ApiResponse = {
@@ -52,13 +111,7 @@ const ReligiouModel: React.FC<PersonalBagroundModelProps> = ({
 
 
   const { Option } = Select;
-  const ComplexionOptions = [
-    { value: "White", label: "White" },
-    { value: "Black", label: "Black" },
-    { value: "Asian", label: "Asian" },
-    { value: "Indian", label: "Indian" },
-    { value: "Others", label: "Others" },
-  ];
+
 
   const classNames = {
     mask: styles["my-modal-mask"],
@@ -83,8 +136,8 @@ const ReligiouModel: React.FC<PersonalBagroundModelProps> = ({
   };
 
   const handleFormSubmit = async (values: any) => {
-    const height = `${values.feet} feet ${values.inches} inches`;
-    const formData = { ...values, height }; 
+    const height = values.height ;
+    const formData = { ...values, height };
     try {
       const res = await updatePersonalBackground(formData);
       console.log(res);
@@ -97,6 +150,22 @@ const ReligiouModel: React.FC<PersonalBagroundModelProps> = ({
           return;
         }
       }
+
+      console.log(values.height);
+
+      const data = {
+        height: values.height || myDetails?.personal_background?.height || null,
+        weight: values.weight || myDetails?.personal_background?.weight || null,
+        bodyType: values.bodyType || myDetails?.personal_background?.bodyType || null,
+        complexion: values.complexion || myDetails?.personal_background?.complexion || null,
+        diet: values.diet || myDetails?.personal_background?.diet || null,
+        smokingHabbit: values.smokingHabbit || myDetails?.personal_background?.smokingHabbit || null,
+        drinkingHabbit: values.drinkingHabbit || myDetails?.personal_background?.drinkingHabbit || null,
+        language: values.mothherTongue || myDetails?.personal_background?.language || null,
+      };
+
+      dispatch(updatePersonalDetails(data));
+
       const successData = res.data as ApiResponse;
       toast.success(successData.message);
       onClose();
@@ -111,7 +180,7 @@ const ReligiouModel: React.FC<PersonalBagroundModelProps> = ({
       <Modal
         open={isVisible}
         onCancel={onClose}
-        onOk={() => form.submit()}        
+        onOk={() => form.submit()}
         wrapClassName="my-modal-content"
         classNames={classNames}
         styles={modalStyles}
@@ -123,89 +192,112 @@ const ReligiouModel: React.FC<PersonalBagroundModelProps> = ({
       >
         <Form form={form} layout="vertical" autoComplete="off" onFinish={handleFormSubmit}
         >
-          <Row gutter={16}> 
-          <Col span={24}>
-              <Form.Item label="Height" >
-                <Input.Group compact>
-                  <Form.Item
-                    name="feet"
-                    noStyle
-                  >
-                    <Input style={{ width: "49%", marginRight: "2%" }} placeholder="Feet" />
-                  </Form.Item>
-                  <Form.Item
-                    name="inches"
-                    noStyle
-                  >
-                    <Input style={{ width: "49%" }} placeholder="Inches" />
-                  </Form.Item>
-                </Input.Group>
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item label="height"  name={"height"}>
+                <Select placeholder="Select Height" defaultValue={myDetails?.personal_background?.height}>
+                  {
+                    height.map((option) => (
+                      <Option key={option.id} value={option.value} defaultValue={myDetails?.personal_background?.height}>
+                        {option.value}
+                      </Option>
+                    ))
+                  }
+                </Select>
               </Form.Item>
             </Col>
 
             <Col span={24}>
               <Form.Item name="weight" label="Weight" >
-                <Input placeholder="Enter Weight" />
+                
+                  <Select placeholder="Select Weight" defaultValue={`${myDetails?.personal_background?.weight} kg`}>
+                    {Array.from({ length: 100 }, (_, index) => index + 41).map((weight) => (
+                      <Select.Option key={weight} value={weight}>
+                        {weight} kg
+                      </Select.Option>
+                    ))}
+                  </Select>
+              
+
               </Form.Item>
             </Col>
 
             <Col span={24}>
               <Form.Item name="language" label="Language" >
-                <Select placeholder="Enter Language">
-                  <Option value="english">English</Option>
-                  <Option value="hindi">Hindi</Option>
-                  <Option value="marathi">Marathi</Option>
-                  <Option value="gujarati">Gujarati</Option>
-                  <Option value="punjabi">Punjabi</Option>
-                  <Option value="kannada">Kannada</Option>
-                  <Option value="tamil">Tamil</Option>
+                <Select placeholder="Select Language" defaultValue={myDetails?.personal_background?.language} >
+                  {
+                    motherTongue.map((option) => (
+                      <Option key={option.id} value={option.value} defaultValue={myDetails?.personal_background?.language}>
+                        {option.value}
+                      </Option>
+                    ))
+                  }
                 </Select>
               </Form.Item>
             </Col>
 
             <Col span={24}>
               <Form.Item name="bodyType" label="Body Type" >
-                <Select placeholder="Select Body Type">
-                  <Option value="mesomorph">Mesomorph</Option>
-                  <Option value="ectomorph">Ectomorph</Option>
-                  <Option value="endomorph">Endomorph</Option>
+                <Select placeholder="Select Body Type" defaultValue={myDetails?.personal_background?.bodyType}>
+                  {
+                    bodyType.map((option) => (
+                      <Option key={option.id} value={option.value} defaultValue={myDetails?.personal_background?.bodyType}>
+                        {option.value}
+                      </Option>
+                    ))
+                  }
                 </Select>
               </Form.Item>
             </Col>
 
             <Col span={24}>
               <Form.Item name="smokingHabbit" label="Smoking Habbit" >
-                <Select placeholder="Select Smoking Habbit">
-                  <Option value="smoker">Smoker</Option>
-                  <Option value="non-smoker">Non-Smoker</Option>
+                <Select placeholder="Select Smoking Habbit" defaultValue={myDetails?.personal_background?.smokingHabbit}>
+                  {
+                    smokingHabbit.map((option) => (
+                      <Option key={option.id} value={option.value} defaultValue={myDetails?.personal_background?.smokingHabbit}>
+                        {option.value}
+                      </Option>
+                    ))
+                  }
                 </Select>
               </Form.Item>
             </Col>
 
             <Col span={24}>
               <Form.Item name="drinkingHabbit" label="Drinking Habbit" >
-                <Select placeholder="Select Drinking Habbit">
-                  <Option value="alcoholic">Alcoholic</Option>
-                  <Option value="non-alcoholic">Non-Alcoholic</Option>
+                <Select placeholder="Select Drinking Habbit" defaultValue={myDetails?.personal_background?.drinkingHabbit}>
+                  {
+                    drinkingHabbit.map((option) => (
+                      <Option key={option.id} value={option.value} defaultValue={myDetails?.personal_background?.drinkingHabbit}>
+                        {option.value}
+                      </Option>
+                    ))
+                  }
                 </Select>
               </Form.Item>
             </Col>
 
             <Col span={24}>
               <Form.Item name="diet" label="Diet" >
-                <Select placeholder="Select Diet">
-                  <Option value="veg">Veg</Option>
-                  <Option value="non-veg">Non-Veg</Option>
+                <Select placeholder="Select Diet" defaultValue={myDetails?.personal_background?.diet}>
+                  {
+                    diet.map((option) => (
+                      <Option key={option.id} value={option.value} defaultValue={myDetails?.personal_background?.diet}>
+                        {option.value}
+                      </Option>
+                    ))
+                  }
                 </Select>
               </Form.Item>
             </Col>
 
             <Col span={24}>
               <Form.Item name="complexion" label="Complexion" >
-                <Select placeholder="Select Complexion">
-                  {ComplexionOptions.map((option) => (
-                    <Option key={option.value} value={option.value}>
-                      {option.label}
+                <Select placeholder="Select Complexion" defaultValue={myDetails?.personal_background?.complexion}>
+                  {complexion.map((option) => (
+                    <Option key={option.id} value={option.value} defaultValue={myDetails?.personal_background?.complexion}>
+                      {option.value}
                     </Option>
                   ))}
                 </Select>

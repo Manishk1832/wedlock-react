@@ -657,7 +657,7 @@ const acceptConnection = async (userId: string) => {
                   Gothra / Gothram
                 </div>
                 <div className="justify-center self-start rounded-[100px] bg-pink-50 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-pink-400">
-                  {profileData[0]?.religious_background?.gothra}
+                  {profileData[0]?.religious_background?.gotra}
                 </div>
               </div>
               <div className="mt-4 flex justify-between gap-4 max-md:max-w-full max-md:flex-wrap">
@@ -708,6 +708,23 @@ const acceptConnection = async (userId: string) => {
             Location Background
           </div>
           <div className="mt-6 flex flex-col px-6 max-md:max-w-full max-md:px-5">
+          <div className="flex justify-between gap-0 max-md:flex-wrap">
+              <div className="text-md flex-1 font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
+                Country
+              </div>
+              <div className="justify-center self-start whitespace-nowrap rounded-[100px] bg-blue-50 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-blue-600">
+                {profileData[0]?.location_background?.country}
+              </div>
+            </div>
+            <div className="mt-4 flex justify-between gap-0 max-md:flex-wrap">
+              <div className="text-md flex-1 font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
+                State
+              </div>
+              <div className="justify-center mb-4 self-start rounded-[100px] bg-purple-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-violet-600">
+                {profileData[0]?.location_background?.state ||
+                  "Not Specified"}
+              </div>
+            </div>
             <div className="flex justify-between gap-0 max-md:flex-wrap">
               <div className="text-md flex-1 font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
                 Current location
@@ -809,10 +826,10 @@ const acceptConnection = async (userId: string) => {
                   >
                     <FaUserGraduate />
                   </span>
-                  <div>Education</div>
+                  <div>Occupation</div>
                 </div>
                 <div className="justify-center rounded-[100px] bg-orange-100 px-3 py-1.5 text-center text-sm font-medium capitalize leading-7 text-slate-900 md:text-md text-[12px]">
-                  {profileData[0]?.education_and_financial?.education}
+                  {profileData[0]?.education_and_financial?.occupation}
                 </div>
               </div>
 

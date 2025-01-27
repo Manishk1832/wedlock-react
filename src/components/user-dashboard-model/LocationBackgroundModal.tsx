@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Select, Form, Input, Col, Row } from "antd";
 import { createStyles } from "antd-style";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
 import { useUpdateLocationDetailsMutation } from "../../Redux/Api/profile.api";
 import { toast } from "sonner";
+import { Country, State } from "country-state-city";
+import { RootState } from "./../../Redux/store";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { updateLocationDetail } from "../../Redux/Reducers/user.reducer";
+
+
+
+import { useGetAustralianVisaStatusQuery,useGetCitizenshipQuery } from "../../Redux/Api/dropdown.api";
+
 
 
 const useStyle = createStyles(({ token }) => ({
@@ -37,6 +47,25 @@ const LocationBackgroundModal: React.FC<LocationBagroundModelProps> = ({
   isVisible,
   onClose,
 }) => {
+  const [citizenship, setCitizenship] = useState<{ id: string; value: string }[]>([]);
+  const [australianVisaStatus, setAustralianVisaStatus] = useState<{ id: string; value: string }[]>([]);
+  const dispatch = useDispatch();
+  const {myDetails } = useSelector((state: RootState) => state.userReducer) ;
+
+  const { data: citizenshipData} = useGetCitizenshipQuery();
+  const { data: australianVisaStatusData} = useGetAustralianVisaStatusQuery();
+
+  useEffect(() => {
+    if (citizenshipData) {
+      setCitizenship((citizenshipData as any).data);
+    }
+    if (australianVisaStatusData) {
+      setAustralianVisaStatus((australianVisaStatusData as any).data);
+    }
+  }, [citizenshipData, australianVisaStatusData]);
+
+
+
   const { styles } = useStyle();
 
   type ApiResponse = {
@@ -76,6 +105,21 @@ const LocationBackgroundModal: React.FC<LocationBagroundModelProps> = ({
           return;
         }
       }
+
+      const data = {
+        currentLocation: values.currentLocation || myDetails?.location_background?.currentLocation || null,
+        cityOfResidence: values.cityOfResidence || myDetails?.location_background?.cityOfResidence || null,
+        country: values.country || myDetails?.location_background?.country || null,
+        state: values.state || myDetails?.location_background?.state || null,
+        nationality: values.nationality || myDetails?.location_background?.nationality || null,
+        citizenShip: values.citizenship || myDetails?.location_background?.citizenShip || null,
+        residencyVisaStatus: values.residencyVisaStatus || myDetails?.location_background?.residencyVisaStatus || null,
+      };
+
+
+      dispatch(updateLocationDetail(data));
+
+
       const successData = res.data as ApiResponse;
       toast.success(successData.message);
       onClose();
@@ -117,43 +161,87 @@ const LocationBackgroundModal: React.FC<LocationBagroundModelProps> = ({
         <Form form={form} layout="vertical" autoComplete="off" onFinish={handleFormSubmit}>
           <Row gutter={16}>
             <Col span={24}>
-              <Form.Item name="currentLocation" label="Current Location">
-                <Input placeholder="Enter Current Location" />
+            <Form.Item name="currentLocation" label="Current Location">
+              <Input placeholder="Enter Current Location" defaultValue={myDetails?.location_background?.currentLocation} />
+            </Form.Item>
+            </Col>
+
+            <Col span={24}>
+            <Form.Item name="cityOfResidence" label="City Of Residence">
+              <Input placeholder="Enter City Of Residence" defaultValue={myDetails?.location_background?.cityOfResidence} />
+            </Form.Item>
+            </Col>
+
+
+
+            <Col span={24}>
+              <Form.Item name="country" label="Country">
+               {
+                <Select placeholder="Select Current Location">
+                  {Country.getAllCountries().map((country) => (
+                    <Option key={country.isoCode} value={country.name} defaultValue={myDetails?.location_background?.country}>
+                      {country.name}
+                    </Option>
+                  ))}
+                </Select>
+               }
               </Form.Item>
             </Col>
 
             <Col span={24}>
-              <Form.Item name="cityOfResidence" label="City of Residence">
-                <Input placeholder="Enter City of Residence" />
-              </Form.Item>
-            </Col>
-
-            <Col span={24}>
-              <Form.Item name="nationality" label="Nationality">
-                <Select placeholder="Select Nationality">
-                  <Option value="indian">Indian</Option>
-                  <Option value="australian">Australian</Option>
-                  <Option value="american">American</Option>
-                  <Option value="others">Others</Option>
+              <Form.Item name="state" label="State">
+              <Select placeholder="Select Current Location" defaultValue={myDetails?.location_background?.state}>
+                  {State.getAllStates().map((states) => (
+                    <Option key={states.isoCode} value={states.name}>
+                      {states.name}
+                    </Option>
+                  ))}
                 </Select>
               </Form.Item>
             </Col>
 
             <Col span={24}>
+              <Form.Item name="nationality" label="Nationality">
+                {
+                  <Select placeholder="Select Nationality" defaultValue={myDetails?.location_background?.nationality}>
+                    {citizenship.map((citizenship) => (
+                      <Option key={citizenship.id} value={citizenship.value}>
+                        {citizenship.value}
+                      </Option>
+                    ))}
+                  </Select>
+                }
+              </Form.Item>
+            </Col>
+
+            <Col span={24}>
               <Form.Item name="citizenShip" label="Citizenship">
-                <Input placeholder="Enter Citizenship" />
+              {
+                  <Select placeholder="Select Citizenship" defaultValue={myDetails?.location_background?.citizenShip}>
+                    {citizenship.map((citizenship) => (
+                      <Option key={citizenship.id} value={citizenship.value}>
+                        {citizenship.value}
+                      </Option>
+                    ))}
+                  </Select>
+                }
               </Form.Item>
             </Col>
 
             <Col span={24}>
               <Form.Item
                 name="residencyVisaStatus"
-                label="Residency Visa Status"
+                label="Australian Visa Status"
               >
-                <Select placeholder="Select Residency Visa Status">
-                  <Option value="yes">Yes</Option>
-                  <Option value="No">No</Option>
-                </Select>
+                <Select placeholder="Select Residency Visa Status" defaultValue={myDetails?.location_background?.residencyVisaStatus}>
+                  {
+                    australianVisaStatus.map((australianVisaStatus) => (
+                      <Option
+                        key={australianVisaStatus.id}
+                        value={australianVisaStatus.value}
+                      >{australianVisaStatus.value}</Option>))  
+                  }         
+                          </Select>
               </Form.Item>
             </Col>
           </Row>

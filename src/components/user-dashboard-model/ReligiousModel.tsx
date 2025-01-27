@@ -1,9 +1,18 @@
 import { Modal} from "antd";
 import { createStyles} from "antd-style";
-import { Form, Input } from "antd";
+import { Form, Input ,Select} from "antd";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
 import { useUpdateReligiousBackgroundMutation } from "../../Redux/Api/profile.api";
 import { toast } from "sonner";
+import { useGetReligionQuery,useGetCommunityQuery,useGetGotraQuery,useGetMotherOccupationQuery } from "../../Redux/Api/dropdown.api";
+import { useEffect, useState } from "react";
+import { RootState } from "./../../Redux/store";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { updateReligiousBackgroundDetails } from "../../Redux/Reducers/user.reducer";
+
+
+
 
 
 const useStyle = createStyles(({ token }) => ({
@@ -37,6 +46,42 @@ const ReligiousModel: React.FC<ReligiousModalProps> = ({
   isVisible,
   onClose,
 }) => {
+  const dispatch = useDispatch();
+
+
+  const [religion, setReligion] = useState<{ id: string; value: string }[]>([]);
+  const [community, setCommunity] = useState<{ id: string; value: string }[]>([]);
+  const [gotra, setGotra] = useState<{ id: string; value: string }[]>([]);
+  const [motherTongue, setMotherTongue] = useState<{ id: string; value: string }[]>([]);
+  const {myDetails } = useSelector((state: RootState) => state.userReducer) ;
+
+
+
+  const { data: ReligionData } = useGetReligionQuery();
+  const { data: CommunityData } = useGetCommunityQuery();
+  const { data: GotraData} = useGetGotraQuery();
+  const { data: MotherOccupationData } = useGetMotherOccupationQuery();
+
+
+  useEffect(() => {
+    if(ReligionData){
+      setReligion((ReligionData as any).data);
+    }
+    if(CommunityData){
+      setCommunity((CommunityData as any).data);
+    }
+    if(GotraData){
+      setGotra((GotraData as any).data);
+    }
+    if(MotherOccupationData){
+      setMotherTongue((MotherOccupationData as any).data);
+    }
+  }, [ReligionData,CommunityData,GotraData,MotherOccupationData]);
+
+
+
+
+
   const { styles } = useStyle();
 
 
@@ -54,6 +99,8 @@ const ReligiousModel: React.FC<ReligiousModalProps> = ({
 
   const [updateReligiousBackground, { isLoading }] = useUpdateReligiousBackgroundMutation();
 
+  
+
   const handleFormSubmit = async (values: any) => {
     try {
       const res = await updateReligiousBackground(values);
@@ -67,6 +114,22 @@ const ReligiousModel: React.FC<ReligiousModalProps> = ({
           return;
         }
       }
+
+      console.log(values.religion);
+
+      const data = {
+        religion: values.religion || myDetails?.religious_background?.religion || null,
+        subCommunity: values.subCommunity || myDetails?.religious_background?.subCommunity || null,
+        community: values.community || myDetails?.religious_background?.community || null,
+        gotra: values.gotra || myDetails?.religious_background?.gotra || null,
+        motherTongue: values.motherTongue || myDetails?.religious_background?.motherTongue || null,
+        timeOfBirth:  myDetails?.religious_background?.timeOfBirth || null,
+        dateOfBirth:  myDetails?.religious_background?.dateOfBirth || null,
+        placeOfBirth: values.placeOfBirth || myDetails?.religious_background?.placeOfBirth || null,
+      };
+  
+        dispatch(updateReligiousBackgroundDetails(data));
+    
       const successData = res.data as ApiResponse;
       toast.success(successData.message);
       onClose();
@@ -115,7 +178,13 @@ const ReligiousModel: React.FC<ReligiousModalProps> = ({
       >
         <Form form={form} layout="vertical" autoComplete="off" onFinish={handleFormSubmit}>
           <Form.Item name="religion" label="Religion" rules={[{ required: false , message: "Please enter your religion"}]}  >
-            <Input placeholder="Enter Religion" />
+            <Select placeholder="Select Religion" defaultValue={myDetails?.religious_background?.religion} >
+              {religion.map((religion) => (
+                <Select.Option key={religion.id} value={religion.value}>
+                  {religion.value}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
 
 
@@ -123,23 +192,43 @@ const ReligiousModel: React.FC<ReligiousModalProps> = ({
             <Input placeholder="Enter Sub Community" />
           </Form.Item>
           <Form.Item name="community" label="Community" rules={[{ required: false , message: "Please enter your community"}]}>
-            <Input placeholder="Enter Community" />
+            <Select placeholder="Select Community" defaultValue={myDetails?.religious_background?.community} >
+              {community.map((community) => (
+                <Select.Option key={community.id} value={community.value}>
+                  {community.value}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
-          <Form.Item name="gothra" label="Gothra/Gothram" rules={[{ required: false , message: "Please enter your Gothra"}]}>
-            <Input placeholder="Enter Gothra" />
+          <Form.Item name="gotra" label="Gothra/Gothram" rules={[{ required: false , message: "Please enter your Gothra"}]}>
+           {
+            <Select placeholder="Select Gothra" defaultValue={myDetails?.religious_background?.gotra} >
+              {gotra.map((gotra) => (
+                <Select.Option key={gotra.id} value={gotra.value}>
+                  {gotra.value}
+                </Select.Option>
+              ))}
+            </Select>
+           }
           </Form.Item>
-          <Form.Item name="dateOfBirth" label="Date of Birth" rules={[{ required: false , message: "Please enter your date of birth"}]}>
-            <Input placeholder="Enter Date of Birth" />
+          {/* <Form.Item name="dateOfBirth" label="Date of Birth" rules={[{ required: false , message: "Please enter your date of birth"}]}>
+            <DatePicker placeholder="Enter Date of Birth" className="w-full" />
           </Form.Item>
           <Form.Item name="timeOfBirth" label="Time of Birth" rules={[{ required: false , message: "Please enter your time of birth"}]}>
-            <Input placeholder="Enter Time of Birth" />
-          </Form.Item>
+            <TimePicker placeholder="Enter Time of Birth" className="w-full" />
+          </Form.Item> */}
           <Form.Item name="placeOfBirth" label="Place of Birth" rules={[{ required: false , message: "Please enter your place of birth"}]}>
-            <Input placeholder="Enter Place of Birth" />
+            <Input placeholder="Enter Place of Birth"   />
           </Form.Item>
 
           <Form.Item name="motherTongue" label="Mother Tongue" rules={[{ required: false , message: "Please enter your mother tongue"}]}>
-            <Input placeholder="Enter Place of Birth" />
+          <Select placeholder="Select Mother Tongue" >
+              {motherTongue.map((motherTongue) => (
+                <Select.Option key={motherTongue.id} value={motherTongue.value}>
+                  {motherTongue.value}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
           
         </Form>

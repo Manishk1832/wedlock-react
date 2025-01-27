@@ -1,9 +1,15 @@
-import React from "react";
-import { Modal, Select, Form, Input, Col, Row } from "antd";
+import React, { useState,useEffect } from "react";
+import { Modal, Select, Form, Col, Row } from "antd";
 import { createStyles } from "antd-style";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
 import { useUpdateEducationAndFinancialDetailsMutation } from "../../Redux/Api/profile.api";
 import { toast } from "sonner";
+// import { Income, Occupations, Qualifications } from "../../data/data";
+import { useGetIncomeQuery, useGetOccupationQuery,useGetQualificationQuery } from "../../Redux/Api/dropdown.api";
+import { RootState } from "./../../Redux/store";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { updateEducationDetails } from "../../Redux/Reducers/user.reducer";
 
 
 const useStyle = createStyles(({ token }) => ({
@@ -37,6 +43,10 @@ const ReligiouModel: React.FC<EducationalModelProps> = ({
   isVisible,
   onClose,
 }) => {
+  const dispatch = useDispatch();
+
+  const {myDetails } = useSelector((state: RootState) => state.userReducer) ;
+
   const { styles } = useStyle();
 
   type ApiResponse = {
@@ -49,8 +59,34 @@ const ReligiouModel: React.FC<EducationalModelProps> = ({
   };
 
   const [form] = Form.useForm();
+  const [qualifications, setQualifications] = useState<{ id: string; value: string }[]>([]);
+  const [incomes, setIncomes] = useState<{ id: string; value: string }[]>([]);
+  const [occupations, setOccupations] = useState<{ id: string; value: string }[]>([]);
 
   const [updateEducationAndFinancialDetails, { isLoading }] = useUpdateEducationAndFinancialDetailsMutation();
+
+  const { data: QualificationsData } = useGetQualificationQuery();
+  const { data: OccupationsData, } = useGetOccupationQuery();
+  const { data: IncomeData} = useGetIncomeQuery();
+
+
+
+  useEffect(() => {
+    if (QualificationsData) {
+      setQualifications((QualificationsData as any).data);
+    }
+
+    if (OccupationsData) {
+      setOccupations((OccupationsData as any).data);
+    }
+
+    if (IncomeData) {
+      setIncomes((IncomeData as any).data);
+    }
+  }, [QualificationsData, OccupationsData, IncomeData]);
+
+
+
 
 
   const handleFormSubmit = async (values: any) => {
@@ -66,6 +102,20 @@ const ReligiouModel: React.FC<EducationalModelProps> = ({
           return;
         }
       }
+
+      const data = {
+        qualification: values.qualification || myDetails?.education_and_financial?.qualification || null,
+        occupation: values.occupation || myDetails?.education_and_financial?.occupation || null,
+        workingStatus: values.currentWorkingStatus || myDetails?.education_and_financial?.workingStatus || null,
+        income: values.income || myDetails?.education_and_financial?.income || null,
+      };
+
+      console.log(data);
+
+      dispatch(updateEducationDetails(data));
+
+
+
       const successData = res.data as ApiResponse;
       toast.success(successData.message);
       onClose();
@@ -118,49 +168,49 @@ const ReligiouModel: React.FC<EducationalModelProps> = ({
         <Form form={form} layout="vertical" autoComplete="off" onFinish={handleFormSubmit}>
           <Row gutter={16}>
             <Col span={24}>
-              <Form.Item name="qualification" label="qualification">
-                <Select placeholder="Select qualification">
-                  <Option value="student">Student</Option>
-                  <Option value="employed">Employed</Option>
-                  <Option value="unemployed">Unemployed</Option>
-                  <Option value="retired">Retired</Option>
-                  <Option value="other">Other</Option>
+              <Form.Item name="qualification" label="Qualification" >
+                <Select placeholder="Select qualification" defaultValue={myDetails?.education_and_financial?.qualification}>
+                  {qualifications.map((qualification) => (
+                    <Option key={qualification.id} value={qualification.value}>
+                      {qualification.value}
+                    </Option>
+                  ))}
                 </Select>
               </Form.Item>
             </Col>
 
             <Col span={24}>
-              <Form.Item name="highestQualification" label="Education">
-                <Select placeholder="Select Body Type">
-                  <Option value="elementary-school">Elementary School</Option>
-                  <Option value="high-school">High School</Option>
-                  <Option value="graduation">Graduation</Option>
-                  <Option value="post-graduation">Post Graduation</Option>
-                  <Option value="other">Other</Option>
+              <Form.Item name="occupation" label="Occupation">
+                <Select placeholder="Select Occupation" defaultValue={myDetails?.education_and_financial?.occupation}>
+                 {
+                  occupations.map((occupation) => (
+                    <Option key={occupation.id} value={occupation.value}>
+                      {occupation.value}
+                    </Option>
+                  ))
+                 }
                 </Select>
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item name="currentlyWorking" label="Working Status">
-                <Select placeholder="Select Body Type">
-                  <Option value="elementary-school">Elementary School</Option>
-                  <Option value="high-school">High School</Option>
-                  <Option value="graduation">Graduation</Option>
-                  <Option value="post-graduation">Post Graduation</Option>
-                  <Option value="other">Other</Option>
+              <Form.Item name="currentWorkingStatus" label="Working Status"  >
+                <Select placeholder="Select Working Status" defaultValue={myDetails?.education_and_financial?.workingStatus}>
+                  <Option value="yes">Yes</Option>
+                  <Option value="no">No</Option>
                 </Select>
               </Form.Item>
             </Col>
 
             <Col span={24}>
-              <Form.Item label="Income">
-                <Input.Group compact>
-                  <Input
-                    style={{ width: "49%", marginRight: "2%" }}
-                    placeholder="Starting"
-                  />
-                  <Input style={{ width: "49%" }} placeholder="Ends" />
-                </Input.Group>
+              <Form.Item label="Income" name="income">
+                <Select placeholder="Select Income" defaultValue={`AU$ ${myDetails?.education_and_financial?.income}`}>
+                {incomes.map((income) => (
+                  <Option key={income.id} value={income.value}>
+                    {income.value}
+                  </Option>
+                  
+                ))}
+                </Select>
               </Form.Item>
             </Col>
           </Row>

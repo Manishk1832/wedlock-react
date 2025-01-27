@@ -12,8 +12,7 @@ import { FaWineGlassAlt } from "react-icons/fa";
 import Loading from "../Loading";
 import { FaUserGraduate } from "react-icons/fa";
 import { useMyDetailsQuery, useGetProfilePercentageQuery } from "../../Redux/Api/profile.api";
-
-
+import { useDispatch } from "react-redux";
 import "../../font.css";
 import ReligiouModel from "../user-dashboard-model/ReligiousModel";
 import FamilyModel from "../user-dashboard-model/FamilyModel";
@@ -23,19 +22,28 @@ import LocationBackgroundModal from "../user-dashboard-model/LocationBackgroundM
 import { RootState } from "./../../Redux/store";
 
 import { useSelector } from "react-redux";
+import { setMyDetails } from "../../Redux/Reducers/user.reducer";
 
-// import InterestHobbiesModal from "../user-dashboard-model/InterestHobbiesModal";
-// import LifestyleModel from "../user-dashboard-model/LifestyleModal";
-// import '../app/globals.css'
+
 
 const MyDetails = () => {
-  // const dispatch = useDispatch();
-  const {user } = useSelector((state: RootState) => state.userReducer) ;
+  const dispatch = useDispatch();
+
+  const {user,myDetails } = useSelector((state: RootState) => state.userReducer) ;
+
+
 
 
   const [Percentage, setProfilePercentage] = useState(0);
-  const { data: myDetails ,isLoading:isLoading} = useMyDetailsQuery<any>();
+  const { data: myDetailsData ,isLoading:isLoading} = useMyDetailsQuery<any>();
  
+
+  useEffect(() => {
+    if (myDetailsData) {
+      dispatch(setMyDetails(myDetailsData?.data[0]));
+    }
+  }, [myDetailsData, dispatch]); 
+  
 
 
 const [isExclusive, setIsExclusive] = useState(false);
@@ -50,19 +58,19 @@ const [isExclusive, setIsExclusive] = useState(false);
 
 
   const { data: profileData, isLoading: isprofileDataLoading ,refetch} = useGetProfilePercentageQuery();
-  console.log(myDetails?.data?.[0], "myDetails");
+ 
 
 
 
   useEffect(() => {
     const notificationData = {
-      userId: myDetails?.data[0].userId,
-      profileImage: myDetails?.data[0].profileImage[0],
-      name: `${myDetails?.data[0].basic_and_lifestye?.firstName} ${myDetails?.data[0].basic_and_lifestye?.lastName}`,
-      fcmToken: myDetails?.data[0].fcmToken,
+      userId: user?.userId,
+      profileImage: myDetails?.profileImage[0],
+      name: `${myDetails?.basic_and_lifestye?.firstName} ${myDetails?.basic_and_lifestye?.lastName}`,
+      fcmToken: myDetails?.fcmToken,
     };
 
-    if(myDetails?.data){
+    if(myDetails){
 
       localStorage.setItem("notificationData", JSON.stringify(notificationData));
 
@@ -181,7 +189,7 @@ const [isExclusive, setIsExclusive] = useState(false);
       ) : (
       <div className="min-w-screen flex min-h-screen flex-col gap-4 md:gap-10 lg:flex-row">
         <div className="mb-4 lg:grid grid-cols-1 gap-2 md:mb-0  auto-rows-[10rem] ">
-          {myDetails?.data[0]?.profileImage.map(
+          {myDetails?.profileImage.map(
             (imageUrl: string, index: number) => (
               <img
                 key={index}
@@ -218,26 +226,26 @@ const [isExclusive, setIsExclusive] = useState(false);
                 </div>
                 <div className="mt-2.5 flex flex-wrap py-6 items-center gap-2.5 self-start text-base font-medium  leading-4 text-slate-900">
                   <div className={ `self-stretch text-xl font-bold leading-10 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} lg:text-3xl`}>
-                    {myDetails?.data[0]?.basic_and_lifestye?.firstName +
+                    {myDetails?.basic_and_lifestye?.firstName +
                       " " +
-                      myDetails?.data[0]?.basic_and_lifestye?.lastName}
+                      myDetails?.basic_and_lifestye?.lastName}
                   </div>
                   <div className="my-auto justify-center self-stretch whitespace-nowrap rounded-[100px] bg-orange-100 px-3 py-1.5 text-center capitalize tracking-normal">
-                    {myDetails?.data[0]?.basic_and_lifestye?.gender}
+                    {myDetails?.basic_and_lifestye?.gender}
                   </div>
                   <div className="my-auto justify-center self-stretch whitespace-nowrap rounded-[100px] bg-orange-100 px-3 py-1.5 text-center capitalize tracking-normal">
-                    {myDetails?.data[0]?.basic_and_lifestye?.age}
+                    {myDetails?.basic_and_lifestye?.age}
                   </div>
                 </div>
                 <div className="mt-6 flex flex-col rounded-xl bg-cyan-600 bg-opacity-20 px-6 py-3 max-md:max-w-full max-md:px-5">
                   <div className="text-base font-bold leading-6 tracking-wide text-gray-900 text-opacity-90 max-md:max-w-full">
                     About{" "}
-                    {myDetails?.data[0]?.basic_and_lifestye?.firstName +
+                    {myDetails?.basic_and_lifestye?.firstName +
                       " " +
-                      myDetails?.data[0]?.basic_and_lifestye?.lastName}
+                      myDetails?.basic_and_lifestye?.lastName}
                   </div>
                   <div className="mt-4 text-sm leading-7 tracking-wide text-slate-600 max-md:max-w-full md:text-lg">
-                    {myDetails?.data[0].basic_and_lifestye?.about}
+                    {myDetails?.basic_and_lifestye?.about}
                   </div>
                 </div>
                 <div className="mt-4 flex flex-col px-2 max-md:max-w-full max-md:px-5 gap-3">
@@ -246,7 +254,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                       Religion
                     </div>
                     <div className="justify-center self-start whitespace-nowrap rounded-[100px] bg-blue-50 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-blue-600">
-                      {myDetails?.data[0].basic_and_lifestye?.religion}
+                      {myDetails?.basic_and_lifestye?.religion}
                     </div>
                   </div>
 
@@ -255,7 +263,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                       Marital status
                     </div>
                     <div className="justify-center self-start rounded-[100px] bg-orange-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-slate-900">
-                      {myDetails?.data[0].basic_and_lifestye?.maritalStatus}
+                      {myDetails?.basic_and_lifestye?.maritalStatus}
                     </div>
                   </div>
 
@@ -264,7 +272,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                       Posted by{" "}
                     </div>
                     <div className="justify-center self-start rounded-[100px] bg-purple-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-violet-600">
-                      {myDetails?.data[0].basic_and_lifestye?.postedBy}
+                      {myDetails?.basic_and_lifestye?.postedBy}
                     </div>
                   </div>
                 </div>
@@ -341,7 +349,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                   Father occupation
                 </div>
                 <div className="justify-center self-start whitespace-nowrap rounded-[100px] bg-blue-50 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-blue-600">
-                  {myDetails?.data[0]?.family_details?.fatherOccupation}
+                  {myDetails?.family_details?.fatherOccupation}
                 </div>
               </div>
               <div className="mt-4 flex justify-between gap-0 max-md:flex-wrap">
@@ -349,7 +357,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                   Mother occupation
                 </div>
                 <div className="justify-center self-start rounded-[100px] bg-neutral-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-slate-900">
-                  {myDetails?.data[0]?.family_details?.motherOccupation}
+                  {myDetails?.family_details?.motherOccupation}
                 </div>
               </div>
               <div className="mt-4 flex justify-between gap-0 max-md:flex-wrap">
@@ -357,7 +365,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                   Number of siblings
                 </div>
                 <div className="justify-center self-start rounded-[100px] bg-orange-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-slate-900">
-                  {myDetails?.data[0]?.family_details?.numberOfSiblings}
+                  {myDetails?.family_details?.numberOfSiblings}
                 </div>
               </div>
               <div className="mt-4 flex justify-between gap-4 max-md:max-w-full max-md:flex-wrap">
@@ -365,7 +373,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                   Living with family
                 </div>
                 <div className="justify-center self-start rounded-[100px] bg-purple-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-violet-600">
-                  {myDetails?.data[0]?.family_details?.livingWithFamily}
+                  {myDetails?.family_details?.livingWithFamily}
                 </div>
               </div>
               {/* </div> */}
@@ -408,7 +416,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                   </div>
                 </div>
                 <div className={`text-md ml-8 mt-2 justify-center self-start rounded-[100px] bg-blue-50 px-3 py-1.5 text-center font-medium capitalize leading-7 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} max-md:ml-2.5 md:text-md`}>
-                  {myDetails?.data[0]?.personal_background?.height}
+                  {myDetails?.personal_background?.height}
                 </div>
                 <div className="mt-6 flex items-center gap-1 whitespace-nowrap">
                   <div className={`text-xl leading-8 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} md:text-3xl`}>
@@ -419,7 +427,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                   </div>
                 </div>
                 <div className={`text-md ml-8 mt-2 justify-center self-start rounded-[100px] bg-blue-50 px-3 py-1.5 text-center font-medium capitalize leading-7 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} max-md:ml-2.5 md:text-md`}>
-                  {myDetails?.data[0]?.personal_background?.weight}
+                  {myDetails?.personal_background?.weight}
                 </div>
                 <div className="mt-6 flex items-center gap-1">
                   <div className={`text-xl leading-8 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} md:text-3xl`}>
@@ -430,7 +438,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                   </div>
                 </div>
                 <div className={`text-md ml-8 mt-2 flex justify-center gap-1.5 self-start rounded-[100px] border border-solid border-gray-200 bg-blue-50 bg-opacity-50 px-5 py-2 font-medium capitalize leading-7 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} max-md:ml-2.5 md:py-4 md:text-md`}>
-                  {myDetails?.data[0]?.personal_background?.bodyType}
+                  {myDetails?.personal_background?.bodyType}
                 </div>
                 <div className="mt-6 flex items-center gap-1 whitespace-nowrap text-xl leading-8 tracking-wide text-slate-600">
                   <div className={`text-xl leading-8 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} md:text-3xl`}>
@@ -442,7 +450,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                   </div>
                 </div>
                 <div className="text-md ml-8 mt-2 justify-center self-start rounded-[100px] bg-pink-50 px-3 py-1.5 text-center font-medium capitalize leading-7 text-pink-400 max-md:ml-2.5 md:text-md">
-                  {myDetails?.data[0]?.personal_background?.language}
+                  {myDetails?.personal_background?.language}
                 </div>
                 <div className="mt-6 flex items-center gap-1 text-xl leading-8 tracking-wide text-slate-600">
                   <div className={`text-xl leading-8 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} md:text-3xl`}>
@@ -455,7 +463,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                   </div>
                 </div>
                 <div className="text-md ml-9 mt-2 justify-center self-start rounded-[100px] bg-green-100 px-3 py-1.5 text-center font-medium capitalize leading-7 text-green-700 max-md:ml-2.5 md:text-md">
-                  {myDetails?.data[0]?.personal_background?.smokingHabbit}
+                  {myDetails?.personal_background?.smokingHabbit}
                 </div>
                 <div className="mt-6 flex items-center gap-1 text-xl leading-8 tracking-wide text-slate-600">
                   <div className={`text-xl leading-8 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} md:text-3xl`}>
@@ -469,7 +477,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                   </div>
                 </div>
                 <div className="text-md ml-7 mt-2 justify-center self-start rounded-[100px] bg-gray-200 px-3 py-1.5 text-center font-medium capitalize leading-7 text-slate-900 max-md:ml-2.5 md:text-md">
-                  {myDetails?.data[0]?.personal_background?.drinkingHabbit}
+                  {myDetails?.personal_background?.drinkingHabbit}
                 </div>
                 <div className="mt-6 flex items-center gap-1 whitespace-nowrap">
                   <div className={`text-xl leading-8 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} md:text-3xl`}>
@@ -480,7 +488,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                   </div>
                 </div>
                 <div className="text-md ml-8 mt-2 justify-center self-start whitespace-nowrap rounded-[100px] bg-neutral-100 px-3 py-1.5 text-center font-medium capitalize leading-7 text-slate-900 max-md:ml-2.5 md:text-md">
-                  {myDetails?.data[0]?.personal_background?.diet}
+                  {myDetails?.personal_background?.diet}
                 </div>
                 <div className="mt-6 flex items-center gap-2 whitespace-nowrap">
                   <div className={`text-xl leading-8 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} md:text-3xl`}>
@@ -491,7 +499,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                   </div>
                 </div>
                 <div className="text-md ml-8 mt-2 justify-center self-start rounded-[100px] bg-neutral-100 px-3 py-1.5 text-center font-medium capitalize leading-7 text-slate-900 max-md:ml-2.5 md:text-md">
-                  {myDetails?.data[0]?.personal_background?.complexion}
+                  {myDetails?.personal_background?.complexion}
                 </div>
               </div>
             </div>
@@ -530,7 +538,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                     Religion
                   </div>
                   <div className="justify-center self-start whitespace-nowrap rounded-[100px] bg-blue-50 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-blue-600">
-                    {myDetails?.data[0]?.religious_background?.religion}
+                    {myDetails?.religious_background?.religion}
                   </div>
                 </div>
                 <div className="mt-4 flex justify-between gap-0 max-md:flex-wrap">
@@ -538,7 +546,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                     Sub community
                   </div>
                   <div className="justify-center self-start rounded-[100px] bg-orange-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-slate-900">
-                    {myDetails?.data[0]?.religious_background?.subCommunity}
+                    {myDetails?.religious_background?.subCommunity}
                   </div>
                 </div>
                 <div className="mt-4 flex justify-between gap-0 font-normal max-md:flex-wrap">
@@ -546,7 +554,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                     Community
                   </div>
                   <div className="justify-center self-start rounded-[100px] bg-purple-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-violet-600">
-                    {myDetails?.data[0]?.religious_background?.community}
+                    {myDetails?.religious_background?.community}
                   </div>
                 </div>
 
@@ -555,7 +563,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                     Gothra/Gothram
                   </div>
                   <div className="justify-center self-start rounded-[100px] bg-pink-50 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-pink-400 ">
-                    {myDetails?.data[0]?.religious_background?.gothra}
+                    {myDetails?.religious_background?.gotra}
                   </div>
                 </div>
 
@@ -564,7 +572,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                     Time of Birth
                   </div>
                   <div className="justify-center self-start rounded-[100px] bg-pink-50 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-pink-400">
-                    {myDetails?.data[0]?.religious_background?.timeOfBirth}
+                    {myDetails?.religious_background?.timeOfBirth}
                   </div>
                 </div>
 
@@ -573,7 +581,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                     Date of Birth
                   </div>
                   <div className="justify-center self-start rounded-[100px] bg-pink-50 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-pink-400">
-                    {myDetails?.data[0]?.religious_background?.dateOfBirth}
+                    {myDetails?.religious_background?.dateOfBirth}
                   </div>
                 </div>
 
@@ -582,7 +590,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                     Place of Birth
                   </div>
                   <div className="justify-center self-start rounded-[100px] bg-pink-50 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-pink-400">
-                    {myDetails?.data[0]?.religious_background?.placeOfBirth}
+                    {myDetails?.religious_background?.placeOfBirth}
                   </div>
                 </div>
 
@@ -591,7 +599,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                     Mother Tongue
                   </div>
                   <div className="justify-center self-start whitespace-nowrap rounded-[100px] bg-green-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-green-700">
-                    {myDetails?.data[0]?.religious_background?.motherTongue}
+                    {myDetails?.religious_background?.motherTongue}
                   </div>
                 </div>
               </div>
@@ -625,20 +633,42 @@ const [isExclusive, setIsExclusive] = useState(false);
               </div>
             </div>
             <div className="mt-6 flex flex-col px-6 max-md:max-w-full max-md:px-5">
+
+            <div className="flex justify-between gap-0 max-md:flex-wrap">
+                <div className="text-md flex-1 font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
+                  Country
+                </div>
+                <div className="justify-center self-start whitespace-nowrap rounded-[100px] bg-blue-50 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-blue-600">
+                  {myDetails?.location_background?.country}
+                </div>
+              </div>
+
+              <div className="mt-4 mb-4 flex justify-between gap-0 max-md:flex-wrap">
+                <div className="text-md flex-1 font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
+                State
+                </div>
+                <div className="justify-center self-start rounded-[100px] bg-purple-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-violet-600">
+                  {myDetails?.location_background?.state ||
+                    "Not Specified"}
+                </div>
+              </div>
+
+
               <div className="flex justify-between gap-0 max-md:flex-wrap">
                 <div className="text-md flex-1 font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
                   Current location
                 </div>
                 <div className="justify-center self-start whitespace-nowrap rounded-[100px] bg-blue-50 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-blue-600">
-                  {myDetails?.data[0]?.location_background?.currentLocation}
+                  {myDetails?.location_background?.currentLocation}
                 </div>
+
               </div>
               <div className="mt-4 flex justify-between gap-0 max-md:flex-wrap">
                 <div className="text-md flex-1 font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
                   City of residence
                 </div>
                 <div className="justify-center self-start rounded-[100px] bg-purple-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-violet-600">
-                  {myDetails?.data[0]?.location_background?.cityOfResidence ||
+                  {myDetails?.location_background?.cityOfResidence ||
                     "Not Specified"}
                 </div>
               </div>
@@ -647,7 +677,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                   Nationality
                 </div>
                 <div className="justify-center self-start rounded-[100px] bg-orange-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-slate-900">
-                  {myDetails?.data[0]?.location_background?.nationality}
+                  {myDetails?.location_background?.nationality}
                 </div>
               </div>
               <div className="mt-4 flex justify-between gap-4 max-md:max-w-full max-md:flex-wrap">
@@ -655,7 +685,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                   Citizenship
                 </div>
                 <div className="justify-center self-start rounded-[100px] bg-pink-50 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-pink-400">
-                  {myDetails?.data[0]?.location_background?.citizenShip}
+                  {myDetails?.location_background?.citizenShip}
                 </div>
               </div>
               <div className="mt-4 flex justify-between gap-4 max-md:max-w-full max-md:flex-wrap">
@@ -663,7 +693,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                   Residency visa status
                 </div>
                 <div className="justify-center self-start whitespace-nowrap rounded-[100px] bg-green-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-green-700">
-                  {myDetails?.data[0]?.location_background?.residencyVisaStatus}
+                  {myDetails?.location_background?.residencyVisaStatus}
                 </div>
               </div>
             </div>
@@ -692,7 +722,7 @@ const [isExclusive, setIsExclusive] = useState(false);
               </div>
 
               <div className="mt-4 flex  gap-2.5 whitespace-nowrap  capitalize tracking-wide max-md:pr-5 flex-wrap">
-                {myDetails?.data[0]?.interest_and_hobbies?.map(
+                {myDetails?.interest_and_hobbies?.map(
                   (interest: string) => (
                     <div
                       key={interest}
@@ -742,7 +772,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                     <div>Qualification</div>
                   </div>
                   <div className="justify-center rounded-[100px] bg-orange-100 px-3 py-1.5 text-center text-[12px] font-medium capitalize leading-7 text-slate-900 md:text-md">
-                    {myDetails?.data[0]?.education_and_financial?.qualification}
+                    {myDetails?.education_and_financial?.qualification}
                   </div>
                 </div>
 
@@ -751,10 +781,10 @@ const [isExclusive, setIsExclusive] = useState(false);
                     <span className={`${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'}`}>
                       <FaUserGraduate />
                     </span>
-                    <div>Education</div>
+                    <div>Occupation</div>
                   </div>
                   <div className="justify-center rounded-[100px] bg-orange-100 px-3 py-1.5 text-center text-[12px] font-medium capitalize leading-7 text-slate-900 md:text-md">
-                    {myDetails?.data[0]?.education_and_financial?.education}
+                    {myDetails?.education_and_financial?.occupation}
                   </div>
                 </div>
 
@@ -766,7 +796,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                     <div>Working Status</div>
                   </div>
                   <div className="justify-center rounded-[100px] bg-orange-100 px-3 py-1.5 text-center text-[12px] font-medium capitalize leading-7 text-slate-900 md:text-md">
-                    {myDetails?.data[0]?.education_and_financial?.workingStatus}
+                    {myDetails?.education_and_financial?.workingStatus}
                   </div>
                 </div>
 
@@ -780,7 +810,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                   <div className="justify-center rounded-[100px] bg-orange-100 px-3 py-1.5 text-center text-[12px] font-medium capitalize leading-7 text-slate-900 md:text-md">
                     
                     <span className="">
-                      {myDetails?.data[0]?.education_and_financial?.income}
+                      {myDetails?.education_and_financial?.income}
                     </span>
                   </div>
                 </div>
