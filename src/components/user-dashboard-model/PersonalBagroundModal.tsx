@@ -212,7 +212,7 @@ const ReligiouModel: React.FC<PersonalBagroundModelProps> = ({
                 
                   <Select placeholder="Select Weight" defaultValue={`${myDetails?.personal_background?.weight} kg`}>
                     {Array.from({ length: 100 }, (_, index) => index + 41).map((weight) => (
-                      <Select.Option key={weight} value={weight}>
+                      <Select.Option key={weight} value={weight + " kg"}>
                         {weight} kg
                       </Select.Option>
                     ))}

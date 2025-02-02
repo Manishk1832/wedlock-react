@@ -110,7 +110,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profiles, isFavourite, handle
           <img
             src={data?.profileImages?.[0] ? data.profileImages[0] : 'path/to/default-image.jpg'}
             alt="p"
-            className={`absolute h-full w-full rounded-2xl object-cover ${getBlurStyle(user?.usertype || '', data.userType)}`}          />
+            className={`absolute h-full w-full rounded-2xl object-cover ${getBlurStyle(user?.usertype || '', data.userType)}`}  />
 
           <div
             className={`relative p-5 text-white ${data.userType !== "Standard" ? "space-y-[12.5rem]" : ""} h-full space-y-[13.5rem] rounded-2xl bg-black bg-opacity-45`}
@@ -141,8 +141,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profiles, isFavourite, handle
           >
             <FaRegStar className="text-2xl" />
           </button>
-
-
                }
 
             </div>
@@ -177,14 +175,14 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profiles, isFavourite, handle
                   <h1 className="font-semibold">{data.maritalStatus}</h1>
                 </div>
               </div>
-              <div className="w-40 rounded-full bg-[#F0F5FF] px-2 text-[#0B63E5]">
+              <div className="w-max rounded-full bg-[#F0F5FF] px-2 text-[#0B63E5]">
                 <h1
                   className="flex items-center justify-around"
                   style={{ fontFamily: "Proxima-Nova-Semibold, sans-serif" }}
                 >
                   {" "}
-                  <FaRegMap />
-                  {` ${data.country } ${data.state}`}
+                  <FaRegMap className="mr-2" />
+                  {` ${data.country } - ${data.state}`}
                 </h1>
               </div>
             </div>

@@ -64,8 +64,11 @@ export interface ProfilePercentage {
     }),
 
     getProfiles : builder.query({
-      query: () => ({
+      query: (filters) => ({
         url: 'profile/getProfiles',
+        method: 'GET',
+        params: filters,
+
       }),
     }),
 

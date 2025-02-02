@@ -76,11 +76,6 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
   const { data: qualificationData, isLoading: isQualificationLoading } = useGetQualificationQuery();
   const {data: maritalStatusData , isLoading:isMaritalStatusLoading} = useGetMaritalStatusQuery();
 
-
-
-
-
-
   const [communities, setcommunities] = useState<{ id: string; value: string }[]>([]);
   const [diet, setDiet] = useState<{ id: string; value: string }[]>([]);
   const [ethnicity, setEthnicity] = useState<{ id: string; value: string }[]>([]);
@@ -179,25 +174,26 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
 
 
   const handleFormSubmit = async (values: any) => {
-
-    const data = {
-      ageRange: `${values.ageMin} - ${values.ageMax}`,
-      heightRange: `${values.heightMin} - ${values.heightMax}`,
-      income: values.income,
-      religion: values.religion,
-      ethnicity: values.ethnicity,
-      highestQualification: values.highestQualification,
-      smokingHabbit: values.smokingHabits,
-      workingWith: values.workingWith,
-      maritalStatus: values.maritalStatus,
-      eatingHabbits: values.eatingHabits,
-      community: values.community,
-    };
-
+    const data: any = {};
+  
+    if (values.ageMin && values.ageMax) data.ageRange = `${values.ageMin}-${values.ageMax}`;
+    if (values.heightMin && values.heightMax) data.height = `${values.heightMin}-${values.heightMax}`;
+    if (values.income) data.income = values.income;
+    if (values.religion) data.religion = values.religion;
+    if (values.ethnicity) data.ethnicity = values.ethnicity;
+    if (values.qualification) data.qualification = values.qualification;
+    if (values.smokingHabits) data.smokingHabbit = values.smokingHabits;
+    if (values.occupation) data.occupation = values.occupation;
+    if (values.maritalStatus) data.maritalStatus = values.maritalStatus;
+    if (values.eatingHabits) data.eatingHabbits = values.eatingHabits;
+    if (values.caste) data.caste = values.caste;
+  
+    console.log(data);
+  
     onFormSubmit(data);
     onClose();
-
   };
+  
 
 
 
@@ -388,7 +384,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
         </Form.Item>
 
         <Form.Item
-          name="hasChildren"
+          name="maritalStatus"
           label={
             <label
               style={{
@@ -526,7 +522,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
           </Col>
           <Col >
             <Form.Item
-              name={"highestQualification"}
+              name={"qualification"}
               label={
                 <label
                   style={{
@@ -621,7 +617,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
           style={{ display: "flex", flexDirection: "column" }}
         >
           <Form.Item
-            name={"workingWith"}
+            name={"occupation"}
             label={
               <label
                 style={{
@@ -763,7 +759,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
         </Row>
 
         <Form.Item
-          name={"community"}
+          name={"caste"}
           label={
             <label
               style={{
