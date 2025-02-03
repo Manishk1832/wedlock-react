@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from "react";
 
 interface AdviceCardProps {
   imageSrc: string;
@@ -6,28 +6,35 @@ interface AdviceCardProps {
   hoverContent: React.ReactNode;
 }
 
-const AdviceCard = ({ imageSrc, title, hoverContent } : AdviceCardProps) => {
+const AdviceCard = ({ imageSrc, title, hoverContent }: AdviceCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div
-      className={`rounded border-2 border-[#E6E8EC] px-4 space-y-[8px] ${
-        isHovered ? 'hover:border-none hover:shadow-2xl py-4' : ''
+      className={`relative rounded-lg border-2 border-[#E6E8EC] px-4 py-4 space-y-3 transition-all duration-300 ${
+        isHovered ? "shadow-2xl border-transparent" : ""
       }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <img src={imageSrc} alt="Project" className="xl:w-[100%]" />
+      <div className="relative w-full">
+        <img
+          src={imageSrc}
+          alt="Advice"
+          className="w-full h-auto object-cover rounded-md transition-transform duration-300"
+        />
+      </div>
       <h1
-        className="text-[#061C3D] text-[24px] leading-[32px] font-normal"
-        style={{ fontFamily: 'Proxima-Nova-Regular' }}
+        className="text-[#061C3D] text-xl font-medium"
+        style={{ fontFamily: "Proxima-Nova-Regular" }}
       >
         {title}
       </h1>
-      
+
+      {/* Hover Content */}
       {isHovered && (
-        <div className="hover-content text-[#061C3D]">
-          {hoverContent}
+        <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-90 p-4 rounded-lg transition-opacity duration-300">
+          <div className="text-[#061C3D] text-center">{hoverContent}</div>
         </div>
       )}
     </div>
