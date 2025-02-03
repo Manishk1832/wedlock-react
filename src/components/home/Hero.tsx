@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 // import heroImg from "../../assets/bg.png";
-import heroImg from "../../assets/Wedlock-Homepage.jpg";
+import heroImg from "../../assets/Banner-2.jpg";
 
 function Hero() {
   return (
