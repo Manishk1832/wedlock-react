@@ -21,7 +21,7 @@ const Mission = () => {
 
           </div>
        
-           <div className="bg-[#007EAF] text-white p-16">
+           <div className="bg-[#007EAF] text-white px-4 md:px-28 lg:px-40 3xl:px-60 py-16">
           <div className="container mx-auto text-center lg:px-10">
             <h1 className="text-4xl font-bold mb-6">Relationships are at the core of everything we do.</h1>
             <p className="text-lg mb-12">
@@ -50,7 +50,7 @@ const Mission = () => {
     
           {/* value in action  */}
     
-          <div className="bg-[#F5F4F4] text-[#061C3D] font-lato py-16 px-14 md:px-32">
+          <div className="bg-[#F5F4F4] text-[#061C3D] font-lato px-4 md:px-28 lg:px-40 3xl:px-60 py-16">
           <div className="container mx-auto ">
             <h1 className="text-4xl font-bold mb-4">Learn More About Our Commitments  </h1>
             <p className="text-lg mb-12">
@@ -86,7 +86,7 @@ const Mission = () => {
     
           {/* wedlock difference */}
     
-          <div className="bg-white text-[#061C3D] py-12 px-14 md:px-32">
+          <div className="bg-white text-[#061C3D] py-12 px-4 md:px-28 lg:px-40 3xl:px-60 py-16">
           <div className="container mx-auto ">
             <h2 className="text-3xl font-bold mb-4 lg:px-[5%]">The Wedlock Difference</h2>
             <p className="text-lg mb-12 text-gray-600 lg:px-[5%]">Our unique combination of features work together to foster long term genuine connections.

@@ -3,14 +3,11 @@ import FAQ from "../../components/faqs/Faqs.tsx";
 
 const comparison = () => {
   return (
-    <div className="container  ">
+    <div className="  ">
         <div className="">
         <Subscription />
         </div>
-        <div>
-            <FAQ />
-
-        </div>
+       
       
     </div>
   )
