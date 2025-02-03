@@ -11,26 +11,16 @@ const Mission = () => {
                 At Wedlock Australia, our mission is to help you find meaningful connections that lead to lifelong happiness. We’re committed to fostering a safe, respectful, and inclusive platform where users can explore relationships that align with their personal values, preferences, and cultural backgrounds. By leveraging advanced technology and compassionate support, we strive to redefine the matchmaking experience, making it easier for everyone to find companionship and create lasting memories. We are here to support you every step of the way as you embark on this important journey.
               </p>
             </div>
-            <div className="ml-[11%] m-auto xl:m-0 w-[100%]">
-              <img
-                src="/Mission.jpg"
-                alt="mission
-                "
-                className="lg:h-[40rem] xl:h-full xl-w-full  w-[100%]"
-              />
-            </div>
+            <div className="w-full">
+  <img
+    src="/Mission.jpg"
+    alt="mission"
+    className="w-full h-auto sm:h-[30rem] md:h-[35rem] lg:h-[40rem] xl:h-[50rem] object-cover"
+  />
+</div>
+
           </div>
-          {/* relationship */}
-    
-          {/* <div className="bg-white h-96">
-            <div className="bg-[url('/mBG.svg')] bg-cover h-96  text-white">
-              <div className="bg-[url('/Shape.svg')]">
-                <div>
-                  <h1>Relationships are at the core of everything we do.</h1>
-                </div>
-              </div>
-            </div>
-          </div> */}
+       
            <div className="bg-[#007EAF] text-white p-16">
           <div className="container mx-auto text-center lg:px-10">
             <h1 className="text-4xl font-bold mb-6">Relationships are at the core of everything we do.</h1>

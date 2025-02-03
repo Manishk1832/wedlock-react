@@ -11,21 +11,21 @@ const AdviceCard = ({ imageSrc, title, hoverContent }: AdviceCardProps) => {
 
   return (
     <div
-      className={`relative rounded-lg border-2 border-[#E6E8EC] px-4 py-4 space-y-3 transition-all duration-300 ${
+      className={`relative rounded-lg border-2 border-[#E6E8EC] p-4 space-y-3 transition-all duration-300 ${
         isHovered ? "shadow-2xl border-transparent" : ""
       }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="relative w-full">
+      <div className="relative w-full h-[180px] sm:h-[200px] md:h-[220px] lg:h-[250px] xl:h-[280px]">
         <img
           src={imageSrc}
           alt="Advice"
-          className="w-full h-auto object-cover rounded-md transition-transform duration-300"
+          className="w-full h-full object-cover rounded-md transition-transform duration-300"
         />
       </div>
       <h1
-        className="text-[#061C3D] text-xl font-medium"
+        className="text-[#061C3D] text-lg sm:text-xl md:text-2xl font-medium"
         style={{ fontFamily: "Proxima-Nova-Regular" }}
       >
         {title}
@@ -34,7 +34,9 @@ const AdviceCard = ({ imageSrc, title, hoverContent }: AdviceCardProps) => {
       {/* Hover Content */}
       {isHovered && (
         <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-90 p-4 rounded-lg transition-opacity duration-300">
-          <div className="text-[#061C3D] text-center">{hoverContent}</div>
+          <div className="text-[#061C3D] text-center text-sm sm:text-base md:text-lg">
+            {hoverContent}
+          </div>
         </div>
       )}
     </div>
