@@ -7,7 +7,7 @@ const question = [
     text: "I am age",
     summary:
       "Knowing your age allows us to create matches that are compatible and appropriate for your life stage",
-    options: ["18", "19", "20", "21", "22", "23", "24", "26"],
+    options: Array.from({ length: 85 - 18 + 1 }, (_, i) => String(i + 18)),
   },
 ];
 
@@ -24,7 +24,6 @@ const Question6: React.FC<QuestionProps> = ({ selectedOptions, handleOptionChang
     label: option,
   }));
 
-  // Find the selected option for the specific question ID
   const selectedOption = selectedOptions.find(
     (selected) => selected.questionId === question[0].id
   );

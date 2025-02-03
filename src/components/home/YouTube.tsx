@@ -21,7 +21,8 @@ const YouTube = () => {
 
         <div className='mt-10'>
 
-        <iframe className='w-full h-[calc(100vh-4rem)]' src="https://www.youtube.com/embed/88kzxvrR22A?si=1wWkr4LJbRSFmuxb" title="YouTube video player"  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  ></iframe>
+        <iframe width="1236" height="695" src="https://www.youtube.com/embed/g9SKCSIO3dw" title="Wedlock" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+
         </div>
 
 

@@ -18,9 +18,9 @@ const question = [
     text: "I am looking for a partner of age",
     summary:
       "Specifying the age range of your ideal partner helps us connect you with individuals who match your preferences",
-    options: ["18", "19", "20", "21", "22", "23"],
+      options: Array.from({ length: 85 - 18 + 1 }, (_, i) => String(i + 18)),
     text2: "to",
-    options1: ["18", "19", "20", "21", "22", "23"],
+    options1: Array.from({ length: 85 - 18 + 1 }, (_, i) => String(i + 18)),
   },
 ];
 

@@ -1,5 +1,5 @@
 import Subscription from "../../components/Subscription/Subscription"
-import FAQ from "../../components/faqs/Faqs.tsx";
+
 
 const comparison = () => {
   return (
