@@ -11,12 +11,12 @@ const Mission = () => {
                 At Wedlock Australia, our mission is to help you find meaningful connections that lead to lifelong happiness. We’re committed to fostering a safe, respectful, and inclusive platform where users can explore relationships that align with their personal values, preferences, and cultural backgrounds. By leveraging advanced technology and compassionate support, we strive to redefine the matchmaking experience, making it easier for everyone to find companionship and create lasting memories. We are here to support you every step of the way as you embark on this important journey.
               </p>
             </div>
-            <div className="ml-[11%] m-auto w-[77%]">
+            <div className="ml-[11%] m-auto xl:m-0 w-[100%]">
               <img
-                src="/mission.jpg"
+                src="/Mission.jpg"
                 alt="mission
                 "
-                className="lg:h-[40rem] w-[100%]"
+                className="lg:h-[40rem] xl:h-full xl-w-full  w-[100%]"
               />
             </div>
           </div>
