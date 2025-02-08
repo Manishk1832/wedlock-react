@@ -44,13 +44,13 @@ function Hero() {
          */}
         </div>
         <div
-          className="absolute bottom-0 right-0 sm:pt-40 md:bottom-40 md:left-[8rem] xl:bottom-60   xl:left-[70rem] 2xl:left-[70rem] hidden md:block 3xl:ml-[18%]  "
+          className="absolute bottom-40 right-4 sm:pt-40  md:bottom-[15rem] md:right-[4rem] xl:bottom-60   xl:right-[4rem] 2xl:rigth-[4rem]  3xl:ml-[18%]  "
           style={{ transform: "translateY(50%)" }}
         >
           <div className="flex flex-col items-center gap-2  w-[24rem]   ">
             <p
-              className="text-[18px]  mt-[12rem] italic "
-              style={{ fontFamily: "Proxima-Nova-Thin, sans-serif" }}
+              className="text-[18px]  mt-[12rem] italic font-Proxima-Nova-Light "
+              
             >
               All photos are used for illustrative purposes only.
             </p>

@@ -35,8 +35,8 @@ const Navbar: React.FC = () => {
     "/plan",
     "/services",
     "/subscription-tiers"
-
   ].includes(pathname);
+
   const hiddenRoutes = [
     "/verification",
     "/register",
@@ -59,6 +59,7 @@ const Navbar: React.FC = () => {
     "/cancel",
     "/exclusive",
   ];
+
   const isHiddenRoute = hiddenRoutes.some((route) =>
     pathname.startsWith(route)
   );
@@ -76,9 +77,9 @@ const Navbar: React.FC = () => {
       >
         <div className={`${isBlueBgRoute ? " " : " bg-[#007eb0] "}`}></div>
         <div className="flex justify-between items-center container w-full m-auto">
-          <div className="flex  xl:px-16 items-center justify-between w-full">
-            <div className="text-white   hidden md:flex">
-              <ul className="hidden md:flex gap-5 sm:mt-7 md:mt-0 text-[22px] font-Proxima-Nova-SemiBold">
+          <div className="flex items-center justify-between w-full">
+            <div className="text-white hidden md:flex flex-1 justify-center">
+              <ul className="flex gap-5 text-[22px] font-Proxima-Nova-SemiBold">
                 <li>
                   <Link to="/mission">Mission</Link>
                 </li>
@@ -90,17 +91,16 @@ const Navbar: React.FC = () => {
                 </li>
               </ul>
             </div>
-            <div className="px-0 ">
+            <div className="flex justify-center flex-1">
               <Link to={"/"}>
                 <img
                   src="/newlogo.png"
                   alt="logo"
-                  className="w-[10rem] h-[4rem] px-0 xl:w-[18rem] xl:h-[6rem] "
+                  className="w-[10rem] h-[4rem] xl:w-[18rem] xl:h-[6rem]"
                 />
               </Link>
             </div>
-
-            <div className="flex gap-5 items-start justify-center">
+            <div className="flex gap-5 items-center justify-end flex-1">
               {accessToken ? (
                 <button className="flex items-center justify-center md:gap-3 md:text-[24px] text-white md:rounded-full rounded-3xl border-white font-bold border md:w-[170px] md:h-[69px] px-3 hidden">
                   Dashboard
@@ -109,20 +109,18 @@ const Navbar: React.FC = () => {
                 <button
                   className={`flex items-center justify-center ${
                     isBlueBgRoute ? "hidden" : "block"
-                  } md:gap-3 md:text-[24px] text-white  font-Proxima-Nova-SemiBold md:rounded-full rounded-3xl border-white font-bold border md:w-[170px] md:h-[69px] px-3 `}
+                  } md:gap-3 md:text-[24px] text-white font-Proxima-Nova-SemiBold md:rounded-full rounded-3xl border-white font-bold border md:w-[170px] md:h-[69px] px-3`}
                   onClick={openLogin}
                 >
                   Login
                   <RiArrowDropDownLine className="text-5xl" />
                 </button>
               )}
-
               <img
                 src="/Aus.svg"
                 alt="lang"
                 className={`hidden md:block w-10 h-12`}
               />
-
               <button className="md:hidden text-3xl" onClick={toggleSidebar}>
                 <GiHamburgerMenu />
               </button>
@@ -140,7 +138,6 @@ const Navbar: React.FC = () => {
             <Link to={"/"}>
               <img src="/Logo.png" alt="logo" className="w-36 h-10" />
             </Link>
-
             <button className="text-3xl text-white" onClick={toggleSidebar}>
               <RiCloseLine />
             </button>

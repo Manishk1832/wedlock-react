@@ -14,7 +14,6 @@ const Footer = () => {
     "/login",
     "/forgot-password",
     "/discover",
-    "/contact",
     "/change-password",
     "/verification",
     "/user",
@@ -23,7 +22,6 @@ const Footer = () => {
     "/personal",
     "/location",
     "/profile",
-    "/contact",
     "/other-details",
     "/qualification",
     "/successfully",
@@ -48,6 +46,8 @@ const Footer = () => {
       behavior: "smooth",
     });
   };
+
+  const currentYear = new Date().getFullYear();
 
   return (
     <div className="w-full h-auto bg-[#2A2A2A] 8xl:px-32 3xl:px-56 xl:px-24 7xl:px-40">
@@ -138,7 +138,7 @@ const Footer = () => {
         </div>
         <div className="flex flex-col md:flex-row  items-center md:items-end justify-between mt-4">
           <div style={{ fontFamily: 'Proxima-Nova-Regular, sans-serif' }}>
-            <h1 className="font-semibold text-base md:text-lg">
+            <h1 className="font-semibold text-base md:text-lg ">
               <i>Connecting Hearts Worldwide</i>
             </h1>
             <p className="text-xs md:text-sm pb-4 text-balance md:pb-0">
@@ -147,7 +147,7 @@ const Footer = () => {
           </div>
           <div className="flex flex-col items-center md:items-end text-center md:text-left">
             <h1 className="text-xs sm:text-sm md:text-base" style={{ letterSpacing: '3%', lineHeight: '22px', fontFamily: 'Proxima-Nova-Regular, sans-serif' }}>
-              © 2024 Wedlock Global Services (Australia) Pty Ltd. All rights reserved.
+              © {currentYear} Wedlock Global Services (Australia) Pty Ltd. All rights reserved.
             </h1>
             <h2 className="text-xs sm:text-sm md:text-base" style={{ letterSpacing: '3%', lineHeight: '22px', fontFamily: 'Proxima-Nova-Regular, sans-serif' }}>
               ABN: 36 679 422 738

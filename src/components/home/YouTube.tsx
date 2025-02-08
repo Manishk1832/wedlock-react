@@ -19,11 +19,21 @@ const YouTube = () => {
         </p>
         <h4 className='text-[20px]  md:text-[24px] lg:text-[20px] xl:text-[28px] text-[#007EAF] pt-10 font-[Proxima-Nova-SemiBold] leading-[32px]  '>Get a sneek peek:</h4>
 
-        <div className='mt-10'>
+      
+        <div className="mt-10 aspect-video">
+  <iframe
+    className="w-full h-full"
+    src="https://www.youtube.com/embed/g9SKCSIO3dw?rel=0&modestbranding=1&showinfo=0"
+    title="Wedlock"
+    frameBorder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerPolicy="strict-origin-when-cross-origin"
+    allowFullScreen
+  ></iframe>
+</div>
 
-        <iframe width="1236" height="695" src="https://www.youtube.com/embed/g9SKCSIO3dw" title="Wedlock" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
 
-        </div>
+
 
 
     </div>

@@ -10,7 +10,7 @@ const Ai = () => {
           alt="Curve"
           className="absolute w-[40rem] rotate-12 -right-10 -top-32"
         />
-        <div className="relative space-y-48 text-white md:space-y-40 md:px-20 mt-10 px-4  ">
+        <div className="relative space-y-48 text-white md:space-y-40 md:px-20 mt-4 px-4  ">
           <div className="relative space-y-10 lg:pr-20 ">
             <h1
               className=" text-[32px] md:text-[48px] xl:text-[64px]  xl:leading-[83.2px] font-[Proxima-Nova-Bold] tracking-[-0.02em] "

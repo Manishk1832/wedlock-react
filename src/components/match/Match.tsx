@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { CiMap } from "react-icons/ci";
 import { IoLanguage } from "react-icons/io5";
 import { FaSmoking } from "react-icons/fa";
@@ -26,40 +26,123 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
 import { RootState } from "./../../Redux/store";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-
+import ProfileSection from "./profileSection";
 interface MatchProps {
   userId: string;
 }
 
 const Match: React.FC<MatchProps> = ({ userId }) => {
-  const { user } = useSelector((state: RootState) => state.userReducer);
-
   const dispatch = useDispatch();
-
+  const { user } = useSelector((state: RootState) => state.userReducer);
   const { connectionStatus, connectionType } = useSelector(
     (state: RootState) => state.connectionReducer
   );
- 
+
+  const icons = {
+
+    Qualification: <FaUserGraduate />,
+    Occupation: <FaUserGraduate />,
+    "Working Status": <FaUserGraduate />,
+    Income: <FaUserGraduate />,
+  };
 
   const [profileData, setProfileData] = useState<any>([]);
-  const [isExclusive, setIsExclusive] = useState(false);
-
-  const [userByid, { isLoading, isSuccess, isError }] = useUserByidMutation();
-  const [cancel,{isLoading:isLoadingCancel}] = useCancelConnectionMutation();
+  const [userByid, { isLoading, isError }] = useUserByidMutation();
+  const [cancel, { isLoading: isLoadingCancel }] = useCancelConnectionMutation();
   const [remove, { isLoading: isLoadingRemove }] = useRemoveConnectionMutation();
   const [accept, { isLoading: isLoadingAccept }] = useAcceptConnectionMutation();
   const [create, { isLoading: isLoadingConnection }] = useCreateConnectionMutation();
   const [sendNotification] = useSendNotifcationMutation();
-  const [getConnectionStatus, { isLoading: isLoadingConnectionStatus }] =
-    useGetConnectionStatusMutation();
+  const [getConnectionStatus, { isLoading: isLoadingConnectionStatus }] = useGetConnectionStatusMutation();
+
+  // Memoize `isExclusive` for efficient computation
+  const isExclusive = useMemo(() => {
+    return localStorage.getItem("isExclusive") === "true" || user?.usertype === "Exclusive";
+  }, [user?.usertype]);
+
+  // Memoize notificationData to prevent unnecessary `localStorage` parsing
+  const notificationData = useMemo(() => {
+    return JSON.parse(localStorage.getItem("notificationData") || "null");
+  }, []);
+
+  // Fetch profile data only when userId changes
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const response = await userByid(userId).unwrap();
+        setProfileData(response.data[0]);
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+      }
+    };
+
+    fetchProfileData();
+  }, [userId, userByid]);
+
+  // Fetch connection status only when userId changes
+  const getStatus = useCallback(async (userId: string) => {
+    try {
+      const response = await getConnectionStatus(userId).unwrap();
+      if (response.success) {
+        dispatch(setConnectionStatus(response.data));
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      console.error("Failed to fetch connection status:", error);
+    }
+  }, [getConnectionStatus, dispatch]);
 
   useEffect(() => {
-    const isExclusive = localStorage.getItem("isExclusive");
-    if (isExclusive === "true" || user?.usertype === "Exclusive") {
-      setIsExclusive(true);
+    getStatus(userId);
+  }, [userId, getStatus]);
+
+  // Connection Actions (Memoized)
+  const createConnection = useCallback(async (userId: string) => {
+    try {
+      const response = await create(userId).unwrap();
+
+      if (response.error) {
+        toast.error(response.message);
+        return;
+      }
+      toast.success("Connection request sent successfully!");
+
+      if (!notificationData) {
+        console.error("Notification data is not available");
+        return;
+      }
+
+      await sendNotification({
+        token: profileData?.fcmToken,
+        title: "Connection Request",
+        body: "You have a new connection request",
+        data: {
+          type: "connection",
+          receiverId: String(userId),
+          receiverFCM: String(profileData?.fcmToken),
+          senderId: String(user?.userId),
+          senderImage: String(notificationData?.profileImage),
+          senderFCM: String(notificationData?.fcmToken),
+          senderName: String(notificationData?.name),
+        },
+      });
+
+      getStatus(userId);
+    } catch (error) {
+      toast.error("Failed to create connection. Please try again later.");
     }
-    [];
-  });
+  }, [create, sendNotification, profileData, notificationData, user?.userId, getStatus]);
+
+  const cancelConnection = useCallback(async (userId: string) => {
+    try {
+      await cancel(userId).unwrap();
+      toast.success("Connection canceled successfully!");
+      getStatus(userId);
+    } catch (error) {
+      toast.error("Failed to cancel connection. Please try again later.");
+    }
+  }, [cancel, getStatus]);
 
   const getBlurStyle = (
     currentUserType: string,
@@ -85,168 +168,42 @@ const Match: React.FC<MatchProps> = ({ userId }) => {
     return "";
   };
 
-
-  interface NotificationData {
-    userId: string;
-    profileImage: string;
-    fcmToken: string;
-    name: string;
-  }
-
-  type ApiResponse = {
-    success: boolean;
-    message: string;
-    data?: any;
-  };
-
-  useEffect(() => {
-    const fetchProfileData = async () => {
-      try {
-        const response = await userByid(userId).unwrap();
-        setProfileData(response.data);
-      } catch (error) {
-        console.error("Failed to fetch user data:", error);
-      }
-    };
-
-    fetchProfileData();
-  }, [userId]);
-
-  const getStatus = async (userId: string) => {
+  const removeConnection = useCallback(async (userId: string) => {
     try {
-      const response = await getConnectionStatus(userId);
-      console.log(response.data.data);
-      if (response.error) {
-        const errorData = response.error as FetchBaseQueryError;
-        toast.error((errorData.data as ApiResponse).message);
-        return;
-      }
-
-      if (response.data.success === true) {
-        dispatch(setConnectionStatus(response.data.data));
-      }
-    } catch (error) {
-      console.error("Failed to fetch connection status:", error);
-    }
-  };
-
-  const notificationData: NotificationData | null = JSON.parse(
-    localStorage.getItem("notificationData") || "null"
-  );
-
-  const createConnection = async (userId: string) => {
-    try {
-      const response = await create(userId);
-
-      if (response.error) {
-        const errorData = response.error as FetchBaseQueryError;
-        toast.error((errorData.data as ApiResponse).message);
-        return;
-      }
-
-      if (!notificationData) {
-        console.error("Notification data is not available");
-        return;
-      }
-
-      await sendNotification({
-        token: profileData[0]?.fcmToken,
-        title: "Connection Request",
-        body: "U have a new connection request",
-        data: {
-          type: "connection",
-          receiverId: String(userId),
-          receiverFCM: String(profileData[0]?.fcmToken),
-          senderId: String(user?.userId),
-          senderImage: String(notificationData?.profileImage),
-          senderFCM: String(notificationData?.fcmToken),
-          senderName: String(notificationData?.name),
-        },
-      });
-
-      toast.success("Connection request sent successfully!");
-      getStatus(userId);
-    } catch (error) {
-      toast.error("Failed to create connection. Please try again later.");
-    }
-  };
-
-  const cancelConnection = async (userId: string) => {
-    try {
-      const recieverId = userId;
-      const response = await cancel(recieverId);
-      if (response.error) {
-        const errorData = response.error as FetchBaseQueryError;
-        toast.error((errorData.data as ApiResponse).message);
-        return;
-      }
-      toast.success("Connection canceled successfully!");
-      // Automatically refetch connection status after successful cancellation
-      getStatus(userId);
-    } catch (error) {
-      toast.error("Failed to cancel connection. Please try again later.");
-    }
-  };
-
-  const removeConnection = async (userId: string) => {
-    try {
-      const receiverId = userId;
-      const response = await remove(receiverId);
-      if (response.error) {
-        const errorData = response.error as FetchBaseQueryError;
-        toast.error((errorData.data as ApiResponse).message);
-        return;
-      }
+      await remove(userId).unwrap();
       toast.success("Connection removed successfully!");
       getStatus(userId);
     } catch (error) {
-      toast.error("failed to  remove connection. Please try again later.");
+      toast.error("Failed to remove connection. Please try again later.");
     }
-  };
+  }, [remove, getStatus]);
 
-const acceptConnection = async (userId: string) => {
+  const acceptConnection = useCallback(async (userId: string) => {
     try {
-      const senderId = userId;
-      const response = await accept(senderId);
-      if (response.error) {
-        const errorData = response.error as FetchBaseQueryError;
-        toast.error((errorData.data as ApiResponse).message);
-        return;
-      }
-      
+      await accept(userId).unwrap();
       toast.success("Connection accepted successfully!");
+      getStatus(userId);
     } catch (error) {
       toast.error("Failed to accept connection. Please try again later.");
     }
-  };
+  }, [accept, getStatus]);
 
-  useEffect(() => {
-    getStatus(userId);
-  }, [userId]);
+  // Loading & Error Handling
+  if (isLoading) return <Loading />;
+  if (isError) return <p>Failed to load user data.</p>;
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (isError) {
-    return <p>Failed to load user data.</p>;
-  }
-
-  if (isSuccess && profileData.length === 0) {
-    return <p>No user data found.</p>;
-  }
 
   return (
     <div className="min-w-screen flex min-h-screen flex-col gap-4 md:gap-10 lg:flex-row">
       <div className="mb-4 md:grid grid-cols-1 gap-2 md:mb-0  auto-rows-[10rem] ">
-        {profileData[0]?.profileImage.map((imageUrl: string, index: number) => (
+        {profileData?.profileImage?.map((imageUrl: string, index: number) => (
           <img
             key={index}
             src={imageUrl}
             alt="profile image"
             className={`object-cover w-full h-full rounded-md ${getBlurStyle(
               user?.usertype || "",
-              profileData[0].userType
+              profileData.userType
             )}`}
           />
         ))}
@@ -259,23 +216,22 @@ const acceptConnection = async (userId: string) => {
 
           <div className="mt-2.5 flex flex-wrap items-center gap-2.5 self-start text-base font-medium leading-4 text-slate-900">
             <div
-              className={`self-stretch text-xl font-bold leading-10  ${
-                isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
-              }
+              className={`self-stretch text-xl font-bold leading-10  ${isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
+                }
  lg:text-3xl`}
             >
               <h1>
-                {profileData[0]?.basic_and_lifestye?.displayName ||
-                  profileData[0]?.basic_and_lifestye?.firstName +
-                    " " +
-                    profileData[0]?.basic_and_lifestye?.lastName}{" "}
+                {profileData?.basic_and_lifestyle?.displayName ||
+                  profileData?.basic_and_lifestyle?.firstName +
+                  " " +
+                  profileData?.basic_and_lifestyle?.lastName}{" "}
               </h1>
             </div>
             <div className="text-md my-auto justify-center  self-stretch whitespace-nowrap rounded-[100px] bg-orange-100 px-1 py-1.5 text-center capitalize tracking-normal md:px-3 ">
-              <p> {profileData[0]?.basic_and_lifestye?.gender}</p>
+              <p> {profileData?.basic_and_lifestyle?.gender}</p>
             </div>
             <div className=" my-auto text-md justify-center self-stretch whitespace-nowrap rounded-[100px] bg-orange-100 px-1 py-1.5 text-center capitalize trackingl md:px-3">
-              {profileData[0]?.basic_and_lifestye?.age}
+              {profileData?.basic_and_lifestyle?.age}
             </div>
 
             <div>
@@ -290,10 +246,10 @@ const acceptConnection = async (userId: string) => {
                         {
                           isLoadingAccept ? (
                             <FaSpinner className="animate-spin" />
-                          ): (
+                          ) : (
 
-                             "Confirm request"
-                            
+                            "Confirm request"
+
                           )
 
                         }
@@ -319,8 +275,8 @@ const acceptConnection = async (userId: string) => {
                   {connectionStatus === "pending" && (
                     <>
                       <div className="rounded-[0.5rem] bg-gray-400 px-4 py-2 text-white">
-                        
-                       Request Sent
+
+                        Request Sent
 
                       </div>
                       <button
@@ -342,12 +298,12 @@ const acceptConnection = async (userId: string) => {
                 connectionStatus === "accepted" && (
                   <div className="flex items-center justify-center gap-2">
                     <div className="rounded-[0.5rem] bg-gray-400 px-4 py-2 text-white">
-                    {
-                          isLoadingConnectionStatus && (
-                            <FaSpinner className="animate-spin" /> 
-                          )
-                          
-                        }
+                      {
+                        isLoadingConnectionStatus && (
+                          <FaSpinner className="animate-spin" />
+                        )
+
+                      }
                       Connected
                     </div>
                     <button
@@ -368,11 +324,10 @@ const acceptConnection = async (userId: string) => {
                 connectionStatus !== "accepted" && (
                   <button
                     onClick={() => createConnection(userId)}
-                    className={`rounded-[0.5rem] ${
-                      isExclusive ? "bg-[#60457E]" : "bg-[#007EAF]"
-                    } px-4 py-2 text-white`}
+                    className={`rounded-[0.5rem] ${isExclusive ? "bg-[#60457E]" : "bg-[#007EAF]"
+                      } px-4 py-2 text-white`}
                   >
-                    {isLoadingConnection  ? (
+                    {isLoadingConnection ? (
                       <FaSpinner className="animate-spin" />
                     ) : (
                       <div className="flex items-center gap-2">
@@ -387,13 +342,13 @@ const acceptConnection = async (userId: string) => {
           <div className="mt-6 flex flex-col rounded-xl bg-cyan-600 bg-opacity-20 px-6 py-3 max-md:max-w-full max-md:px-5">
             <div className="text-base font-bold leading-6 tracking-wide text-gray-900 text-opacity-90 max-md:max-w-full">
               About{" "}
-              {profileData[0]?.basic_and_lifestye?.displayName ||
-                profileData[0]?.basic_and_lifestye?.firstName +
-                  " " +
-                  profileData[0]?.basic_and_lifestye?.lastName}
+              {profileData?.basic_and_lifestyle?.displayName ||
+                profileData?.basic_and_lifestyle?.firstName +
+                " " +
+                profileData?.basic_and_lifestyle?.lastName}
             </div>
             <div className="mt-4 text-sm leading-7 tracking-wide text-slate-600 max-md:max-w-full md:text-lg">
-              <p> {profileData[0]?.basic_and_lifestye?.about}</p>
+              <p> {profileData?.basic_and_lifestyle?.about}</p>
             </div>
           </div>
           <div className="mt-4 flex flex-col max-md:max-w-full md:px-5">
@@ -405,7 +360,7 @@ const acceptConnection = async (userId: string) => {
                 Religion
               </div>
               <div className="justify-center self-start whitespace-nowrap rounded-[100px] bg-blue-50 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-blue-600">
-                {profileData[0]?.basic_and_lifestye?.religion}
+                {profileData?.basic_and_lifestyle?.religion}
               </div>
             </div>
             <div className="mt-2 flex justify-between gap-0 font-normal max-md:flex-wrap">
@@ -416,7 +371,7 @@ const acceptConnection = async (userId: string) => {
                 Marital status
               </div>
               <div className="justify-center self-start rounded-[100px] bg-orange-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-slate-900">
-                {profileData[0]?.basic_and_lifestye?.maritalStatus}
+                {profileData?.basic_and_lifestyle?.maritalStatus}
               </div>
             </div>
             <div className="mt-2 flex justify-between gap-0 max-md:flex-wrap">
@@ -427,359 +382,226 @@ const acceptConnection = async (userId: string) => {
                 Posted By
               </div>
               <div className="justify-center self-start rounded-[100px] bg-purple-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-violet-600">
-                {profileData[0]?.basic_and_lifestye?.postedBy}
+                {profileData?.basic_and_lifestyle?.postedBy}
               </div>
             </div>
           </div>
         </div>
 
-        <div className="w-75% mb-4  xl:mb-0 flex flex-col rounded-xl bg-white md:w-auto h-[17rem]">
-          {/* <div className="flex flex-col pb-6 bg-white rounded-xl shadow-sm max-md:max-w-full"> */}
-          <div
-            className={`w-full justify-center border-b border-solid border-zinc-300 px-6 py-4 text-lg leading-6 tracking-wide  ${
-              isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
-            } max-md:max-w-full max-md:px-5 md:text-xl font-Proxima-Nova-Bold`}
-          >
-            Family details
-          </div>
-          <div className="mt-6 flex flex-col px-6 max-md:max-w-full max-md:px-5 md:mb-0">
-            <div className="flex justify-between gap-0 max-md:flex-wrap">
-              <div className="text-md flex-1 font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
-                Father occupation
-              </div>
-              <div className="justify-center self-start whitespace-nowrap rounded-[100px] bg-blue-50 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-blue-600">
-                {profileData[0]?.family_details?.fatherOccupation}
-              </div>
-            </div>
-            <div className="mt-4 flex justify-between gap-0 max-md:flex-wrap">
-              <div className="text-md flex-1 font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
-                Mother occupation
-              </div>
-              <div className="justify-center self-start rounded-[100px] bg-neutral-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-slate-900">
-                {profileData[0]?.family_details?.motherOccupation}
-              </div>
-            </div>
-            <div className="mt-4 flex justify-between gap-0 max-md:flex-wrap">
-              <div className="text-md flex-1 font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
-                Number of siblings
-              </div>
-              <div className="justify-center self-start rounded-[100px] bg-orange-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-slate-900">
-                {profileData[0]?.family_details?.numberOfSiblings}
-              </div>
-            </div>
-            <div className="mt-4 flex justify-between gap-4 max-md:max-w-full max-md:flex-wrap">
-              <div className="text-md font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
-                Living with family
-              </div>
-              <div className="justify-center self-start rounded-[100px] bg-purple-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-violet-600">
-                {profileData[0]?.family_details?.livingWithFamily}
-              </div>
-            </div>
-            {/* </div> */}
-          </div>
-        </div>
+        {profileData?.family_details &&
 
-        <div className="row-span-3 lg:row-span-3 mb-4  xl:mb-0 rounded-xl bg-white ">
-          <div className="flex flex-col rounded-xl bg-white pb-6 shadow-sm">
-            <div
-              className={`justify-center border-b font-Proxima-Nova-Bold border-solid border-zinc-300 px-6 py-4 text-lg leading-6 tracking-wide  ${
-                isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
-              } max-md:px-5 md:text-xl`}
-            >
-              Personal Background
-            </div>
-            <div className="mt-6 flex flex-col px-6 gap-4 max-md:px-5">
-              <div className="flex items-center gap-1 whitespace-nowrap">
-                <div
-                  className={`text-xl leading-8 ${
-                    isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
-                  } md:text-3xl`}
-                >
-                  <CiMap />
-                </div>
-                <div className="text-lg leading-8 text-slate-600 md:text-xl">
-                  Height
-                </div>
-              </div>
+          <ProfileSection
+            title="Family Background"
+            data={{
+              "Father's Occupation": profileData?.family_details?.fatherOccupation,
+              "Mother's Occupation": profileData?.family_details?.motherOccupation,
+              "Number of Siblings": profileData?.family_details?.numberOfSiblings,
+              "Living with Family": profileData?.family_details?.livingWithFamily,
 
-              <div className="text-md ml-8 mt-2 justify-center self-start rounded-[100px] bg-blue-50 px-3 py-1.5 text-center font-medium capitalize leading-7 text-cyan-600 max-md:ml-2.5 md:text-xl">
-                {profileData[0]?.personal_background?.height}
+            }}
+            isExclusive={isExclusive}
+            fieldColors={{
+              "Father's Occupation": "bg-purple-100 text-violet-600",
+              "Mother's Occupation": "bg-orange-100 text-slate-900",
+              "Number of Siblings": "bg-pink-50 text-pink-400",
+              "Living with Family": "bg-green-100 text-green-700",
+            }}
+          />
+        }
+
+        {
+          profileData?.personal_background &&
+          <div className="row-span-3 lg:row-span-3 mb-4  xl:mb-0 rounded-xl bg-white ">
+            <div className="flex flex-col rounded-xl bg-white pb-6 shadow-sm">
+              <div
+                className={`justify-center border-b font-Proxima-Nova-Bold border-solid border-zinc-300 px-6 py-4 text-lg leading-6 tracking-wide  ${isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
+                  } max-md:px-5 md:text-xl`}
+              >
+                Personal Background
               </div>
-              <div className="mt-6 flex items-center gap-1 whitespace-nowrap">
-                <div
-                  className={`text-xl leading-8 ${
-                    isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
-                  } md:text-3xl`}
-                >
-                  <CiMap />
-                </div>
-                <div className="text-lg leading-8 tracking-wide text-slate-600 md:text-xl">
-                  Weight
-                </div>
-              </div>
-              <div className="text-md ml-8 mt-2 justify-center self-start rounded-[100px] bg-blue-50 px-3 py-1.5 text-center font-medium capitalize leading-7 text-cyan-600 max-md:ml-2.5 md:text-xl">
-                {profileData[0]?.personal_background?.weight}
-              </div>
-              <div className="mt-6 flex items-center gap-1">
-                <div
-                  className={`text-xl leading-8 ${
-                    isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
-                  } md:text-3xl`}
-                >
-                  <CiMap />
-                </div>
-                <div className="text-lg leading-8 tracking-wide text-slate-600 md:text-xl">
-                  Body Type
-                </div>
-              </div>
-              <div className="text-md ml-8 mt-2 flex justify-center gap-1.5 self-start rounded-[100px] border border-solid border-gray-200 bg-blue-50 bg-opacity-50 px-5 py-2 font-medium capitalize leading-7 text-cyan-600 max-md:ml-2.5 md:py-4 md:text-xl">
-                {profileData[0]?.personal_background?.bodyType}
-              </div>
-              <div className="mt-6 flex items-center gap-1 whitespace-nowrap text-xl leading-8 tracking-wide text-slate-600">
-                <div
-                  className={`text-xl leading-8 ${
-                    isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
-                  } md:text-3xl`}
-                >
-                  <IoLanguage />
+              <div className="mt-6 flex flex-col px-6 gap-4 max-md:px-5">
+                <div className="flex items-center gap-1 whitespace-nowrap">
+                  <div
+                    className={`text-xl leading-8 ${isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
+                      } md:text-3xl`}
+                  >
+                    <CiMap />
+                  </div>
+                  <div className="text-lg leading-8 text-slate-600 md:text-xl">
+                    Height
+                  </div>
                 </div>
 
-                <div className="text-lg leading-8 text-slate-600 md:text-xl">
-                  Language
+                <div className="text-md ml-8 mt-2 justify-center self-start rounded-[100px] bg-blue-50 px-3 py-1.5 text-center font-medium capitalize leading-7 text-cyan-600 max-md:ml-2.5 md:text-xl">
+                  {profileData?.personal_background?.height}
                 </div>
-              </div>
-              <div className="text-md ml-8 mt-2 justify-center self-start rounded-[100px] bg-pink-50 px-3 py-1.5 text-center font-medium capitalize leading-7 text-pink-400 max-md:ml-2.5 md:text-xl">
-                {profileData[0]?.personal_background?.language}
-              </div>
-              <div className="mt-6 flex items-center gap-1 text-xl leading-8 tracking-wide text-slate-600">
-                <div
-                  className={`text-xl leading-8 ${
-                    isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
-                  } md:text-3xl`}
-                >
-                  {" "}
-                  <FaSmoking />
+                <div className="mt-6 flex items-center gap-1 whitespace-nowrap">
+                  <div
+                    className={`text-xl leading-8 ${isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
+                      } md:text-3xl`}
+                  >
+                    <CiMap />
+                  </div>
+                  <div className="text-lg leading-8 tracking-wide text-slate-600 md:text-xl">
+                    Weight
+                  </div>
                 </div>
-                <div className="text-lg leading-8 text-slate-600 md:text-xl">
-                  Smoking habbits
+                <div className="text-md ml-8 mt-2 justify-center self-start rounded-[100px] bg-blue-50 px-3 py-1.5 text-center font-medium capitalize leading-7 text-cyan-600 max-md:ml-2.5 md:text-xl">
+                  {profileData?.personal_background?.weight}
                 </div>
-              </div>
-              <div className="text-md ml-9 mt-2 justify-center self-start rounded-[100px] bg-green-100 px-3 py-1.5 text-center font-medium capitalize leading-7 text-green-700 max-md:ml-2.5 md:text-xl">
-                {profileData[0]?.personal_background?.smokingHabbit}
-              </div>
-              <div className="mt-6 flex items-center gap-1 text-xl leading-8 tracking-wide text-slate-600">
-                <div
-                  className={`text-xl leading-8 ${
-                    isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
-                  } md:text-3xl`}
-                >
-                  {" "}
-                  <FaWineGlassAlt />{" "}
+                <div className="mt-6 flex items-center gap-1">
+                  <div
+                    className={`text-xl leading-8 ${isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
+                      } md:text-3xl`}
+                  >
+                    <CiMap />
+                  </div>
+                  <div className="text-lg leading-8 tracking-wide text-slate-600 md:text-xl">
+                    Body Type
+                  </div>
                 </div>
+                <div className="text-md ml-8 mt-2 flex justify-center gap-1.5 self-start rounded-[100px] border border-solid border-gray-200 bg-blue-50 bg-opacity-50 px-5 py-2 font-medium capitalize leading-7 text-cyan-600 max-md:ml-2.5 md:py-4 md:text-xl">
+                  {profileData?.personal_background?.bodyType}
+                </div>
+                <div className="mt-6 flex items-center gap-1 whitespace-nowrap text-xl leading-8 tracking-wide text-slate-600">
+                  <div
+                    className={`text-xl leading-8 ${isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
+                      } md:text-3xl`}
+                  >
+                    <IoLanguage />
+                  </div>
 
-                <div className="text-lg leading-8 text-slate-600 md:text-xl">
-                  Drinking habbit
+                  <div className="text-lg leading-8 text-slate-600 md:text-xl">
+                    Language
+                  </div>
                 </div>
-              </div>
-              <div className="text-md ml-7 mt-2 justify-center self-start rounded-[100px] bg-gray-200 px-3 py-1.5 text-center font-medium capitalize leading-7 text-slate-900 max-md:ml-2.5 md:text-xl">
-                {profileData[0]?.personal_background?.drinkingHabbit}
-              </div>
-              <div className="mt-6 flex items-center gap-1 whitespace-nowrap">
-                <div
-                  className={`text-xl leading-8 ${
-                    isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
-                  } md:text-3xl`}
-                >
-                  <CiMap />
+                <div className="text-md ml-8 mt-2 justify-center self-start rounded-[100px] bg-pink-50 px-3 py-1.5 text-center font-medium capitalize leading-7 text-pink-400 max-md:ml-2.5 md:text-xl">
+                  {profileData?.personal_background?.language}
                 </div>
-                <div className="text-lg leading-8 tracking-wide text-slate-600 md:text-xl">
-                  Diet
+                <div className="mt-6 flex items-center gap-1 text-xl leading-8 tracking-wide text-slate-600">
+                  <div
+                    className={`text-xl leading-8 ${isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
+                      } md:text-3xl`}
+                  >
+                    {" "}
+                    <FaSmoking />
+                  </div>
+                  <div className="text-lg leading-8 text-slate-600 md:text-xl">
+                    Smoking habbits
+                  </div>
                 </div>
-              </div>
-              <div className="text-md ml-8 mt-2 justify-center self-start whitespace-nowrap rounded-[100px] bg-neutral-100 px-3 py-1.5 text-center font-medium capitalize leading-7 text-slate-900 max-md:ml-2.5 md:text-xl">
-                {profileData[0]?.personal_background?.diet}
-              </div>
-              <div className="mt-6 flex items-center gap-2 whitespace-nowrap">
-                <div
-                  className={`text-xl leading-8 ${
-                    isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
-                  } md:text-3xl`}
-                >
-                  <CiMap />
+                <div className="text-md ml-9 mt-2 justify-center self-start rounded-[100px] bg-green-100 px-3 py-1.5 text-center font-medium capitalize leading-7 text-green-700 max-md:ml-2.5 md:text-xl">
+                  {profileData?.personal_background?.smokingHabbit}
                 </div>
-                <div className="text-lg leading-8 tracking-wide text-slate-600 md:text-xl">
-                  Complexion
-                </div>
-              </div>
-              <div className="text-md ml-8 mt-2 justify-center self-start rounded-[100px] bg-neutral-100 px-3 py-1.5 text-center font-medium capitalize leading-7 text-slate-900 max-md:ml-2.5 md:text-xl">
-                {profileData[0]?.personal_background?.complexion}
-              </div>
-            </div>
-          </div>
-        </div>
+                <div className="mt-6 flex items-center gap-1 text-xl leading-8 tracking-wide text-slate-600">
+                  <div
+                    className={`text-xl leading-8 ${isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
+                      } md:text-3xl`}
+                  >
+                    {" "}
+                    <FaWineGlassAlt />{" "}
+                  </div>
 
-        <div className="h-[31rem] md:h-[28rem] mb-4 xl:mb-0 rounded-xl bg-white">
-          <div className="flex h-[28rem] flex-col rounded-xl bg-white pb-6 shadow-sm max-md:max-w-full">
-            <div
-              className={`justify-center border-b font-Proxima-Nova-Bold border-solid border-zinc-300 px-6 py-4 text-lg leading-6 tracking-wide  ${
-                isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
-              } max-md:max-w-full max-md:px-5 md:text-xl`}
-            >
-              Religious Background
-            </div>
-            <div className="mt-6 flex flex-col px-6 max-md:max-w-full max-md:px-5">
-              <div className="flex justify-between gap-0 max-md:flex-wrap">
-                <div className="text-md flex-1 font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
-                  Religion
+                  <div className="text-lg leading-8 text-slate-600 md:text-xl">
+                    Drinking habbit
+                  </div>
                 </div>
-                <div className="justify-center self-start whitespace-nowrap rounded-[100px] bg-blue-50 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-blue-600">
-                  {profileData[0]?.religious_background?.religion}
+                <div className="text-md ml-7 mt-2 justify-center self-start rounded-[100px] bg-gray-200 px-3 py-1.5 text-center font-medium capitalize leading-7 text-slate-900 max-md:ml-2.5 md:text-xl">
+                  {profileData?.personal_background?.drinkingHabbit}
                 </div>
-              </div>
-              <div className="mt-4 flex justify-between gap-0 max-md:flex-wrap">
-                <div className="text-md flex-1 font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
-                  Sub community
+                <div className="mt-6 flex items-center gap-1 whitespace-nowrap">
+                  <div
+                    className={`text-xl leading-8 ${isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
+                      } md:text-3xl`}
+                  >
+                    <CiMap />
+                  </div>
+                  <div className="text-lg leading-8 tracking-wide text-slate-600 md:text-xl">
+                    Diet
+                  </div>
                 </div>
-                <div className="justify-center self-start rounded-[100px] bg-orange-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-slate-900">
-                  {profileData[0]?.religious_background?.subCommunity}
+                <div className="text-md ml-8 mt-2 justify-center self-start whitespace-nowrap rounded-[100px] bg-neutral-100 px-3 py-1.5 text-center font-medium capitalize leading-7 text-slate-900 max-md:ml-2.5 md:text-xl">
+                  {profileData?.personal_background?.diet}
                 </div>
-              </div>
-              <div className="mt-4 flex justify-between gap-0 font-normal max-md:flex-wrap">
-                <div className="text-md flex-1 leading-8 tracking-wide text-slate-600 md:text-xl">
-                  Community
+                <div className="mt-6 flex items-center gap-2 whitespace-nowrap">
+                  <div
+                    className={`text-xl leading-8 ${isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
+                      } md:text-3xl`}
+                  >
+                    <CiMap />
+                  </div>
+                  <div className="text-lg leading-8 tracking-wide text-slate-600 md:text-xl">
+                    Complexion
+                  </div>
                 </div>
-                <div className="justify-center self-start rounded-[100px] bg-purple-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-violet-600">
-                  {profileData[0]?.religious_background?.community}
-                </div>
-              </div>
-              <div className="mt-4 flex justify-between gap-4 max-md:max-w-full max-md:flex-wrap">
-                <div className="text-md font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
-                  Gothra / Gothram
-                </div>
-                <div className="justify-center self-start rounded-[100px] bg-pink-50 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-pink-400">
-                  {profileData[0]?.religious_background?.gotra}
-                </div>
-              </div>
-              <div className="mt-4 flex justify-between gap-4 max-md:max-w-full max-md:flex-wrap">
-                <div className="text-md font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
-                  Date of Birth
-                </div>
-                <div className="justify-center self-start whitespace-nowrap rounded-[100px] bg-green-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-green-700">
-                  {profileData[0]?.religious_background?.dateOfBirth}
-                </div>
-              </div>
-
-              <div className="mt-4 flex justify-between gap-4 max-md:max-w-full max-md:flex-wrap">
-                <div className="text-md font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
-                  Time of Birth
-                </div>
-                <div className="justify-center self-start whitespace-nowrap rounded-[100px] bg-green-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-green-700">
-                  {profileData[0]?.religious_background?.timeOfBirth}
-                </div>
-              </div>
-
-              <div className="mt-4 flex justify-between gap-4 max-md:max-w-full max-md:flex-wrap">
-                <div className="text-md font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
-                  Place of Birth
-                </div>
-                <div className="justify-center self-start whitespace-nowrap rounded-[100px] bg-green-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-green-700">
-                  {profileData[0]?.religious_background?.placeOfBirth}
-                </div>
-              </div>
-
-              <div className="mt-4 flex justify-between gap-4 max-md:max-w-full max-md:flex-wrap">
-                <div className="text-md font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
-                  Mother Tongue
-                </div>
-                <div className="justify-center self-start whitespace-nowrap rounded-[100px] bg-green-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-green-700">
-                  {profileData[0]?.religious_background?.motherTongue}
+                <div className="text-md ml-8 mt-2 justify-center self-start rounded-[100px] bg-neutral-100 px-3 py-1.5 text-center font-medium capitalize leading-7 text-slate-900 max-md:ml-2.5 md:text-xl">
+                  {profileData?.personal_background?.complexion}
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        }
 
-        <div className="h-auto py-4  rounded-xl mb-4 xl:mb-0 bg-white">
-          <div
-            className={`justify-center border-b border-solid font-Proxima-Nova-Bold border-zinc-300 px-6 py-4 text-lg leading-6 tracking-wide  ${
-              isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
-            } max-md:max-w-full max-md:px-5 md:text-xl`}
-          >
-            Location Background
-          </div>
-          <div className="mt-6 flex flex-col px-6 max-md:max-w-full max-md:px-5">
-          <div className="flex justify-between gap-0 max-md:flex-wrap">
-              <div className="text-md flex-1 font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
-                Country
-              </div>
-              <div className="justify-center self-start whitespace-nowrap rounded-[100px] bg-blue-50 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-blue-600">
-                {profileData[0]?.location_background?.country}
-              </div>
-            </div>
-            <div className="mt-4 flex justify-between gap-0 max-md:flex-wrap">
-              <div className="text-md flex-1 font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
-                State
-              </div>
-              <div className="justify-center mb-4 self-start rounded-[100px] bg-purple-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-violet-600">
-                {profileData[0]?.location_background?.state ||
-                  "Not Specified"}
-              </div>
-            </div>
-            <div className="flex justify-between gap-0 max-md:flex-wrap">
-              <div className="text-md flex-1 font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
-                Current location
-              </div>
-              <div className="justify-center self-start whitespace-nowrap rounded-[100px] bg-blue-50 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-blue-600">
-                {profileData[0]?.location_background?.currentLocation}
-              </div>
-            </div>
-            <div className="mt-4 flex justify-between gap-0 max-md:flex-wrap">
-              <div className="text-md flex-1 font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
-                City of residence
-              </div>
-              <div className="justify-center self-start rounded-[100px] bg-purple-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-violet-600">
-                {profileData[0]?.location_background?.cityOfResidence ||
-                  "Not Specified"}
-              </div>
-            </div>
-            <div className="mt-4 flex justify-between gap-0 max-md:flex-wrap">
-              <div className="text-md flex-1 font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
-                Nationality
-              </div>
-              <div className="justify-center self-start rounded-[100px] bg-orange-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-slate-900">
-                {profileData[0]?.location_background?.nationality}
-              </div>
-            </div>
-            <div className="mt-4 flex justify-between gap-4 max-md:max-w-full max-md:flex-wrap">
-              <div className="text-md font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
-                Citizenship
-              </div>
-              <div className="justify-center self-start rounded-[100px] bg-pink-50 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-pink-400">
-                {profileData[0]?.location_background?.citizenShip}
-              </div>
-            </div>
-            <div className="mt-4 flex justify-between gap-4 max-md:max-w-full max-md:flex-wrap">
-              <div className="text-md font-normal leading-8 tracking-wide text-slate-600 md:text-xl">
-                Residency visa status
-              </div>
-              <div className="justify-center self-start whitespace-nowrap rounded-[100px] bg-green-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-green-700">
-                {profileData[0]?.location_background?.residencyVisaStatus}
-              </div>
-            </div>
-          </div>
-        </div>
+        {
+          profileData?.family_background &&
+          <ProfileSection
+            title="Religious Background"
+            data={{
+              Religion: profileData?.religious_background?.religion,
+              SubCommunity: profileData?.religious_background?.subCommunity,
+              Community: profileData?.religious_background?.community,
+              Gothra: profileData?.religious_background?.gotra,
+              "Date of Birth": profileData?.religious_background?.dateOfBirth,
+              "Time of Birth": profileData?.religious_background?.timeOfBirth,
+              "Place of Birth": profileData?.religious_background?.placeOfBirth,
+              "Mother Tongue": profileData?.religious_background?.motherTongue,
+            }}
+            isExclusive={isExclusive}
+            fieldColors={{
+              Religion: "bg-purple-100 text-violet-600",
+              SubCommunity: "bg-orange-100 text-slate-900",
+              Community: "bg-pink-50 text-pink-400",
+              "Time of Birth": "bg-green-100 text-green-700",
+            }}
+          />
+
+        }
+
+
+
+        {profileData?.location_background &&
+          <ProfileSection
+            title="Location Background"
+            data={{
+              Country: profileData?.location_background?.country,
+              State: profileData?.location_background?.state,
+              "Current Location": profileData?.location_background?.currentLocation,
+              "City of Residence": profileData?.location_background?.cityOfResidence,
+              Nationality: profileData?.location_background?.nationality,
+              Citizenship: profileData?.location_background?.citizenShip,
+              "Residency Visa Status": profileData?.location_background?.residencyVisaStatus,
+            }}
+            isExclusive={isExclusive}
+            fieldColors={{
+              State: "bg-purple-100 text-violet-600",
+              Nationality: "bg-orange-100 text-slate-900",
+              Citizenship: "bg-pink-50 text-pink-400",
+              "Residency Visa Status": "bg-green-100 text-green-700",
+            }}
+          />
+        }
+
 
         <div className="h-auto py-4 rounded-xl">
           <div className=" flex max-w-[499px] flex-col pb-9 leading-8 text-slate-900">
             <div
-              className={`w-full text-lg font-Proxima-Nova-Bold leading-[110%]  ${
-                isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
-              } max-md:max-w-full md:text-xl`}
+              className={`w-full text-lg font-Proxima-Nova-Bold leading-[110%]  ${isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
+                } max-md:max-w-full md:text-xl`}
             >
               Interest and hobbies
             </div>
             <div className="mt-4 flex gap-2.5 whitespace-nowrap text-center capitalize tracking-wide max-md:pr-5 md:flex-wrap">
-              {profileData[0]?.interest_and_hobbies?.map((interest: string) => (
+              {profileData?.interest_and_hobbies?.map((interest: string) => (
                 <div
                   key={interest}
                   className="justify-center rounded-[100px] bg-gray-200 px-3 py-1.5"
@@ -791,84 +613,29 @@ const acceptConnection = async (userId: string) => {
           </div>
         </div>
 
-        <div className="h-58 rounded-xl bg-white mb-5">
-          <div className="flex flex-col  rounded-xl border border-solid border-gray-200 bg-white pb-6 shadow-sm">
-            <div
-              className={`justify-center font-Proxima-Nova-Bold border-b border-solid border-zinc-300 px-6 py-4 text-lg leading-6 tracking-wide  ${
-                isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
-              } max-md:px-5 md:text-xl`}
-            >
-              Education and financial
-            </div>
-            <div className="mt-6 flex flex-col px-6 max-md:px-5">
-              <div className="flex justify-between gap-2 whitespace-nowrap pr-8 max-md:pr-5">
-                <div className="text-md flex items-center justify-between gap-2 self-start leading-8 tracking-wide text-slate-600 md:text-xl">
-                  <span
-                    className={`${
-                      isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
-                    }`}
-                  >
-                    <FaUserGraduate />
-                  </span>
-                  <div>Qualification</div>
-                </div>
-                <div className="justify-center rounded-[100px] bg-orange-100 px-3 py-1.5 text-center text-sm font-medium capitalize leading-7 text-slate-900 md:text-md text-[12px]">
-                  {profileData[0]?.education_and_financial?.qualification}
-                </div>
-              </div>
 
-              <div className="mt-4 flex justify-between gap-2 whitespace-nowrap pr-8 max-md:pr-5">
-                <div className="text-md flex items-center justify-between gap-2 self-start leading-8 tracking-wide text-slate-600 md:text-xl">
-                  <span
-                    className={`${
-                      isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
-                    }`}
-                  >
-                    <FaUserGraduate />
-                  </span>
-                  <div>Occupation</div>
-                </div>
-                <div className="justify-center rounded-[100px] bg-orange-100 px-3 py-1.5 text-center text-sm font-medium capitalize leading-7 text-slate-900 md:text-md text-[12px]">
-                  {profileData[0]?.education_and_financial?.occupation}
-                </div>
-              </div>
+        {profileData?.education_and_financial &&
 
-              <div className="mt-4 flex justify-between gap-2 whitespace-nowrap pr-8 max-md:pr-5">
-                <div className="text-md flex items-center justify-between gap-2 self-start leading-8 tracking-wide text-slate-600 md:text-xl">
-                  <span
-                    className={`${
-                      isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
-                    }`}
-                  >
-                    <FaUserGraduate />
-                  </span>
-                  <div>Working Status</div>
-                </div>
-                <div className="justify-center rounded-[100px] bg-orange-100 px-3 py-1.5 text-center font-medium capitalize leading-7 text-slate-900 md:text-md text-[12px]">
-                  {profileData[0]?.education_and_financial?.workingStatus}
-                </div>
-              </div>
+          <ProfileSection
+            title="Educational and Financial Background"
+            data={{
+              "Qualification": profileData?.education_and_financial?.qualification,
+              "Occupation": profileData?.education_and_financial?.occupation,
+              "Working Status": profileData?.education_and_financial?.workingStatus,
+              "Income": profileData?.education_and_financial?.income,
 
-              <div className="mt-4 flex justify-between gap-2 pr-8 max-md:pr-5">
-                <div className="text-md flex items-center justify-around gap-2 self-start whitespace-nowrap leading-8 tracking-wide text-slate-600 md:text-xl">
-                  <span
-                    className={`${
-                      isExclusive ? "text-[#60457E]" : "text-[#007EAF]"
-                    }`}
-                  >
-                    <FaUserGraduate />
-                  </span>
-                  <div>Income</div>
-                </div>
-                <div className="justify-center rounded-[100px] bg-orange-100 px-3 py-1.5 text-center font-medium capitalize leading-7 text-slate-900 md:text-md text-[12px]">
-                  <span className="">
-                    {profileData[0]?.education_and_financial?.income}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+            }}
+            isExclusive={isExclusive}
+            fieldColors={{
+              "Qualification": "bg-purple-100 text-violet-600",
+              "Occupation": "bg-orange-100 text-slate-900",
+              "Working Status": "bg-pink-50 text-pink-400",
+              "Income": "bg-green-100 text-green-700",
+            }}
+            icons={icons}
+          />
+        }
+
       </div>
     </div>
   );

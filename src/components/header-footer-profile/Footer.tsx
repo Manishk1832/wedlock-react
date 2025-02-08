@@ -5,6 +5,10 @@ import { FaApple } from "react-icons/fa";
 
 
 const Footer = () => {
+
+  const currentYear = new Date().getFullYear();
+
+
   return (
     <div>
       <footer>
@@ -42,7 +46,7 @@ const Footer = () => {
             <div className="flex flex-col items-center justify-between space-y-4 px-4 md:flex-row md:space-y-0 md:px-10 ">
               <div className="text-center md:text-left">
                 <h4
-                  className="text-lg font-semibold"
+                  className="text-lg font-semibold italic tracking-wider text-[#FFFFFF]"
                   style={{
                     fontFamily: "Proxima-Nova-ExtraBold-Italic, sans-serif",
                   }}
@@ -55,7 +59,7 @@ const Footer = () => {
 </p>
               </div>
               <div className="text-center md:text-right">
-                <span className="text-sm">© 2024. Wedlock Global Service(Australia) Pty Ltd.   All rights reserved</span>
+                <span className="text-sm">© {currentYear} Wedlock Global Services (Australia) Pty Ltd.   All rights reserved.</span>
               </div>
             </div>
           </div>

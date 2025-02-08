@@ -3,7 +3,7 @@ import "../../font.css";
 function Pre() {
   return (
     <div className="w-100 h-auto 8xl:px-32 bg-[#E6F2F7] pb-10 3xl:px-48 xl:px-10 xl:pb-28 7xl:px-36 7xl:py-28">
-      <div className=" space-y-10 bg-[#E6F2F7] relative overflow-hidden px-5 sm:px-20 py-4 container m-auto">
+      <div className=" space-y-4 bg-[#E6F2F7] relative overflow-hidden px-5 sm:px-20  container m-auto">
         <img
           src="/Vector.png"
           alt="arw"

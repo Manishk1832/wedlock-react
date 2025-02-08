@@ -20,6 +20,9 @@ import PersonalBagroundModal from "../user-dashboard-model/PersonalBagroundModal
 import EducationFinancialModal from "../user-dashboard-model/EducationFinancialModal";
 import LocationBackgroundModal from "../user-dashboard-model/LocationBackgroundModal";
 import { RootState } from "./../../Redux/store";
+import {useToggleMutation} from "../../Redux/Api/toggle.api"
+import {toast} from "sonner";
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 
 import { useSelector } from "react-redux";
 import { setMyDetails } from "../../Redux/Reducers/user.reducer";
@@ -29,7 +32,15 @@ import { setMyDetails } from "../../Redux/Reducers/user.reducer";
 const MyDetails = () => {
   const dispatch = useDispatch();
 
+  const [toggle, { isLoading: isToggleLoading }] = useToggleMutation();
+
   const {user,myDetails } = useSelector((state: RootState) => state.userReducer) ;
+
+  const [isPersonalDetails, setIsPersonalDetails] = useState(false);
+  const [isReligiousDetails, setIsReligiousDetails] = useState(false);
+  const [isFamilyDetails, setIsFamilyDetails] = useState(false);
+  const [isEducationFinancial, setIsEducationFinancial] = useState(false);
+  const [isLocationBackground, setIsLocationBackground] = useState(false);
 
 
 
@@ -55,6 +66,145 @@ const [isExclusive, setIsExclusive] = useState(false);
     }
     [];
   });
+
+   
+  const TogglePersonalDetails = async () => {
+    const newStatus = !isPersonalDetails; // Determine new status
+    setIsPersonalDetails(newStatus);
+  
+    try {
+      const response = await toggle({
+        section: "personal_details",
+        status: newStatus,
+      });
+  
+      if (response.error) {
+        const errorData = response.error as FetchBaseQueryError & { data: { message: string } };
+        toast.error(errorData.data.message);
+        return;
+      }
+  
+      toast.success(
+        newStatus ? " Personal Background is now hidden." : " Personal Background is now visible." 
+      );
+      
+      refetch();
+    } catch (error) {
+      toast.error("Failed to update Personal Background visibility.");
+    }
+  };
+  
+
+  const ToggleReligiousDetails = async () => {
+    const newStatus = !!isReligiousDetails; // Determine new status
+    setIsReligiousDetails(newStatus);
+    
+    try {
+      const response = await toggle({
+        section: "religious_details",
+        status: newStatus,
+      });
+  
+      if (response.error) {
+        const errorData = response.error as FetchBaseQueryError & { data: { message: string } };
+        toast.error(errorData.data.message);
+        return;
+      }
+  
+      toast.success(
+        newStatus ? " Religious Background is now hidden." : " Religious Background is now visible." 
+      );
+      
+      refetch();
+    } catch (error) {
+      toast.error("Failed to update Religious Background visibility.");
+    }
+  };
+
+  const ToggleFamilyDetails = async() => {
+   const newStatus = !isFamilyDetails; // Determine new status
+   setIsFamilyDetails(newStatus);
+   
+   try {
+     const response = await toggle({
+       section: "family_details",
+       status: newStatus,
+     });
+ 
+     if (response.error) {
+       const errorData = response.error as FetchBaseQueryError & { data: { message: string } };
+       toast.error(errorData.data.message);
+       return;
+     }
+ 
+     toast.success(
+       newStatus ? " Family Background is now hidden." : " Family Background is now visible." 
+     );
+     
+     refetch();
+   } catch (error) {
+     toast.error("Failed to update Family Background visibility.");
+     
+   }
+  };
+
+
+  const ToggleEducationFinancial = async() => {
+   const newStatus = !isEducationFinancial; // Determine new status
+   setIsEducationFinancial(newStatus);
+   
+   try {
+     const response = await toggle({
+       section: "education_and_financial_details",
+       status: newStatus,
+     });
+ 
+     if (response.error) {
+       const errorData = response.error as FetchBaseQueryError & { data: { message: string } };
+       toast.error(errorData.data.message);
+       return;
+     }
+ 
+     toast.success(
+       newStatus ? " Education Financial Background is now hidden." : " Education Financial Background is now visible." 
+     );
+     
+     refetch();
+   } catch (error) {
+     toast.error(
+       newStatus ? "Failed to update Education Financial Background visibility." : "Failed to update Education Financial Background visibility."
+   )
+     
+   }
+  };
+
+  const ToggleLocationBackground = async() => {
+   const newStatus = !isLocationBackground; // Determine new status
+   setIsLocationBackground(newStatus);
+   
+   try {
+     const response = await toggle({
+       section: "location_details",
+       status: newStatus,
+     });
+ 
+     if (response.error) {
+       const errorData = response.error as FetchBaseQueryError & { data: { message: string } };
+       toast.error(errorData.data.message);
+       return;
+     }
+ 
+     toast.success(
+       newStatus ? " Location Background is now hidden." : " Location Background is now visible." 
+     );
+     
+     refetch();
+   } catch (error) {
+     toast.error(
+       newStatus ? "Failed to update Location Background visibility." : "Failed to update Location Background visibility."
+     )
+   }
+  };
 
 
   const { data: profileData, isLoading: isprofileDataLoading ,refetch} = useGetProfilePercentageQuery();
@@ -338,7 +488,8 @@ const [isExclusive, setIsExclusive] = useState(false);
                   />
 
                   <div>
-                    <Switch defaultChecked disabled />
+                    
+                    <Switch defaultChecked  onChange={ToggleFamilyDetails} disabled={isToggleLoading} />
                   </div>
                 </div>
               </div>
@@ -401,7 +552,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                       onClose={closePersonalBagroundModal}
                     />
                     <div>
-                      <Switch defaultChecked disabled />
+                      <Switch defaultChecked  onChange={TogglePersonalDetails} disabled={isToggleLoading} />
                     </div>
                   </div>
                 </div>
@@ -527,7 +678,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                     />
 
                     <div>
-                      <Switch defaultChecked disabled />
+                      <Switch defaultChecked onChange={ToggleReligiousDetails} disabled={isToggleLoading} />
                     </div>
                   </div>
                 </div>
@@ -627,7 +778,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                     onClose={closeLocationBackgroundModal}
                   />
                   <div>
-                    <Switch defaultChecked  disabled/>
+                    <Switch defaultChecked  onChange={ToggleLocationBackground} disabled={isToggleLoading} />
                   </div>
                 </div>
               </div>
@@ -758,7 +909,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                     />
 
                     <div>
-                      <Switch defaultChecked disabled />
+                      <Switch defaultChecked onChange={ToggleEducationFinancial} disabled={isToggleLoading} />
                     </div>
                   </div>
                 </div>

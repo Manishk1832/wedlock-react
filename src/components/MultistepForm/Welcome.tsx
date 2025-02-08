@@ -23,8 +23,7 @@ const Welcome = ({handleNext} : {handleNext: () => void}) => {
       <div className="flex mt-40 flex-col items-center justify-center text-center gap-5">
         <h1 className=" text-3xl font-bold">Welcome to Wedlock</h1>
         <p>
-          Congratulation - you are taking the first step towards finding someone
-          <br /> who gets you.
+          Congratulations! - you are taking the first step towards finding your potential matrimonial match.
         </p>
 
         <button

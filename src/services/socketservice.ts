@@ -35,6 +35,8 @@ const initializeSocket = (token: string) => {
     
   })
 
+  
+
   socket.on("disconnect", () => {
     console.log("Disconnected from Socket.io server");
   });

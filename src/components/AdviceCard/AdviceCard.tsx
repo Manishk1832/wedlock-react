@@ -21,7 +21,7 @@ const AdviceCard = ({ imageSrc, title, hoverContent }: AdviceCardProps) => {
         <img
           src={imageSrc}
           alt="Advice"
-          className="w-full h-full object-cover rounded-md transition-transform duration-300"
+          className="w-full h-full object-cover rounded-md transition-transform duration-300 scale-100 hover:scale-105 "
         />
       </div>
       <h1

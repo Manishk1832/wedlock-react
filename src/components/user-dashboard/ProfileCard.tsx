@@ -67,20 +67,20 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profiles, isFavourite, handle
 
   const getBlurStyle = (currentUserType: string, targetUserType: string): string => {
     if (currentUserType === "Standard"  &&  targetUserType === "Standard") {
-      return " blur-sm";
+      return " blur-[5px]";
     }
     if (currentUserType === "Standard" && targetUserType === "Premium") {
-      return "blur-sm";
+      return "blur-[5px]";
     }
     if (currentUserType === "Standard" && targetUserType === "Exclusive") {
-      return "blur-sm";
+      return "blur-[5px]";
     }
 
     if(currentUserType === "Premium" && targetUserType === "Standard"){
       return "";
     }
     if(currentUserType === "Premium" && targetUserType === "Exclusive"){
-      return "blur-sm";
+      return "blur-[5px]";
     }
     
   

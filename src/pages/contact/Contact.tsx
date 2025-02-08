@@ -1,4 +1,3 @@
-import Footer from "../../components/header-footer-profile/Footer";
 
 
 const Contact = () => {
@@ -110,7 +109,7 @@ const Contact = () => {
           <span className="font-medium">Email:</span>  <a href="mailto:info@wedlock.au" className=" underline">info@wedlock.au</a>
         </p>
         <p className=" text-black ">
-          <span className="font-medium">Address:</span>  Melbourne, Australia
+          <span className="font-medium">Address:</span>  38 Carlton Street, McKinnon VIC 3204, Australia
         </p>
       </div>
       <div className="flex flex-col items-center justify-between bg-[#F9FAFB] px-6 py-10 md:px-10 lg:flex-row lg:px-20">
@@ -136,8 +135,6 @@ const Contact = () => {
        
       </div>
       
-     
-      <Footer />
     </div>
   );
 };

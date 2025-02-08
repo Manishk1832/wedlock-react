@@ -20,6 +20,8 @@ const PricingPage = () => {
   const { data: planData, isLoading, error } = useGetPlansQuery<any>();
   const [createCheckoutSession] = useCreateCheckoutSessionMutation();
 
+  console.log(planData,"planData");
+
   const getPlanDuration = () =>
     activeTab === "Monthly" ? "Per Month" : "Per Year";
 
@@ -106,9 +108,12 @@ const filteredPlans = planData?.data?.filter((plan: any) => {
           </div>
         </div>
 
+  
+
         <div className="mt-5 grid grid-cols-1 justify-items-center content-center gap-4 md:grid-cols-2 lg:gap-8 xl:gap-24">
 
           {filteredPlans.map((plan: any) => (
+            
             <PlanCard
               key={plan.id}
               title={plan.planName}
@@ -116,7 +121,7 @@ const filteredPlans = planData?.data?.filter((plan: any) => {
               duration={getPlanDuration()}
               isHighlighted={plan.planName === "Exclusive"}
               features={plan.featureList}
-              isDisabled={plan.planName === currentPlan }
+              isDisabled={plan.planName === currentPlan && plan.planType === activeTab}
               id={plan.id}
               onClick={() => handleCheckout(plan.id)}
             />
