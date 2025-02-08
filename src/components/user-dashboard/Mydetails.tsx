@@ -36,11 +36,25 @@ const MyDetails = () => {
 
   const {user,myDetails } = useSelector((state: RootState) => state.userReducer) ;
 
+  console.log(myDetails,"myDetails",myDetails?.toggleStatus);
+  
   const [isPersonalDetails, setIsPersonalDetails] = useState(false);
   const [isReligiousDetails, setIsReligiousDetails] = useState(false);
   const [isFamilyDetails, setIsFamilyDetails] = useState(false);
   const [isEducationFinancial, setIsEducationFinancial] = useState(false);
   const [isLocationBackground, setIsLocationBackground] = useState(false);
+  
+  console.log(myDetails?.toggleStatus);
+  useEffect(() => {
+    if (myDetails?.toggleStatus) {
+      setIsPersonalDetails(myDetails.toggleStatus.personal_details);
+      setIsReligiousDetails(myDetails.toggleStatus.religious_details);
+      setIsFamilyDetails(myDetails.toggleStatus.family_details);
+      setIsEducationFinancial(myDetails.toggleStatus.education_and_financial_details);
+      setIsLocationBackground(myDetails.toggleStatus.location_details);
+    }
+  }, [myDetails]); // Runs whenever `myDetails` updates
+  
 
 
 
@@ -85,10 +99,10 @@ const [isExclusive, setIsExclusive] = useState(false);
       }
   
       toast.success(
-        newStatus ? " Personal Background is now hidden." : " Personal Background is now visible." 
+        newStatus ? " Personal Background is now visible." : "Personal Background is now hidden." 
       );
       
-      refetch();
+      
     } catch (error) {
       toast.error("Failed to update Personal Background visibility.");
     }
@@ -96,7 +110,7 @@ const [isExclusive, setIsExclusive] = useState(false);
   
 
   const ToggleReligiousDetails = async () => {
-    const newStatus = !!isReligiousDetails; // Determine new status
+    const newStatus = !isReligiousDetails; // Determine new status
     setIsReligiousDetails(newStatus);
     
     try {
@@ -112,10 +126,9 @@ const [isExclusive, setIsExclusive] = useState(false);
       }
   
       toast.success(
-        newStatus ? " Religious Background is now hidden." : " Religious Background is now visible." 
+        newStatus ? "Religious Background is now visible." : "Religious Background is now hidden." 
       );
       
-      refetch();
     } catch (error) {
       toast.error("Failed to update Religious Background visibility.");
     }
@@ -138,10 +151,10 @@ const [isExclusive, setIsExclusive] = useState(false);
      }
  
      toast.success(
-       newStatus ? " Family Background is now hidden." : " Family Background is now visible." 
+       newStatus ? "Family Background is now visible." : "Family Background is now hidden." 
      );
      
-     refetch();
+    
    } catch (error) {
      toast.error("Failed to update Family Background visibility.");
      
@@ -166,14 +179,14 @@ const [isExclusive, setIsExclusive] = useState(false);
      }
  
      toast.success(
-       newStatus ? " Education Financial Background is now hidden." : " Education Financial Background is now visible." 
+       newStatus ? "Education Financial Background is now visible." : "Education Financial Background is now hidden." 
      );
      
-     refetch();
+     
    } catch (error) {
-     toast.error(
-       newStatus ? "Failed to update Education Financial Background visibility." : "Failed to update Education Financial Background visibility."
-   )
+     toast.error( "Failed to update Education Financial Background visibility.");
+       
+   
      
    }
   };
@@ -195,13 +208,13 @@ const [isExclusive, setIsExclusive] = useState(false);
      }
  
      toast.success(
-       newStatus ? " Location Background is now hidden." : " Location Background is now visible." 
+       newStatus ? " Location Background is now visible. " : "Location Background is now hidden." 
      );
      
-     refetch();
+     
    } catch (error) {
      toast.error(
-       newStatus ? "Failed to update Location Background visibility." : "Failed to update Location Background visibility."
+       "Failed to update Location Background visibility."
      )
    }
   };
@@ -489,7 +502,7 @@ const [isExclusive, setIsExclusive] = useState(false);
 
                   <div>
                     
-                    <Switch defaultChecked  onChange={ToggleFamilyDetails} disabled={isToggleLoading} />
+                    <Switch  checked={isFamilyDetails}  onChange={ToggleFamilyDetails} disabled={isToggleLoading} />
                   </div>
                 </div>
               </div>
@@ -552,7 +565,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                       onClose={closePersonalBagroundModal}
                     />
                     <div>
-                      <Switch defaultChecked  onChange={TogglePersonalDetails} disabled={isToggleLoading} />
+                      <Switch checked={isPersonalDetails}  onChange={TogglePersonalDetails} disabled={isToggleLoading} />
                     </div>
                   </div>
                 </div>
@@ -678,7 +691,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                     />
 
                     <div>
-                      <Switch defaultChecked onChange={ToggleReligiousDetails} disabled={isToggleLoading} />
+                      <Switch checked={isReligiousDetails} onChange={ToggleReligiousDetails} disabled={isToggleLoading} />
                     </div>
                   </div>
                 </div>
@@ -778,7 +791,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                     onClose={closeLocationBackgroundModal}
                   />
                   <div>
-                    <Switch defaultChecked  onChange={ToggleLocationBackground} disabled={isToggleLoading} />
+                    <Switch checked={isLocationBackground}  onChange={ToggleLocationBackground} disabled={isToggleLoading} />
                   </div>
                 </div>
               </div>
@@ -909,7 +922,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                     />
 
                     <div>
-                      <Switch defaultChecked onChange={ToggleEducationFinancial} disabled={isToggleLoading} />
+                      <Switch checked={isEducationFinancial} onChange={ToggleEducationFinancial} disabled={isToggleLoading} />
                     </div>
                   </div>
                 </div>

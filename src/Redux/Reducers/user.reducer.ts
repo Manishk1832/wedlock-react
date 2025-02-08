@@ -28,8 +28,16 @@ interface User {
   updatedAt: string; // Same as above
 }
 
+type ToggleStatusType = {
+  family_details: boolean;
+  personal_details: boolean;
+  religious_details: boolean;
+  location_details: boolean;
+  education_and_financial_details: boolean;
+};
 
 interface MyDetails {
+  toggleStatus: ToggleStatusType;
  
   fcmToken: string;
   profileImage: string[];
