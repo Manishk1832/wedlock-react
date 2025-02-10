@@ -3,11 +3,10 @@ import {
   PiChatsDuotone,
   PiMicrophoneDuotone,
 } from "react-icons/pi";
-import "../../font.css";
 
 const Feature = () => {
   return (
-    <div className="w-100  h-auto 8xl:px-32 bg-[#007EAF]  sm:pt-0 3xl:px-48 xl:px-10 7xl:px-36">
+    <div className="w-100  h-auto 8xl:px-32 bg-[#007EAF]    3xl:px-48 xl:px-10 7xl:px-36">
       <div className="relative overflow-hidden container m-auto">
         <img
           src="/curvewhite.svg"
@@ -15,8 +14,8 @@ const Feature = () => {
           className="absolute  w-[42rem] left-10 -top-10 -rotate-[128deg]"
         />
 
-        <div className=" flex flex-col pt-6 lg:flex-row justify-between text-white xl:p-20 p-6  ">
-          <div className="space-y-6 connect_match">
+        <div className=" flex flex-col pt-6 lg:flex-row justify-between text-white p-6 py-5 md:py-12  ">
+          <div className="space-y-6 ">
             <h1 className="text-[32px] md:text-[48px] xl:text-[64px]  xl:leading-[83.2px] font-[Proxima-Nova-Bold] tracking-[-0.02em]">
               Connect with matches <br className=" hidden lg:block" /> the way
               you like

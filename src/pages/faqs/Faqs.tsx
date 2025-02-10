@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import FAQ from '../../components/faqs/Faqs';
 import { CiSearch, CiHeart } from "react-icons/ci";
 
@@ -94,8 +95,8 @@ const Faqs = () => {
       <FAQ /> 
       <div className="py-20 text-center bg-[#F5F4F4] space-y-8">
         <p className="font-bold">Still have questions?</p>
-        <p className='text-[#475467]'>Can’t find the answer you’re looking for? Please chat to our friendly team.</p>
-        <button className="bg-[#007EAF] text-white py-2 px-4 rounded">Get in touch</button>
+        <p className='text-[#475467] pb-5 '>Can’t find the answer you’re looking for? Please chat to our friendly team.</p>
+        <Link to={'/contact-us'} className="bg-[#007EAF] text-white py-2 px-4 rounded 2">Get in touch</Link>
       </div>
     </div>
   );

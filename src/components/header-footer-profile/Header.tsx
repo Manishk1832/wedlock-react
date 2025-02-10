@@ -17,6 +17,7 @@ import Cookies from "js-cookie";
 import { toast } from "sonner";
 import { logout } from "../../Redux/Reducers/user.reducer";
 import { RootState } from "./../../Redux/store";
+import Loading from "../Loading";
 import { useSelector } from "react-redux";
 
 
@@ -26,19 +27,6 @@ const Header = memo(() => {
 
   const [isExclusive, setIsExclusive] = useState(false);
 
-
-
-
-
-  
-
-  
-
-
-  
-
-  
-
   useEffect(() => {
     const isExclusive = localStorage.getItem("isExclusive");
     if (isExclusive === "true" || user?.usertype === "Exclusive") {
@@ -46,6 +34,8 @@ const Header = memo(() => {
     }
     [];
   });
+
+
 
 
   const navigate = useNavigate();
@@ -70,7 +60,7 @@ const Header = memo(() => {
   const handleDelete = async () => {
     try {
       const response: DeleteResponse = await deleteUser().unwrap();
-      console.log(response);
+    
       if (response?.success === true) {
         toast.success(response?.message);
         Cookies.remove("isImageFormFilled");
@@ -79,7 +69,6 @@ const Header = memo(() => {
         Cookies.remove("isQualificationFormFilled");
         Cookies.remove("isOtherFormFilled");
         Cookies.remove("isPersonalFormFilled");
-        Cookies.remove("persist:user");
         Cookies.remove("fcmToken");
         Cookies.remove("uid");
         dispatch(logout());
@@ -138,6 +127,8 @@ const Header = memo(() => {
       </button>
     </div>
   );
+
+
 
   return (
     <div className={`fixed z-10 h-20 w-full ${isExclusive? 'bg-[#60457E]': 'bg-[#007EAF]'}`}>

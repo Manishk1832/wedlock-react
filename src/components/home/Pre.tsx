@@ -2,14 +2,14 @@ import "../../font.css";
 
 function Pre() {
   return (
-    <div className="w-100 h-auto 8xl:px-32 bg-[#E6F2F7] pb-10 3xl:px-48 xl:px-10 xl:pb-28 7xl:px-36 7xl:py-28">
-      <div className=" space-y-4 bg-[#E6F2F7] relative overflow-hidden px-5 sm:px-20  container m-auto">
+    <div className="w-100 h-auto 8xl:px-32 bg-[#E6F2F7]  py-5 md:py-12 3xl:px-48 xl:px-10  7xl:px-36 ">
+      <div className="  bg-[#E6F2F7] relative overflow-hidden px-5 sm:px-20  container m-auto">
         <img
           src="/Vector.png"
           alt="arw"
           className="absolute  w-[38rem] -right-4 -top-40"
         />
-        <div className="space-y-7 matrimony xl:pt-10">
+        <div className=" matrimony ">
           <h1 className="text-[#007EAF]  text-[32px] md:text-[48px] xl:text-[64px]  xl:leading-[83.2px] font-[Proxima-Nova-Bold] tracking-[-0.02em]">
             The premier matrimony platform{" "}
           </h1>

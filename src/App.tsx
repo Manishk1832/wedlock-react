@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState } from "react";
 import "./App.css";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -50,17 +50,28 @@ const Exclusive = lazy(()=>import("./pages/exclusive-matching/exclusive"))
 const Cancel = lazy(() => import("./pages/paymentCancelPage/PaymentCancelPage"))
 
 const App = () => {
-  const { accessToken ,user  } = useSelector((state: RootState) => state.userReducer) ;
+  const { accessToken,refreshToken ,user  } = useSelector((state: RootState) => state.userReducer) ;
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!accessToken || !!refreshToken);
+
 
   useEffect(() => {
-    if(accessToken){
-      connectSocket();
-      
+    if (!accessToken && !refreshToken) {
+      localStorage.clear();
+      setIsAuthenticated(false);
+    } else {
+      setIsAuthenticated(true);
     }
-    else{
+  }, [accessToken, refreshToken]);
+
+  useEffect(() => {
+    if (accessToken) {
+      connectSocket();
+    } else {
       disconnectSocket();
     }
-  },[accessToken])
+  }, [accessToken]);
+
+
 
 
 
@@ -82,19 +93,19 @@ const App = () => {
 
   const [updateFcmToken] = useUpdateFcmTokenMutation();
 
-  async function requestPermission() {
-    const permission = await Notification.requestPermission();
-    if (permission === "granted") {
-      const token = await getToken(messaging,{
-        vapidKey:'BDMJ1bttVFT8x_Im4tTOPjWMXR4lqlb193pBRAfRYPWx2JkkvSk9eZkjf3d0dfDPlMfcwawtCd21WTMPq_0x2_w'
-      });
+  // async function requestPermission() {
+  //   const permission = await Notification.requestPermission();
+  //   if (permission === "granted") {
+  //     const token = await getToken(messaging,{
+  //       vapidKey:'BDMJ1bttVFT8x_Im4tTOPjWMXR4lqlb193pBRAfRYPWx2JkkvSk9eZkjf3d0dfDPlMfcwawtCd21WTMPq_0x2_w'
+  //     });
       
-      localStorage.setItem("fcmToken",token!);
+  //     localStorage.setItem("fcmToken",token!);
 
-    } else {
-       alert("You denied for notification");
-    }
-  }
+  //   } else {
+  //      alert("You denied for notification");
+  //   }
+  // }
 
 
 
@@ -116,17 +127,18 @@ useEffect(() => {
   
 },[])
 
-  useEffect(() => {
-    requestPermission();
-  },[])
+  // useEffect(() => {
+  //   requestPermission();
+  // },[])
 
   return  (
     <Router>
+     
       <Navbar />
       <Suspense fallback={<div className="flex justify-center items-center min-h-screen"><Loading /></div>}>
         <Routes>
-        <Route path="/" element={accessToken ? <Navigate to="/user-dashboard" /> : <Home />} />
-        <Route path="/mission" element={<Mission />} />
+          <Route path="/" element={isAuthenticated ? <Navigate to="/user-dashboard" replace /> : <Home />} />
+          <Route path="/mission" element={<Mission />} />
           <Route path="/advice" element={<Advice />} />
           <Route path="/help" element={<Help />} />
           <Route path="/login" element={<Login />} />
@@ -143,37 +155,27 @@ useEffect(() => {
           <Route path="/services" element={<Services />} />
           <Route path="/exclusive" element={<Exclusive />} />
 
-        <Route element={ <ProtectedRoute isAuthenticated={accessToken ? false : true} />}>
-          <Route path="/questions" element={<Questions />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/create-password" element={<CreatePassword />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path= "/change-password" element={<ChangePassword />} />
-          <Route path="/verification" element={<Verification />} />
-          <Route path="/verify-otp" element={<VerifyOtp />} />
-        </Route>
+          <Route element={<ProtectedRoute isAuthenticated={!accessToken} />}>
+            <Route path="/questions" element={<Questions />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/create-password" element={<CreatePassword />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/change-password" element={<ChangePassword />} />
+            <Route path="/verification" element={<Verification />} />
+            <Route path="/verify-otp" element={<VerifyOtp />} />
+          </Route>
 
-         
-
- {/* 
-          <Route path="/personal-details" element={<Personal/>} />
-          <Route path="/location-details" element={<Location />} />
-          <Route path="/other-details" element={<Other />} />
-          <Route path="/qualification-details" element={<Qualification />} />
-          <Route path="/success" element={<Success />} /> */}
-
-
-          <Route element={<ProtectedRoute isAuthenticated={accessToken ? true : false} />}>
-          <Route path="/user-dashboard" element={<UserDashboard />}/>
-          <Route path="/photoupload" element={<Photoupload />} />
-          <Route path="/profile/:name/:userId" element={<Profile />} />
-          <Route path="/personal-details" element={<Personal/>} />
-          <Route path="/location-details" element={<Location />} />
-          <Route path="/other-details" element={<Other />} />
-          <Route path="/cancel" element={<Cancel />} />
-          <Route path="/qualification-details" element={<Qualification />} />
-          <Route path="/success" element={<Success />} />
-          <Route path="/Payment-Success" element={<Sucessfull />} />
+          <Route element={<ProtectedRoute isAuthenticated={!!accessToken}  />}>
+            <Route path="/user-dashboard" element={<UserDashboard />} />
+            <Route path="/photoupload" element={<Photoupload />} />
+            <Route path="/profile/:name/:userId" element={<Profile />} />
+            <Route path="/personal-details" element={<Personal />} />
+            <Route path="/location-details" element={<Location />} />
+            <Route path="/other-details" element={<Other />} />
+            <Route path="/cancel" element={<Cancel />} />
+            <Route path="/qualification-details" element={<Qualification />} />
+            <Route path="/success" element={<Success />} />
+            <Route path="/Payment-Success" element={<Sucessfull />} />
           </Route>
         </Routes>
       </Suspense>

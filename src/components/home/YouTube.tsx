@@ -4,14 +4,14 @@ const YouTube = () => {
   return (
   
   
-  <div className='w-100 h-auto bg-[#E6F2F7] 3xl:pl-[8%] xl:px-8 7xl:px-32 8xl:px-32'>
+  <div className='w-100 h-auto bg-[#E6F2F7] 3xl:pl-[8%] xl:px-8 py-5 md:py-12 7xl:px-32 8xl:px-32'>
  <div className='relative overflow-hidden container m-auto sm:px-6 px-6 w-100' >
        <img
         src="/curvesm.svg"
         alt="arw"
         className="absolute  w-[52rem] -right-56 top-2 z-10" 
       />
-    <div className='py-5 lg:py-20  sm:px-14 youtube'>
+    <div className='  sm:px-14 youtube'>
   
         <h1 className='text-[32px] md:text-[48px] xl:text-[64px]  xl:leading-[83.2px] font-[Proxima-Nova-Bold] tracking-[-0.02em] text-[#007EAF] '>Introducing: A new wedlock experience
         </h1>

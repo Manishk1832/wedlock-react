@@ -229,7 +229,7 @@ const [isExclusive, setIsExclusive] = useState(false);
     const notificationData = {
       userId: user?.userId,
       profileImage: myDetails?.profileImage[0],
-      name: `${myDetails?.basic_and_lifestye?.firstName} ${myDetails?.basic_and_lifestye?.lastName}`,
+      name: `${myDetails?.basic_and_lifestyle?.firstName} ${myDetails?.basic_and_lifestyle?.lastName}`,
       fcmToken: myDetails?.fcmToken,
     };
 
@@ -389,26 +389,26 @@ const [isExclusive, setIsExclusive] = useState(false);
                 </div>
                 <div className="mt-2.5 flex flex-wrap py-6 items-center gap-2.5 self-start text-base font-medium  leading-4 text-slate-900">
                   <div className={ `self-stretch text-xl font-bold leading-10 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} lg:text-3xl`}>
-                    {myDetails?.basic_and_lifestye?.firstName +
+                    {myDetails?.basic_and_lifestyle?.firstName +
                       " " +
-                      myDetails?.basic_and_lifestye?.lastName}
+                      myDetails?.basic_and_lifestyle?.lastName}
                   </div>
                   <div className="my-auto justify-center self-stretch whitespace-nowrap rounded-[100px] bg-orange-100 px-3 py-1.5 text-center capitalize tracking-normal">
-                    {myDetails?.basic_and_lifestye?.gender}
+                    {myDetails?.basic_and_lifestyle?.gender}
                   </div>
                   <div className="my-auto justify-center self-stretch whitespace-nowrap rounded-[100px] bg-orange-100 px-3 py-1.5 text-center capitalize tracking-normal">
-                    {myDetails?.basic_and_lifestye?.age}
+                    {myDetails?.basic_and_lifestyle?.age}
                   </div>
                 </div>
                 <div className="mt-6 flex flex-col rounded-xl bg-cyan-600 bg-opacity-20 px-6 py-3 max-md:max-w-full max-md:px-5">
                   <div className="text-base font-bold leading-6 tracking-wide text-gray-900 text-opacity-90 max-md:max-w-full">
                     About{" "}
-                    {myDetails?.basic_and_lifestye?.firstName +
+                    {myDetails?.basic_and_lifestyle?.firstName +
                       " " +
-                      myDetails?.basic_and_lifestye?.lastName}
+                      myDetails?.basic_and_lifestyle?.lastName}
                   </div>
                   <div className="mt-4 text-sm leading-7 tracking-wide text-slate-600 max-md:max-w-full md:text-lg">
-                    {myDetails?.basic_and_lifestye?.about}
+                    {myDetails?.basic_and_lifestyle?.about}
                   </div>
                 </div>
                 <div className="mt-4 flex flex-col px-2 max-md:max-w-full max-md:px-5 gap-3">
@@ -417,7 +417,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                       Religion
                     </div>
                     <div className="justify-center self-start whitespace-nowrap rounded-[100px] bg-blue-50 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-blue-600">
-                      {myDetails?.basic_and_lifestye?.religion}
+                      {myDetails?.basic_and_lifestyle?.religion}
                     </div>
                   </div>
 
@@ -426,7 +426,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                       Marital status
                     </div>
                     <div className="justify-center self-start rounded-[100px] bg-orange-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-slate-900">
-                      {myDetails?.basic_and_lifestye?.maritalStatus}
+                      {myDetails?.basic_and_lifestyle?.maritalStatus}
                     </div>
                   </div>
 
@@ -435,7 +435,7 @@ const [isExclusive, setIsExclusive] = useState(false);
                       Posted by{" "}
                     </div>
                     <div className="justify-center self-start rounded-[100px] bg-purple-100 px-3 py-1.5 text-center text-base font-medium capitalize leading-4 tracking-normal text-violet-600">
-                      {myDetails?.basic_and_lifestye?.postedBy}
+                      {myDetails?.basic_and_lifestyle?.postedBy}
                     </div>
                   </div>
                 </div>

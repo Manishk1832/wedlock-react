@@ -7,7 +7,7 @@ const GetApp = () => {
 
 
         <div
-            className="w-100 h-auto  bg-[#007EAF]  8xl:px-32 py-5  7xl:px-32    sm:py-0 sm:pb-0 3xl:px-36 xl:px-10">
+            className="w-100 h-auto  bg-[#007EAF]  8xl:px-32 py-5  7xl:px-32     sm:py-0 sm:pb-0 3xl:px-36 xl:px-10">
 
             <div className=" text-white  overflow-hidden container m-auto">
                 <div className="flex flex-col md:flex-row justify-between lg:justify-between flex-wrap">

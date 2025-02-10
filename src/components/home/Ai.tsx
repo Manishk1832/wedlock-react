@@ -1,9 +1,9 @@
-import '../../font.css';
+
 import Aicard from './Aicard';
 
 const Ai = () => {
   return (
-    <div className="w-full h-auto  bg-[#009BDA] overflow-hidden">
+    <div className="w-full h-auto  bg-[#009BDA] overflow-hidden pt-6 max-md:pt-5" >
       <div className="relative container mx-auto">
         <img
           src="/curvewhite.svg"

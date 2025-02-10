@@ -61,7 +61,7 @@ const Search = () => {
 
   return (
     <div className="w-100 7xl:h-[60rem] 8xl:h-[60rem] 8xl:px-32 3xl:h-[67rem] bg-[#E6F2F7] 3xl:px-56 xl:px-10 5xl:py-4 7xl:px-36">
-      <div className="md:space-y-10 relative min-h-screen md:px-20 md:py-10 3xl:py-16 3xl:pt-28 p-4 container m-auto 5xl:h-[20rem]">
+      <div className="relative min-h-screen md:px-2 py-5 md:py-12 3xl:pt-28 p-4 container m-auto 5xl:h-[20rem]">
         <img
           src="/curvesm.svg"
           alt="arw"

@@ -3,6 +3,8 @@ import Cookies from "js-cookie";
 
 const accessToken = Cookies.get("access_token") || null;
 const refreshToken = Cookies.get("refresh_token") || null;
+console.log(Cookies.get());
+console.log(refreshToken,"refreshToken");
 
 const activationToken = Cookies.get("activationToken") || null;
 const token = Cookies.get("token") || null;
@@ -41,7 +43,7 @@ interface MyDetails {
  
   fcmToken: string;
   profileImage: string[];
-  basic_and_lifestye: {
+  basic_and_lifestyle: {
     firstName: string;
     lastName: string;
     displayName: string;
@@ -149,28 +151,32 @@ const userSlice = createSlice({
 
     setUser: (state, action) => {
       state.loading = false;
+    
+      // Retrieve tokens from cookies if they exist
+      const accessToken = action.payload.accessToken || Cookies.get("access_token");
+      const refreshToken = action.payload.refreshToken || Cookies.get("refresh_token");
+    
+      state.accessToken = accessToken;
+      state.refreshToken = refreshToken;
+    
       const {
         user,
-        accessToken,
-        refreshToken,
         isImageFormFilled,
         isLocationFormFilled,
         isPersonalFormFilled,
         isQualificationFormFilled,
         isOtherFormFilled,
       } = action.payload;
-
+    
       state.user = user;
-      state.accessToken = accessToken;
-      state.refreshToken = refreshToken;
-
+    
       state.isLocationFormFilled = user?.isLocationFormFilled || isLocationFormFilled || false;
       state.isImageFormFilled = user?.isImageFormFilled || isImageFormFilled || false;
       state.isPersonalFormFilled = user?.isPersonalFormFilled || isPersonalFormFilled || false;
-      state.isQualificationFormFilled =user?.isQualificationFormFilled || isQualificationFormFilled || false;
+      state.isQualificationFormFilled = user?.isQualificationFormFilled || isQualificationFormFilled || false;
       state.isOtherFormFilled = user?.isOtherFormFilled || isOtherFormFilled || false;
-
     },
+    
 
     setCredentials: (state, action) => {
       state.accessToken = action.payload;
