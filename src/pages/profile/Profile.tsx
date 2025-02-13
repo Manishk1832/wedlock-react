@@ -4,6 +4,7 @@ import Footer from "../../components/header-footer-profile/Footer";
 import { ConfigProvider } from "antd";
 import { Tabs } from "antd";
 import type { TabsProps } from "antd";
+import { useLocation, useNavigate } from "react-router-dom";
 import Discover from "../../components/user-dashboard/Discover";
 // import {Messaging} from 'firebase/messaging'
 import Favourate from "../../components/user-dashboard/Favourate";
@@ -20,6 +21,7 @@ const Profile: React.FC = () => {
   
   const { userId } = useParams<{ userId: string }>(); 
   const {user } = useSelector((state: RootState) => state.userReducer) ;
+    const navigate = useNavigate();
 
   const [isExclusive, setIsExclusive] = useState(false);
 
@@ -31,9 +33,20 @@ const Profile: React.FC = () => {
     [];
   });
 
+    // Get the current tab from URL parameters
+    const params = new URLSearchParams(location.search);
+    const activeTab = params.get("tab") || "matches"; // Default to 'my-details' if no tab is provided
+  
+    // Function to handle tab change and update URL
+    const handleTabChange = (key: string) => {
+      params.set("tab", key);
+      navigate({ search: params.toString() }, { replace: true });
+    };
+  
+
   const items: TabsProps["items"] = [
     {
-      key: "1",
+      key: "matches",
       label: `Matches`,
       children: (
         <div>
@@ -42,13 +55,13 @@ const Profile: React.FC = () => {
       ),
     },
     {
-      key: "2",
+      key: "discover",
       label: `Discover`,
       children:
        <div><Discover /></div>,
     },
     {
-      key: "3",
+      key: "favorite-profiles",
       label: `Favorite Profile`,
       children: 
       <div>
@@ -57,7 +70,7 @@ const Profile: React.FC = () => {
       </div>,
     },
     {
-      key: "4",
+      key: "notifications",
       label: `Notifications`,
       children: <div><Notification /></div>,
     },
@@ -92,7 +105,8 @@ const Profile: React.FC = () => {
               }}
             >
               <Tabs
-              defaultActiveKey="1"
+               activeKey={activeTab}
+              onChange={handleTabChange}
               items={items}
               className="ant-tabs"
             />

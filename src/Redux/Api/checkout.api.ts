@@ -12,9 +12,9 @@ export const checkoutApi = apiSlice.injectEndpoints({
             }),
         }),
 
-        paymentSuccess:builder.query({
-            query: (session_id: string) => ({
-                url: `subscription/payment-success/${session_id}`,
+        getUserSubscriptionStatus:builder.query({
+            query: () => ({
+                url: `subscription//checkSubscriptionStatus`,
                 method: 'GET',
             }),
         }),
@@ -31,4 +31,4 @@ export const checkoutApi = apiSlice.injectEndpoints({
 })
 
 
-export const { useCreateCheckoutSessionMutation ,usePaymentSuccessQuery,useGetSubscriptionHistoryQuery} = checkoutApi
+export const { useCreateCheckoutSessionMutation ,useGetUserSubscriptionStatusQuery,useGetSubscriptionHistoryQuery} = checkoutApi

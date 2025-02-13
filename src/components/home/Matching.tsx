@@ -51,7 +51,7 @@ const Matching = () => {
                   <div className="space-y-2 ">
                         <div className="flex items-center gap-5 rounded-xl bg-[#FFFFFF80] lg:w-96 h-10 px-2 md:px-5">
                             <FaStar className="text-2xl text-yellow-400 "/>
-                            <h1 className="lg:text-xl text-sm font-[Proxima-Nova-semiBold] ">Top-tier profile visibility</h1>
+                            <h1 className="lg:text-xl text-sm font-[Proxima-Nova-semiBold] ">Get access to Exclusive profiles</h1>
                         </div>
                         <div className="flex items-center gap-5 rounded-xl bg-[#FFFFFF80] lg:w-96 h-10 px-2 md:px-5">
                             <FiMic className="text-2xl text-[#007EAF] "/>

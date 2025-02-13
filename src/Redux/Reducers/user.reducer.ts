@@ -99,6 +99,9 @@ interface MyDetails {
   interest_and_hobbies: string[];
 }
 
+interface ReauthenticatePassword {
+  password: string;
+}
 
 
 
@@ -117,6 +120,7 @@ interface InitialState {
   isLocationFormFilled: boolean;
   isImageFormFilled: boolean;
   myDetails: MyDetails | null;
+  ReauthenticatePassword: ReauthenticatePassword | null;
 }
 
 
@@ -135,6 +139,7 @@ const initialState : InitialState = {
   isLocationFormFilled: false,
   isImageFormFilled: false,
   myDetails: null,
+  ReauthenticatePassword: null,
 };
 
 console.log(initialState.myDetails,"initialState");
@@ -152,7 +157,7 @@ const userSlice = createSlice({
     setUser: (state, action) => {
       state.loading = false;
     
-      // Retrieve tokens from cookies if they exist
+    
       const accessToken = action.payload.accessToken || Cookies.get("access_token");
       const refreshToken = action.payload.refreshToken || Cookies.get("refresh_token");
     
@@ -227,6 +232,10 @@ const userSlice = createSlice({
       }
     },
 
+    SetReauthenticatePassword: (state, action) => {
+      state.ReauthenticatePassword = action.payload;
+    },
+
 
 
     
@@ -242,6 +251,6 @@ const userSlice = createSlice({
 });
 
 export const { setUser,setCredentials,  logout, setActivationToken ,setNotificationData,setUserType,setMyDetails,
-  updateFamilyDetail,updatePersonalDetails,updateReligiousBackgroundDetails,updateLocationDetail,updateEducationDetails} =
+  updateFamilyDetail,updatePersonalDetails,updateReligiousBackgroundDetails,updateLocationDetail,updateEducationDetails,SetReauthenticatePassword} =
   userSlice.actions;
 export default userSlice;

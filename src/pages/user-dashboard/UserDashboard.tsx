@@ -1,25 +1,24 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Tabs } from "antd";
 import { ConfigProvider } from "antd";
 import type { TabsProps } from "antd";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../Redux/store";
+
 import Header from "../../components/header-footer-profile/Header";
 import Footer from "../../components/header-footer-profile/Footer";
 import Plan from "../../pages/plan/Plan";
 import BillingInfo from "../../components/BillingInfo/BillingInfo";
 import Notification from "../../components/user-dashboard/Notification";
-import { useLocation } from "react-router-dom";
 import Discover from "../../components/user-dashboard/Discover";
 import Favourate from "../../components/user-dashboard/Favourate";
 import MyDetails from "../../components/user-dashboard/Mydetails";
-import { RootState } from "./../../Redux/store";
-import { useSelector } from "react-redux";
-
-// import '../../app/globals.css'
 
 const UserDashboard: React.FC = () => {
   const location = useLocation();
-  const {user } = useSelector((state: RootState) => state.userReducer) ;
+  const navigate = useNavigate();
+  const { user } = useSelector((state: RootState) => state.userReducer);
 
   const [isExclusive, setIsExclusive] = useState(false);
 
@@ -28,75 +27,49 @@ const UserDashboard: React.FC = () => {
     if (isExclusive === "true" || user?.usertype === "Exclusive") {
       setIsExclusive(true);
     }
-    [];
-  });
+  }, [user]);
 
+  // Get the current tab from URL parameters
   const params = new URLSearchParams(location.search);
+  const activeTab = params.get("tab") || "details"; // Default to 'my-details' if no tab is provided
 
-
-
-  const activateKey = params.get("Notifications") || params.get("plan");
-
-
-
+  // Function to handle tab change and update URL
+  const handleTabChange = (key: string) => {
+    params.set("tab", key);
+    navigate({ search: params.toString() }, { replace: true });
+  };
 
   const items: TabsProps["items"] = [
     {
-      key: "1",
+      key: "details",
       label: `My Details`,
-      children: (
-        <div>
-          <MyDetails />
-        </div>
-      ),
+      children: <MyDetails />,
     },
     {
-      key: "2",
+      key: "discover",
       label: `Discover`,
-      children: (
-        <div>
-          <Discover />
-        </div>
-      ),
+      children: <Discover />,
     },
     {
-      key: "3",
+      key: "favorite-profiles",
       label: `Favorite Profiles`,
-      children: (
-        <div>
-          <Favourate />
-        </div>
-      ),
+      children: <Favourate />,
     },
     {
-      key: "4",
+      key: "plans",
       label: `Plan`,
-      children: (
-        <div>
-          <Plan />
-        </div>
-      ),
+      children: <Plan />,
     },
     {
-      
-      key: "5",
+      key: "billings",
       label: `Billing`,
-      children: (
-        <div>
-          <BillingInfo />
-        </div>
-      ),
+      children: <BillingInfo />,
       disabled: !(user?.usertype === "Exclusive" || user?.usertype === "Premium"),
-
     },
     {
-      key: "6",
+      key: "notifications",
       label: `Notifications`,
-      children: (
-        <div>
-          <Notification />
-        </div>
-      ),
+      children: <Notification />,
     },
   ];
 
@@ -108,12 +81,12 @@ const UserDashboard: React.FC = () => {
           <img src="/bigad.png" className="h-14 w-full" />
         </div>
 
-        <div className="px-4 py-6 ">
+        <div className="px-4 py-6">
           <div className="p-0 md:p-4">
             <ConfigProvider
               theme={{
                 token: {
-                  colorPrimary: `${isExclusive ? "#60457E" : "#007EAF"}`,
+                  colorPrimary: isExclusive ? "#60457E" : "#007EAF",
                 },
                 components: {
                   Tabs: {
@@ -128,9 +101,9 @@ const UserDashboard: React.FC = () => {
               }}
             >
               <Tabs
-                defaultActiveKey="1"
+                activeKey={activeTab}
+                onChange={handleTabChange}
                 items={items}
-                activeKey={activateKey ?? undefined}
                 tabBarStyle={{ backgroundColor: "#E6F2F7" }}
               />
             </ConfigProvider>

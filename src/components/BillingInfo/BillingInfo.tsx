@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const BillingInfo = () => {
-  const {user } = useSelector((state: RootState) => state.userReducer) ;
+  const {user} = useSelector((state: RootState) => state.userReducer) ;
   const navigate = useNavigate();
 
   const handleUpgradeClick = () => {

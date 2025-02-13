@@ -10,6 +10,8 @@ import {connectSocket} from "../../services/socketservice";
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { toast } from 'sonner'
 import { useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../../utils/firebaseConfig.ts";
 
 import { z } from 'zod'
 
@@ -63,6 +65,16 @@ const Login = () => {
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
       try {
+
+        const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
+       const user = userCredential.user;
+
+
+       if(!user){
+        toast.error("Something went wrong");
+        return;
+       }
+    
         const res = await login(data);
     
         if ('error' in res && res.error) {
@@ -164,7 +176,9 @@ const Login = () => {
           
           </div>
           <div className="flex items-center justify-end mb-8  text-[#F9F5FF] gap-1 text-lg">
-              <button>Forgot password</button>
+            
+            
+              <Link to={"/forgot-password"}>Forgot password</Link>
 
           </div>
 

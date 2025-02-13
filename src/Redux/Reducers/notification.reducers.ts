@@ -26,7 +26,7 @@ interface InitialState {
 
 const initialState: InitialState = {
     data:  null,
-    notifacations: null,
+    notifacations: [],
     notificationCount: 0
 };
 
@@ -39,9 +39,12 @@ export const notificationReducer = createSlice({
         },
 
         setsocketNotification: (state, action: PayloadAction<INotification | null>) => {
-            state.data = action.payload;
-            state.notifacations?.push(action.payload!);
+            if (action.payload) {
+                state.data = action.payload;
+                state.notifacations = state.notifacations ? [...state.notifacations, action.payload] : [action.payload];
+            }
         },
+        
 
         removeNotificationData: (state, action: PayloadAction<string>) => {
             state.notifacations = (state.notifacations || []).filter(

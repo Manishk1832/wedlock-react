@@ -95,6 +95,7 @@ const CreatePassword = () => {
 
           
           const userCredential = await createUserWithEmailAndPassword(auth, email!, confirmPassword!);
+          console.log(userCredential,"userCredential");
 
           const user = userCredential.user;
 

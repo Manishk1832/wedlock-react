@@ -12,6 +12,9 @@ import Navbar from "./components/home/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Loading from "./components/Loading";
 import { connectSocket,disconnectSocket } from "./services/socketservice";
+import { useGetUserSubscriptionStatusQuery } from "./Redux/Api/checkout.api";
+import { setUserType } from "./Redux/Reducers/user.reducer";
+import { useDispatch } from "react-redux";
 
 
 
@@ -53,6 +56,20 @@ const App = () => {
   const { accessToken,refreshToken ,user  } = useSelector((state: RootState) => state.userReducer) ;
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!accessToken || !!refreshToken);
 
+  const dispatch = useDispatch();
+
+
+  const { data } = useGetUserSubscriptionStatusQuery(null);
+
+ 
+  useEffect(() => {
+    if (data?.usertype) {
+      const userType = data.usertype; 
+     
+      dispatch(setUserType(userType));
+    }
+  }, [data, dispatch]);
+
 
   useEffect(() => {
     if (!accessToken && !refreshToken) {
@@ -70,6 +87,7 @@ const App = () => {
       disconnectSocket();
     }
   }, [accessToken]);
+
 
 
 
@@ -93,19 +111,19 @@ const App = () => {
 
   const [updateFcmToken] = useUpdateFcmTokenMutation();
 
-  // async function requestPermission() {
-  //   const permission = await Notification.requestPermission();
-  //   if (permission === "granted") {
-  //     const token = await getToken(messaging,{
-  //       vapidKey:'BDMJ1bttVFT8x_Im4tTOPjWMXR4lqlb193pBRAfRYPWx2JkkvSk9eZkjf3d0dfDPlMfcwawtCd21WTMPq_0x2_w'
-  //     });
+  async function requestPermission() {
+    const permission = await Notification.requestPermission();
+    if (permission === "granted") {
+      const token = await getToken(messaging,{
+        vapidKey:'BDMJ1bttVFT8x_Im4tTOPjWMXR4lqlb193pBRAfRYPWx2JkkvSk9eZkjf3d0dfDPlMfcwawtCd21WTMPq_0x2_w'
+      });
       
-  //     localStorage.setItem("fcmToken",token!);
+      localStorage.setItem("fcmToken",token!);
 
-  //   } else {
-  //      alert("You denied for notification");
-  //   }
-  // }
+    } else {
+       alert("You denied for notification");
+    }
+  }
 
 
 
@@ -127,9 +145,9 @@ useEffect(() => {
   
 },[])
 
-  // useEffect(() => {
-  //   requestPermission();
-  // },[])
+  useEffect(() => {
+    requestPermission();
+  },[])
 
   return  (
     <Router>

@@ -23,9 +23,11 @@ const Contact = () => {
     if (form.current) {
       emailjs.sendForm('service_hzkpbf5', 'template_6vk5lf4', form.current, 'KSa13V-DorIvkrvyY')
         .then((result) => {
+          console.log(result.text)
         toast.success("Email sent successfully!");
         form.current?.reset();
         }, (error) => {
+          console.log(error)
           toast.error("Failed to send email.");
         });
     }

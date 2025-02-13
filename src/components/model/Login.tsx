@@ -10,6 +10,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
 import { LoadingOutlined } from "@ant-design/icons";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../../utils/firebaseConfig.ts";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -55,6 +57,13 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
+      const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
+      const user = userCredential.user;
+      if(!user){
+        toast.error("Something went wrong");
+        return;
+       }
+
       const res = await login(data);
 
       if ("error" in res && res.error) {

@@ -17,13 +17,13 @@ import { toast } from 'sonner';
 
 const fieldNames = ['code0', 'code1', 'code2', 'code3'] as const;
 
-// Define Zod schema
 const verificationSchema = z.object({
   code0: z.string().min(1, "Required").length(1, "Must be 1 character"),
   code1: z.string().min(1, "Required").length(1, "Must be 1 character"),
   code2: z.string().min(1, "Required").length(1, "Must be 1 character"),
   code3: z.string().min(1, "Required").length(1, "Must be 1 character"),
 });
+
 
 const Verify = () => {
   const [isExclusive, setExclusive] = useState(false);
@@ -46,14 +46,18 @@ const Verify = () => {
 
   // const [forgotpassword, { isLoading: forgotpasswordLoading }] = useForgotpasswordMutation();
 
-  const { register, handleSubmit, formState: { errors } } = useForm<VerificationInputs>({
-    resolver: zodResolver(verificationSchema),
-  });
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm<VerificationInputs>({
+     resolver: zodResolver(verificationSchema),
+   });
+ 
 
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
+  
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const { value } = e.target;
+    setValue(fieldNames[index], value); 
     if (value.length === 1 && index < inputRefs.current.length - 1) {
       inputRefs.current[index + 1]?.focus(); // Focus on next input
     } else if (value.length === 0 && index > 0) {
@@ -112,6 +116,7 @@ const Verify = () => {
    try{
     const activationCode = data.code0 + data.code1 + data.code2 + data.code3;
     const activationToken = Cookies.get('activationToken');
+    console.log(activationCode);
 
     const res = await verify({ activationCode, activationToken });
 
@@ -164,13 +169,13 @@ const Verify = () => {
                 <div key={index}>
                   <Input
                     label=""
-                    {...register(fieldNames[index] as typeof fieldNames[number])}
+                    {...register(fieldNames[index])}
+                    ref={el => inputRefs.current[index] = el} // Assign ref to input
                     className={`w-16 h-16 text-center rounded-xl text-3xl text-[#007EAF] placeholder-[#007EAF] outline-gray-400 ${errors[fieldNames[index] as typeof fieldNames[number]] ? 'border-red-500' : ''}`}
                     type="text"
                     inputMode="numeric"
                     maxLength={1}
                     placeholder="0"
-                    ref={(el) => inputRefs.current[index] = el} // Assign ref to the input
                     onChange={(e) => handleInputChange(e, index)} // Handle input change to auto-shift focus
                   />
                   {errors[fieldNames[index] as typeof fieldNames[number]] && (

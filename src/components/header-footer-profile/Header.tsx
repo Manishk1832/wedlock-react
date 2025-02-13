@@ -7,18 +7,19 @@ import { IoIosLogOut } from "react-icons/io";
 import { AiOutlineUserDelete } from "react-icons/ai";
 import {
   useLogoutUserMutation,
-  useDeleteUserMutation,
 } from "../../Redux/Api/user.api";
 import { useGetUserImageQuery } from "../../Redux/Api/profile.api";
 import { IoNotifications } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import Cookies from "js-cookie";
 import { toast } from "sonner";
 import { logout } from "../../Redux/Reducers/user.reducer";
 import { RootState } from "./../../Redux/store";
-import Loading from "../Loading";
 import { useSelector } from "react-redux";
+import ReauthenticateModal from "./RauthenticateModel.tsx";
+import Cookies from "js-cookie";
+
+
 
 
 const Header = memo(() => {
@@ -26,6 +27,7 @@ const Header = memo(() => {
   const {notifacations } = useSelector((state: RootState) => state.notificationReducer) ;
 
   const [isExclusive, setIsExclusive] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const isExclusive = localStorage.getItem("isExclusive");
@@ -35,53 +37,27 @@ const Header = memo(() => {
     [];
   });
 
+  
 
 
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [logoutUser] = useLogoutUserMutation();
-  const [deleteUser] = useDeleteUserMutation();
-
+ 
   interface LogoutResponse {
     success: boolean;
     message: string;
   }
 
-  interface DeleteResponse {
-    success: boolean;
-    message: string;
-  }
+
 
   const handleNotificationClick = () => {
-    navigate(`/user-dashboard?Notifications=${6}`);
+    navigate(`?tab=notifications`);
   };
 
-  const handleDelete = async () => {
-    try {
-      const response: DeleteResponse = await deleteUser().unwrap();
-    
-      if (response?.success === true) {
-        toast.success(response?.message);
-        Cookies.remove("isImageFormFilled");
-        Cookies.remove("isProfileFormFilled");
-        Cookies.remove("isLocationFormFilled");
-        Cookies.remove("isQualificationFormFilled");
-        Cookies.remove("isOtherFormFilled");
-        Cookies.remove("isPersonalFormFilled");
-        Cookies.remove("fcmToken");
-        Cookies.remove("uid");
-        dispatch(logout());
-        localStorage.clear();
-        navigate("/");
-        window.location.reload();
-      } else {
-        toast.error("Delete failed. Please try again.");
-      }
-    } catch (error) {
-      toast.error("An error occurred while logging out");
-    }
-  };
+
+
 
   const handleLogout = async () => {
     try {
@@ -119,7 +95,7 @@ const Header = memo(() => {
         </span>{" "}
         Logout
       </button>
-      <button className="flex items-center gap-2" onClick={handleDelete}>
+      <button className="flex items-center gap-2" onClick={() => setIsModalOpen(true)}>
         <span>
           <AiOutlineUserDelete />
         </span>
@@ -152,7 +128,7 @@ const Header = memo(() => {
               <IoNotifications size={28} />
             </button>
 
-            {/* Notification badge */}
+            {/* Notification IoNotificationsbadge */}
             <span className="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-white text-xs">
               {notifacations?.length?? 0} 
             </span>
@@ -187,6 +163,7 @@ const Header = memo(() => {
               />
             </button>
           </div>
+          <ReauthenticateModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
         </div>
       </div>
     </div>
