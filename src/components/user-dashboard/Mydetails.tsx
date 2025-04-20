@@ -36,7 +36,6 @@ const MyDetails = () => {
 
   const {user,myDetails } = useSelector((state: RootState) => state.userReducer) ;
 
-  console.log(myDetails,"myDetails",myDetails?.toggleStatus);
   
   const [isPersonalDetails, setIsPersonalDetails] = useState(false);
   const [isReligiousDetails, setIsReligiousDetails] = useState(false);
@@ -340,6 +339,10 @@ const [isExclusive, setIsExclusive] = useState(false);
 
     }
   }, [profileData, refetch]);
+
+
+  const capitalize = (str: string | undefined) =>
+    str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : "";
   
 
   return (
@@ -351,7 +354,7 @@ const [isExclusive, setIsExclusive] = useState(false);
         </div>
       ) : (
       <div className="min-w-screen flex min-h-screen flex-col gap-4 md:gap-10 lg:flex-row">
-        <div className="mb-4 lg:grid grid-cols-1 gap-2 md:mb-0  auto-rows-[10rem] ">
+        <div className="mb-4 space-y-5 lg:grid grid-cols-1 gap-5  md:mb-0 h-full  auto-rows-[10rem] ">
           {myDetails?.profileImage.map(
             (imageUrl: string, index: number) => (
               <img
@@ -387,11 +390,10 @@ const [isExclusive, setIsExclusive] = useState(false);
                     </div> */}
                   </div>
                 </div>
+                
                 <div className="mt-2.5 flex flex-wrap py-6 items-center gap-2.5 self-start text-base font-medium  leading-4 text-slate-900">
                   <div className={ `self-stretch text-xl font-bold leading-10 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} lg:text-3xl`}>
-                    {myDetails?.basic_and_lifestyle?.firstName +
-                      " " +
-                      myDetails?.basic_and_lifestyle?.lastName}
+                  {`${capitalize(myDetails?.basic_and_lifestyle?.firstName)} ${capitalize(myDetails?.basic_and_lifestyle?.lastName)}`}
                   </div>
                   <div className="my-auto justify-center self-stretch whitespace-nowrap rounded-[100px] bg-orange-100 px-3 py-1.5 text-center capitalize tracking-normal">
                     {myDetails?.basic_and_lifestyle?.gender}
@@ -778,7 +780,7 @@ const [isExclusive, setIsExclusive] = useState(false);
               style={{ fontFamily: "Proxima-Nova-Bold, sans-serif" }}
             >
               <div className="flex items-center justify-between">
-                Location Background
+                Location 
                 <div className="flex gap-4">
                   <button
                     className="w-2 text-2xl"

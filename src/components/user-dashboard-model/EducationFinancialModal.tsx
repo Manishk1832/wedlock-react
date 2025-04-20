@@ -195,15 +195,18 @@ const ReligiouModel: React.FC<EducationalModelProps> = ({
             <Col span={24}>
               <Form.Item name="currentWorkingStatus" label="Working Status"  >
                 <Select placeholder="Select Working Status" defaultValue={myDetails?.education_and_financial?.workingStatus}>
-                  <Option value="yes">Yes</Option>
-                  <Option value="no">No</Option>
+                <Option value={"working"}>Working</Option>
+                <Option value={"selfEmployed"}>Self-employed</Option>
+                <Option value={"unemployed"}>Unemployed</Option>
+                <Option value={"retired"}>Retired</Option>
+                <Option value="others">Others</Option>
                 </Select>
               </Form.Item>
             </Col>
 
             <Col span={24}>
               <Form.Item label="Income" name="income">
-                <Select placeholder="Select Income" defaultValue={`AU$ ${myDetails?.education_and_financial?.income}`}>
+                <Select placeholder="Select Income" defaultValue={`${myDetails?.education_and_financial?.income}`}>
                 {incomes.map((income) => (
                   <Option key={income.id} value={income.value}>
                     {income.value}

@@ -66,17 +66,12 @@ const Login = () => {
     const onSubmit: SubmitHandler<FormData> = async (data) => {
       try {
 
-        const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
-       const user = userCredential.user;
-
-
-       if(!user){
-        toast.error("Something went wrong");
-        return;
-       }
     
+
+
+      
         const res = await login(data);
-    
+       
         if ('error' in res && res.error) {
           const errorData = res.error as FetchBaseQueryErrorWithData;
     
@@ -84,20 +79,21 @@ const Login = () => {
             toast.error(errorData.data.message);
             return;
           }
+
         }
-    
+
+        const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
+        const user = userCredential.user;
+      
+       
+        console.log("User signed in:", user);
+  
         dispatch(setUser(res.data));
         connectSocket();
 
-    
         const successData = res.data as ApiResponse;
         toast.success(successData.message);
-
-        console.log(successData.success,"successData");
-
-      
         if (successData.success === true) {
-
         const isLocationFormFilled = successData?.user?.isLocationFormFilled;
         const isPersonalFormFilled = successData?.user?.isPersonalFormFilled;
         const isImageFormFilled = successData?.user?.isImageFormFilled;
@@ -141,7 +137,7 @@ const Login = () => {
 } `}>
     <div className="flex items-center justify-center mb-10  ">
       <Link to="/" className="fixed top-2">
-      <img src="/logowhite.png" alt=""  className='w-48 md:w-60 lg:w-70 h-24 ' />
+      <img src="/logowhite.png" alt=""  className='w-auto md:w-60 lg:w-70 h-24 ' />
       </Link>
     </div>
 

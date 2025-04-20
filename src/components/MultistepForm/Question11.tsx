@@ -5,7 +5,7 @@ const question = [
     id: 12,
     text: "What are your interests and hobbies?",
     summary:
-      "Tell us about the activities that you enjoy and are passionate about. Select all that apply.",
+      "Tell us about the activities that you enjoy and are passionate about. Select all that apply",
     options: [
       "Sports",
       "Photography",
@@ -57,7 +57,7 @@ const Question11: React.FC<Question11Props> = ({ selectedOptions, handleOptionCh
   };
 
   return (
-    <div>
+    <div >
       {question.map((ques) => (
         <div key={ques.id}>
           <div className="text-left md:text-center">

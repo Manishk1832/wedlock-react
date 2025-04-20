@@ -103,7 +103,7 @@ const forgotPassword = () => {
       <div className="flex flex-col items-center justify-center text-center text-white mt-4">
         <h1 className="text-4xl font-bold">Forgot password</h1>
         <p className="mt-4  text-md ">
-        This blog post has been published. Team members <br /> will be able to edit this post and republish changes.
+        You will receive OTP verification code via email for resetting your password
         </p>
       </div>
     </div>

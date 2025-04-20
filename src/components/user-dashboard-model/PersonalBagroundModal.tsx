@@ -194,8 +194,8 @@ const ReligiouModel: React.FC<PersonalBagroundModelProps> = ({
         >
           <Row gutter={16}>
             <Col span={24}>
-              <Form.Item label="height"  name={"height"}>
-                <Select placeholder="Select Height" defaultValue={myDetails?.personal_background?.height}>
+              <Form.Item label="Height"  name={"height"}>
+                <Select placeholder="Select height" defaultValue={myDetails?.personal_background?.height}>
                   {
                     height.map((option) => (
                       <Option key={option.id} value={option.value} defaultValue={myDetails?.personal_background?.height}>
@@ -210,15 +210,13 @@ const ReligiouModel: React.FC<PersonalBagroundModelProps> = ({
             <Col span={24}>
               <Form.Item name="weight" label="Weight" >
                 
-                  <Select placeholder="Select Weight" defaultValue={`${myDetails?.personal_background?.weight} kg`}>
+                  <Select placeholder="Select Weight" defaultValue={`${myDetails?.personal_background?.weight}`}>
                     {Array.from({ length: 100 }, (_, index) => index + 41).map((weight) => (
                       <Select.Option key={weight} value={weight + " kg"}>
                         {weight} kg
                       </Select.Option>
                     ))}
                   </Select>
-              
-
               </Form.Item>
             </Col>
 

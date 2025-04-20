@@ -103,9 +103,6 @@ interface ReauthenticatePassword {
   password: string;
 }
 
-
-
-
 interface InitialState {
   loading: boolean;
   user: User | null;
@@ -122,8 +119,6 @@ interface InitialState {
   myDetails: MyDetails | null;
   ReauthenticatePassword: ReauthenticatePassword | null;
 }
-
-
 
 const initialState : InitialState = {
   loading:true,

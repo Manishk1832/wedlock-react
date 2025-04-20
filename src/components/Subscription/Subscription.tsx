@@ -153,23 +153,23 @@ const Subscription: React.FC = () => {
             <thead className="border-b-2 ">
               <tr className="border-b-2  max-md:text-md text-center  text-2xl">
                 <th className="text-left p-2">
-                  <div className="pt-5 pb-5 text-lg">Features</div>
+                  <div className="pt-5 pb-5 text-2xl">Features</div>
                 </th>
                 <th>
-                  <div className="pt-5 pb-5 mr-10 text-lg">Standard</div>
+                  <div className="pt-5 pb-5 text-2xl">Standard</div>
                 </th>
                 <th>
-                  <div className="pt-5 pb-5 text-lg">Premium</div>
+                  <div className="pt-5 pb-5 text-2xl">Premium</div>
                 </th>
                 <th>
-                  <div className="pt-5 pb-5 text-lg">Exclusive</div>
+                  <div className="pt-5 pb-5 text-2xl">Exclusive</div>
                 </th>
               </tr>
             </thead>
 
             <tbody className="text-center ">
               <tr className="border-b-2 ">
-                <td className="font-normal text-md max-md:text-md font-[Proxima-Nova-semiBold] text-left text-gray-500 ">
+                <td className="font-normal text-xl max-md:text-md font-[Proxima-Nova-semiBold] text-left text-gray-500 ">
                   Membership Costs
                 </td>
               </tr>
@@ -178,28 +178,28 @@ const Subscription: React.FC = () => {
                   1 Month
                 </td>
                 <td className="font-normal text-md max-md:text-md font-Proxima-Nova-Light text-center ">Free</td>
-                <td className="font-normal text-md max-md:text-md font-Proxima-Nova-Light text-center ">AUD 7.99</td>
-                <td className="font-normal text-md max-md:text-md font-Proxima-Nova-Light text-center ">AUD 17.99</td>
+                <td className="font-normal text-md max-md:text-md font-Proxima-Nova-Light text-center ">AU $5.99</td>
+                <td className="font-normal text-md max-md:text-md font-Proxima-Nova-Light text-center ">AU $9.99</td>
               </tr>
               <tr className="border-b-2">
                 <td className="font-normal text-md max-md:text-md font-Proxima-Nova-Light text-left ">
                   12 Months
                 </td>
                 <td className="font-normal text-md max-md:text-md font-Proxima-Nova-Light text-center ">Free</td>
-                <td className="font-normal text-md max-md:text-md font-Proxima-Nova-Light text-center ">AUD 89.88</td>
-                <td className="font-normal text-md max-md:text-md font-Proxima-Nova-Light text-center ">AUD 179.99</td>
+                <td className="font-normal text-md max-md:text-md font-Proxima-Nova-Light text-center ">AU $59.99</td>
+                <td className="font-normal text-md max-md:text-md font-Proxima-Nova-Light text-center ">AU $79.99</td>
               </tr>
-              <tr className="border-b-2">
+              {/* <tr className="border-b-2">
                 <td className="font-normal text-md max-md:text-md font-Proxima-Nova-Light text-left ">
                   Subscriptions will auto-renew
                 </td>
                 <td className="font-normal text-md max-md:text-md font-Proxima-Nova-Light text-center ">X</td>
                 <td className="font-normal text-md max-md:text-md font-Proxima-Nova-Light text-center ">X</td>
                 <td className="font-normal text-md max-md:text-md font-Proxima-Nova-Light text-center ">✔</td>
-              </tr>
+              </tr> */}
 
               <tr className="border-b-2">
-                <td className="font-normal text-md max-md:text-md font-Proxima-Nova-SemiBold text-left text-gray-500 ">
+                <td className="font-normal text-xl max-md:text-md font-Proxima-Nova-SemiBold text-left text-gray-500 ">
                   Basic access
                 </td>
               </tr>
@@ -250,7 +250,7 @@ const Subscription: React.FC = () => {
               </tr>
 
               <tr className="border-b-2 ">
-                <td className="font-normal text-md max-md:text-md font-Proxima-Nova-SemiBold text-left text-gray-500">
+                <td className="font-normal text-xl max-md:text-md font-Proxima-Nova-SemiBold text-left text-gray-500">
                   Searching
                 </td>
               </tr>
@@ -289,7 +289,7 @@ const Subscription: React.FC = () => {
               </tr>
 
               <tr className="border-b-2">
-                <td className="font-normal text-md max-md:text-md font-Proxima-Nova-SemiBold text-left text-gray-500">
+                <td className="font-normal text-xl max-md:text-md font-Proxima-Nova-SemiBold text-left text-gray-500">
                   Communication
                 </td>
               </tr>
@@ -345,7 +345,7 @@ const Subscription: React.FC = () => {
 
 
               <tr className="border-b-2">
-                <td className="font-normal text-md max-md:text-md font-Proxima-Nova-SemiBold text-left text-gray-500">
+                <td className="font-normal text-xl max-md:text-md font-Proxima-Nova-SemiBold text-left text-gray-500">
                   Profile Management
                 </td>
               </tr>
@@ -377,7 +377,7 @@ const Subscription: React.FC = () => {
               </tr>
 
               <tr className="border-b-2">
-                <td className="font-normal text-md max-md:text-md font-Proxima-Nova-SemiBold text-left  text-gray-500">
+                <td className="font-normal text-xl max-md:text-md font-Proxima-Nova-SemiBold text-left  text-gray-500">
                   Matchmaking
                 </td>
               </tr>
@@ -409,7 +409,7 @@ const Subscription: React.FC = () => {
               </tr>
 
               <tr className="border-b-2">
-                <td className="font-normal text-md max-md:text-md font-Proxima-Nova-SemiBold text-left text-gray-500">
+                <td className="font-normal text-xl max-md:text-md font-Proxima-Nova-SemiBold text-left text-gray-500">
                   Security
                 </td>
               </tr>

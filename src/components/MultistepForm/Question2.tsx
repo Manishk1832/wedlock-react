@@ -24,7 +24,7 @@ const Question2 : React.FC<QuestionProps> = ( { selectedOptions, handleOptionCha
     <div>
       {question.map((ques) => (
         <div className="text-left md:text-center ">
-            <h2 className="w-full  text-2xl font-bold  md:text-3xl mb-4">
+            <h2 className="w-full  text-2xl font-Proxima-Nova-SemiBold  md:text-3xl mb-4">
             {ques.text}
         </h2>
         <p className="text-[#FFFFFF90]">{ques.summary}</p>

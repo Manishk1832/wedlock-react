@@ -23,7 +23,7 @@ const personalDetailsSchema = z.object({
   lastName: z.string().min(1, { message: "Last name is required" }),
   displayName: z.string().min(1, { message: "Display name is required" }),
   maritalStatus : z.string().min(1, { message: "Marital status is required" }),
-  numberOfChildren: z.enum(["0", "1", "2", "3", "4", "5"], { message: "Number of children is required" }),
+  numberOfChildren: z.enum(["0", "1", "2", "3", "4", "5","6","7","8","9","10","11","12"], { message: "Number of children is required" }),
   contactNumber: z
     .string()
     .min(1, { message: "Contact number is required" })
@@ -212,8 +212,11 @@ const PersonalDetails = () => {
               <select
                 {...register("maritalStatus")}
                 className="w-full rounded border bg-[#F9F5FFE5] p-2 text-[#838E9E]"
-                
+                defaultValue=""
               >
+                <option value="" disabled>
+                  Select your marital status
+                </option>
               
                 {maritalStatus.map((status) => (
 
@@ -234,7 +237,11 @@ const PersonalDetails = () => {
               <select
                 {...register("numberOfChildren")}
                 className="w-full rounded border bg-[#F9F5FFE5] p-2 text-[#838E9E]"
+                defaultValue=""
               >
+                <option value="" disabled>
+                  Select number of children
+                </option>
                 {
                  Array.from({ length: 13 }, (_, i) => (
                    <option key={i} value={i.toString()}>
@@ -253,7 +260,7 @@ const PersonalDetails = () => {
 
           <div className="col-span-2 mt-2">
             <label className="block text-white">
-              Description about yourself*
+            Describe about yourself*
             </label>
             <textarea
               {...register("aboutYourSelf")}

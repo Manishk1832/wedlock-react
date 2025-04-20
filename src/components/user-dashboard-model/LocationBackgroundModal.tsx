@@ -152,7 +152,7 @@ const LocationBackgroundModal: React.FC<LocationBagroundModelProps> = ({
         classNames={classNames}
         styles={modalStyles}
         title={
-          <span className={styles["my-modal-title"]}>Location Background</span>
+          <span className={styles["my-modal-title"]}>Current Location</span>
         }
         centered
         confirmLoading={isLoading}
@@ -161,14 +161,14 @@ const LocationBackgroundModal: React.FC<LocationBagroundModelProps> = ({
         <Form form={form} layout="vertical" autoComplete="off" onFinish={handleFormSubmit}>
           <Row gutter={16}>
             <Col span={24}>
-            <Form.Item name="currentLocation" label="Current Location">
+            <Form.Item name="currentLocation" label="Location">
               <Input placeholder="Enter Current Location" defaultValue={myDetails?.location_background?.currentLocation} />
             </Form.Item>
             </Col>
 
             <Col span={24}>
-            <Form.Item name="cityOfResidence" label="City Of Residence">
-              <Input placeholder="Enter City Of Residence" defaultValue={myDetails?.location_background?.cityOfResidence} />
+            <Form.Item name="cityOfResidence" label="City of Residence">
+              <Input placeholder="Enter City of Residence" defaultValue={myDetails?.location_background?.cityOfResidence} />
             </Form.Item>
             </Col>
 

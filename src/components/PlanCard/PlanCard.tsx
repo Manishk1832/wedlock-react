@@ -28,13 +28,11 @@ const PlanCard = ({
     }`}
   >
     <div className="space-y-4">
-      <h1 className={`font-semibold ${isHighlighted ? "" : "text-white"}`}>{title}</h1>
+      <h1 className={`font-semibold text-3xl ${isHighlighted ? "" : "text-white"}`}>{title}</h1>
       <h1 className={`text-4xl font-bold ${isHighlighted ? "" : "text-white"}`}>
-        {price !== "Free" ? `AUD ${price}` : price}
+        {price !== "Free" ? `AU $${price}` : price}
         <span
-          className={`text-base font-normal ${
-            isHighlighted ? "text-[#FFFFFF33]" : "text-[#42526B]"
-          }`}
+          className={`text-base font-normal text-white`}
         >{` /${duration}`}</span>
       </h1>
     </div>

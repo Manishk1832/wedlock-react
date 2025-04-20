@@ -25,7 +25,7 @@ const Multistep = () => {
    const navigate = useNavigate();
 
   const [selectedOptions, setSelectedOptions] = useState<
-    { questionId: number; answerValue: string | string[] }[]
+   { questionId: number; answerValue: string | string[] }[]
   >([]);
 
 
@@ -345,7 +345,7 @@ const Multistep = () => {
         isWelcome ? <Welcome handleNext={handleWelcomeContinue}/> :
       <div>
 
-      <div className="mt-10 w-full text-center xl:w-[40vw]">
+      <div className="mt-10 w-full text-center ">
         <h2 className="text-2xl" style={{ fontFamily: "Proxima-Nova-Bold, sans-serif" }}>
           {PageTitles[page]}
         </h2>
@@ -360,7 +360,7 @@ const Multistep = () => {
       </div>
 
       <div className="form-container w-full md:w-auto">
-        <div className="form-body ">{PageDisplay()}</div>
+        <div className="form-body  ">{PageDisplay()}</div>
 
         <div className="form-footer">
           <div className="max-md:bottom-5 2xl:bottom-10  flex w-full flex-col items-center justify-end   md:absolute md:right-20 md:flex-row lg:right-40 xl:mt-6 3xl:right-60">
@@ -368,7 +368,7 @@ const Multistep = () => {
              
               <button
                 type="button"
-                className={`flex  h-[48px] w-full items-center justify-center gap-2 rounded-md bg-white  px-2 py-2 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} md:w-auto xl:mt-20 md:mt-0`}
+                className={`flex  h-[48px] w-full mb-5 items-center justify-center gap-2 rounded-md bg-white  px-2 py-2 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} md:w-auto xl:mt-20 md:mt-0 mb-5r`}
                 onClick={handleNext}
               >
                 Continue <FaArrowRightLong />

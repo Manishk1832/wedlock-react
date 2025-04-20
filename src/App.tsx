@@ -15,6 +15,7 @@ import { connectSocket,disconnectSocket } from "./services/socketservice";
 import { useGetUserSubscriptionStatusQuery } from "./Redux/Api/checkout.api";
 import { setUserType } from "./Redux/Reducers/user.reducer";
 import { useDispatch } from "react-redux";
+import ScrollToTop from "./components/ScrollTop/ScrollToTop";
 
 
 
@@ -51,6 +52,8 @@ const Profile = lazy(() => import("./pages/profile/Profile"))
 const Sucessfull = lazy(() => import("./pages/sucessfull/Sucessfull"))
 const Exclusive = lazy(()=>import("./pages/exclusive-matching/exclusive"))
 const Cancel = lazy(() => import("./pages/paymentCancelPage/PaymentCancelPage"))
+const ChildSafety = lazy(()=> import("./pages/child-safefty/ChildSafety"));
+const DeleteAccount = lazy(() => import("./pages/delete-account/DeleteAccount"));
 
 const App = () => {
   const { accessToken,refreshToken ,user  } = useSelector((state: RootState) => state.userReducer) ;
@@ -151,6 +154,7 @@ useEffect(() => {
 
   return  (
     <Router>
+       <ScrollToTop />
      
       <Navbar />
       <Suspense fallback={<div className="flex justify-center items-center min-h-screen"><Loading /></div>}>
@@ -163,8 +167,10 @@ useEffect(() => {
           <Route path="/subscription-tiers" element={<Comparison />} />
           <Route path="/cookies-policy" element={<Cookies_Policy />} />
           <Route path="/privacy-policy" element={<Privacy_Policy />} />
+          <Route path="/delete-account" element={<DeleteAccount />} />
           <Route path="/terms-conditions" element={<Terms_Conditions />} />
           <Route path="/community-guidelines" element={<Community_Guidelines />} />
+          <Route path="/child-safety-policy" element={<ChildSafety/>} />
           <Route path="/faqs" element={<Faqs />} />
           <Route path="/sucessfull" element={<Sucessfull />} />
           <Route path="/contact-us" element={<Contact />} />

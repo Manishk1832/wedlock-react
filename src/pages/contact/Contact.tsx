@@ -35,7 +35,7 @@ const Contact = () => {
 
   return (
     <div>
-      <div className="flex flex-col items-center gap-10 px-6 py-10 pt-10 md:px-10 lg:flex-row lg:gap-20 lg:px-20">
+      <div className="flex flex-col items-center gap-10 px-6 py-10  md:px-10 lg:flex-row lg:gap-20 lg:px-20 mt-10 2xl:mt-0">
         <div className="w-full lg:w-[50%]">
           <div className="mx-auto max-w-md">
             <h2 className="mb-4 text-3xl font-semibold text-[#101828]">
@@ -122,7 +122,7 @@ const Contact = () => {
                 <label htmlFor="privacy" className="text-gray-700">
                   You agree to our friendly{" "}
                   <Link to={"/privacy-policy"} className="text-blue-500 underline">
-                    privacy policy
+                    Privacy Policy
                   </Link>
                   .
                 </label>
@@ -157,7 +157,7 @@ const Contact = () => {
           <a href="mailto:info@wedlock.au" className="underline">info@wedlock.au</a>
         </p>
         <p className="text-black">
-          <span className="font-medium">Address:</span> 38 Carlton Street, McKinnon VIC 3204, Australia
+          <span className="font-medium">Address:</span> Victoria, Australia
         </p>
       </div>
     </div>

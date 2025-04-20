@@ -5,11 +5,11 @@ const question = [
         id: 5,
         text: "How long have you been looking for?",
         summary:
-          "Indicate how long you’ve been on your journey to find a meaningful connection.",
+          "Indicate how long you’ve been on your journey to find a meaningful connection",
         options: [
           "Just started",
           "It's been a while",
-          "My friend or family were looking for me before",
+          "Sometimes but not often",
         ],
       },
 ];

@@ -57,12 +57,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
-      const user = userCredential.user;
-      if(!user){
-        toast.error("Something went wrong");
-        return;
-       }
+     
 
       const res = await login(data);
 
@@ -74,6 +69,10 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
           return;
         }
       }
+      const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
+      const user = userCredential.user;
+      console.log('signIn user', user);
+      
 
       dispatch(setUser(res.data));
 

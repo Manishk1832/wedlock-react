@@ -1,14 +1,14 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useEffect,useState } from "react";
-import {useQualificationDetailsMutation} from "../../Redux/Api/form.api";
+import { useEffect, useState } from "react";
+import { useQualificationDetailsMutation } from "../../Redux/Api/form.api";
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { useNavigate } from "react-router-dom";
-import {LoadingOutlined} from '@ant-design/icons';
+import { LoadingOutlined } from '@ant-design/icons';
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from 'sonner'
-import { useGetQualificationQuery,useGetOccupationQuery,useGetIncomeQuery } from "../../Redux/Api/dropdown.api";
+import { useGetQualificationQuery, useGetOccupationQuery, useGetIncomeQuery } from "../../Redux/Api/dropdown.api";
 
 
 // Define the Zod schema for form validation
@@ -28,19 +28,19 @@ const QualificationDetails = () => {
   const [incomes, setIncomes] = useState<{ id: string; value: string }[]>([]);
 
 
-  const { data: qualificationData ,isLoading: isQualificationLoading} = useGetQualificationQuery();
-  const { data: occupationData ,isLoading: isOccupationLoading} = useGetOccupationQuery();
-  const { data: incomeData ,isLoading: isIncomeLoading} = useGetIncomeQuery();
+  const { data: qualificationData, isLoading: isQualificationLoading } = useGetQualificationQuery();
+  const { data: occupationData, isLoading: isOccupationLoading } = useGetOccupationQuery();
+  const { data: incomeData, isLoading: isIncomeLoading } = useGetIncomeQuery();
 
-  useEffect(()=>{
+  useEffect(() => {
     const isExclusive = localStorage.getItem("isExclusive");
-    if(isExclusive){
+    if (isExclusive) {
       setExclusive(true)
     }
-  },[])
+  }, [])
 
   // const dispatch = useDispatch();
-  const [ qualificationDetails, { isLoading }] = useQualificationDetailsMutation();
+  const [qualificationDetails, { isLoading }] = useQualificationDetailsMutation();
   const navigate = useNavigate();
   const {
     register,
@@ -52,14 +52,14 @@ const QualificationDetails = () => {
 
 
   useEffect(() => {
-   if(qualificationData && occupationData && incomeData){
-    setQualifications((qualificationData as any).data);
-    setOccupations((occupationData as any).data);
-    setIncomes((incomeData as any).data);
-   }
+    if (qualificationData && occupationData && incomeData) {
+      setQualifications((qualificationData as any).data);
+      setOccupations((occupationData as any).data);
+      setIncomes((incomeData as any).data);
+    }
   }, [qualificationData, occupationData, incomeData]);
 
-    
+
   type ApiResponse = {
     success: boolean;
     message: string;
@@ -74,16 +74,16 @@ const QualificationDetails = () => {
     try {
 
       const res = await qualificationDetails(data);
-       
+
       if ('error' in res && res.error) {
         const errorData = res.error as FetchBaseQueryErrorWithData;
-  
+
         if (errorData.data?.success === false) {
           console.log(errorData.data.message);
-          toast.error(errorData.data.message); 
+          toast.error(errorData.data.message);
           return;
         }
-      }else{
+      } else {
         const successData = res.data as ApiResponse;
         console.log(successData);
         // const isQualificationDetailsFormFilled = true
@@ -91,15 +91,15 @@ const QualificationDetails = () => {
         // dispatch(setUser(isQualificationDetailsFormFilled));
         navigate("/location-details");
       }
-      
-    }catch(error) {
+
+    } catch (error) {
       console.log(error);
       toast.error("An unexpected error occurred.");
     }
   };
 
   return (
-    <div className={`flex min-h-screen flex-col items-center justify-center ${isExclusive? 'bg-[#60457E]': 'bg-[#007EAF]'} px-5 md:px-20 lg:px-40 3xl:px-60`}>
+    <div className={`flex min-h-screen flex-col items-center justify-center ${isExclusive ? 'bg-[#60457E]' : 'bg-[#007EAF]'} px-5 md:px-20 lg:px-40 3xl:px-60`}>
       <img
         src="/logowhite.png"
         alt="Wedlock Logo"
@@ -114,8 +114,8 @@ const QualificationDetails = () => {
             Your Qualification details
           </h1>
           <p className="text-sm leading-6 xl:text-xl">
-          Sharing your qualifications allows us to match you with individuals who align with your educational and career aspirations
-             </p>
+            Sharing your qualifications allows us to match you with individuals who align with your educational and career aspirations
+          </p>
         </div>
 
         <form
@@ -129,12 +129,12 @@ const QualificationDetails = () => {
                 {...register("qualification")}
                 className="w-full rounded-[0.5rem] border bg-[#F9F5FFE5] p-2 text-[#838E9E]"
               >
-                
+
                 <option value="" disabled selected>
                   Select your highest qualification
                 </option>
                 {isQualificationLoading && <p>Loading...</p>}
-                
+
                 {qualifications.map((qualification) => (
                   <option key={qualification.id} value={qualification.value}>
                     {qualification.value}
@@ -150,18 +150,21 @@ const QualificationDetails = () => {
           </div>
 
           <div className="mb-2">
-            <label className="block text-white">Current Working Status</label>
+            <label className="block text-white">Current working status</label>
             <div className="">
               <select
-              
+
                 {...register("currentWorkingStatus")}
                 className="w-full rounded-[0.5rem] border bg-[#F9F5FFE5] p-2 text-[#838E9E]"
               >
                 <option value="" disabled selected>
-                  Select your Working Status
+                  Select your working status
                 </option>
-                <option value={"yes"}>Yes</option>
-                <option value={"no"}>No</option>
+                <option value={"working"}>Working</option>
+                <option value={"selfEmployed"}>Self-employed</option>
+                <option value={"unemployed"}>Unemployed</option>
+                <option value={"retired"}>Retired</option>
+                <option value="others">Others</option>
               </select>
               {errors.currentWorkingStatus && (
                 <p className="text-orange-200 text-sm mt-1">
@@ -218,15 +221,15 @@ const QualificationDetails = () => {
           </div>
 
           <div className="mb-5 flex w-full justify-end py-8 pb-4 xl:px-10 2xl:mb-4 2xl:px-0 3xl:mb-20 3xl:px-0">
-        <button
-          type="submit"
-          className={`w-full rounded-[0.5rem] bg-[#F9F5FFE5] px-4 py-2 ${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'}
+            <button
+              type="submit"
+              className={`w-full rounded-[0.5rem] bg-[#F9F5FFE5] px-4 py-2 ${isExclusive ? 'text-[#60457E]' : 'text-[#007EAF]'}
           md:w-20 2xl:w-32`}
-    >
-          {isLoading ? <LoadingOutlined className={`${isExclusive? 'text-[#60457E]': 'text-[#007EAF]'} animate-spin`} /> : 'Save'}
+            >
+              {isLoading ? <LoadingOutlined className={`${isExclusive ? 'text-[#60457E]' : 'text-[#007EAF]'} animate-spin`} /> : 'Save'}
 
-        </button>
-      </div>
+            </button>
+          </div>
         </form>
       </div>
     </div>

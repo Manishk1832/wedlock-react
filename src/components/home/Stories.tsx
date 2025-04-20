@@ -86,8 +86,8 @@ const Stories = () => {
   };
 
   return (
-    <div className="w-full h-auto 8xl:px-32 bg-[#007EAF]  py-5 md:py-12  3xl:px-48 xl:px-10 7xl:px-36">
-      <div className="container m-auto md:px-20  px-4  overflow-hidden bg-[#007EAF] text-white relative">
+    <div className="w-full h-auto  bg-[#007EAF] ">
+      <div className="overflow-hidden px-5 sm:px-20  container m-auto space-y-6  py-5 md:py-12 bg-[#007EAF] text-white relative">
         <img
           src="/curvewhite.svg"
           alt="arw"
@@ -95,7 +95,7 @@ const Stories = () => {
         />
         <div className="  happy_story">
           <div className="flex items-center justify-between gap-5">
-            <h1 className="text-[32px] md:text-[48px] xl:text-[64px]  xl:leading-[83.2px] font-[Proxima-Nova-Bold] tracking-[-0.02em]">
+            <h1 className="font-Proxima-Nova-Bold text-h2-mobile md:text-h2-desktop">
               Inspiring Wedlock stories
             </h1>
             <div className="flex items-center gap-4 z-10">
@@ -109,7 +109,7 @@ const Stories = () => {
               />
             </div>
           </div>
-          <p className="text-[20px] max-md:pt-5 pt-10 sm:text-[24px] md:text-[21px]  md:text-start  xl:text-[28px]  ">
+          <p className="text-[20px]  font-Proxima-Nova-Light sm:text-[16px] md:text-[20px] lg:text-[24px]     xl:text-[28px] pt-[21px] leading-[30px] sm:leading-[10px] md:leading-[24px] lg:leading-[28px] xl:leading-[42px] md:text-start mr-1 mb-9">
             Witness real-life success stories from members who found love with
             Wedlock. Our platform fosters meaningful relationships, bringing
             together people from all walks of life. Hear from couples who found
@@ -117,7 +117,7 @@ const Stories = () => {
           </p>
         </div>
 
-        <div className="grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-10">
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {stories.map((story, index) => {
             // Calculate the range of visible cards
             const startIndex = currentSlide * cardsPerSlide;

@@ -194,7 +194,8 @@ const Match: React.FC<MatchProps> = ({ userId }) => {
 
   return (
     <div className="min-w-screen flex min-h-screen flex-col gap-4 md:gap-10 lg:flex-row">
-      <div className="mb-4 md:grid grid-cols-1 gap-2 md:mb-0  auto-rows-[10rem] ">
+    
+      <div className="mb-4 space-y-5 lg:grid grid-cols-1 gap-5  md:mb-0 h-full  auto-rows-[10rem] ">
         {profileData?.profileImage?.map((imageUrl: string, index: number) => (
           <img
             key={index}
@@ -206,6 +207,7 @@ const Match: React.FC<MatchProps> = ({ userId }) => {
             )}`}
           />
         ))}
+      
       </div>
       <div className="col-span-1 xl:grid w-full md:col-span-2 gap-10">
         <div className="col-span-1 mb-4 xl:mb-0 rounded-xl bg-white p-6 md:col-span-2   md:w-auto  xl:h-[22rem]">

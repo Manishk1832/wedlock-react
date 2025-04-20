@@ -31,11 +31,13 @@ const Navbar: React.FC = () => {
     "/community-guidelines",
     "/privacy-policy",
     "/terms-conditions",
+    "/child-safety-policy",
     "/about-us",
     "/plan",
     "/services",
-    "/subscription-tiers"
-    
+    "/subscription-tiers",
+    "/delete-account"
+
   ].includes(pathname);
 
   const hiddenRoutes = [
@@ -72,14 +74,13 @@ const Navbar: React.FC = () => {
   return (
     <>
       <div
-        className={`absolute navbar z-10 w-full h-auto 3xl:px-32 7xl:px-32 8xl:px-32 xl:px-10 text-white ${
-          isBlueBgRoute ? "bg-[#007eb0] h-20" : " "
-        }`}
+        className={`absolute navbar z-50 w-full h-auto 3xl:px-32 7xl:px-32 8xl:px-32 xl:px-10 text-white ${isBlueBgRoute ? "bg-[#007eb0] h-20" : " "
+          }`}
       >
         <div className={`${isBlueBgRoute ? " " : " bg-[#007eb0] "}`}></div>
         <div className="flex justify-between items-center container w-full m-auto">
           <div className="flex items-center justify-between w-full">
-            <div className="text-white hidden md:flex flex-1 justify-center">
+            <div className="text-white hidden md:flex flex-1 pt-20 lg:pt-0  justify-start ml-12">
               <ul className="flex gap-5 text-[22px] font-Proxima-Nova-SemiBold">
                 <li>
                   <Link to="/mission">Mission</Link>
@@ -90,27 +91,27 @@ const Navbar: React.FC = () => {
                 <li>
                   <Link to="/help">Help</Link>
                 </li>
+
               </ul>
             </div>
-            <div className="flex justify-center flex-1">
+            <div className="flex justify-center ">
               <Link to={"/"}>
                 <img
                   src="/newlogo.png"
                   alt="logo"
-                  className="w-[10rem] h-[4rem] xl:w-[18rem] xl:h-[6rem]"
+                  className="w-[11rem] h-[4rem] xl:w-[18rem] xl:h-[6rem]"
                 />
               </Link>
             </div>
-            <div className="flex gap-5 items-center justify-end flex-1">
+            <div className="flex gap-5 items-center justify-end flex-1 pt-2">
               {accessToken ? (
                 <button className="flex items-center justify-center md:gap-3 md:text-[24px] text-white md:rounded-full rounded-3xl border-white font-bold border md:w-[170px] md:h-[69px] px-3 hidden">
                   Dashboard
                 </button>
               ) : (
                 <button
-                  className={`flex items-center justify-center ${
-                    isBlueBgRoute ? "hidden" : "block"
-                  } md:gap-3 md:text-[24px] text-white font-Proxima-Nova-SemiBold md:rounded-full rounded-3xl border-white font-bold border md:w-[170px] md:h-[69px] px-3`}
+                  className={`flex items-center justify-center ${isBlueBgRoute ? "hidden" : "block"
+                    } md:gap-3 md:text-[24px] text-white font-Proxima-Nova-SemiBold  md:rounded-full rounded-3xl border-white font-bold border md:w-[170px] md:h-[69px] px-3`}
                   onClick={openLogin}
                 >
                   Login
@@ -131,9 +132,8 @@ const Navbar: React.FC = () => {
         </div>
 
         <div
-          className={`fixed top-0 left-0 h-full w-64 bg-[#007eb0] z-20 transform ${
-            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } transition-transform duration-300 ease-in-out`}
+          className={`fixed top-0 left-0 h-full w-64 bg-[#007eb0] z-20 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+            } transition-transform duration-300 ease-in-out`}
         >
           <div className="flex justify-between items-center p-4">
             <Link to={"/"}>
@@ -165,13 +165,29 @@ const Navbar: React.FC = () => {
             >
               Help
             </Link>
+
+
+            <Link to="/services" className="py-1 text-white"
+              onClick={toggleSidebar}>Services</Link>
+
+
+            <Link to="/subscription-tiers" className="py-1 text-white"
+              onClick={toggleSidebar}>Subscription Tiers</Link>
+
+
+            <Link to="/faqs" className="py-1 text-white"
+              onClick={toggleSidebar}>FAQs</Link>
+
+
+            <Link to="/contact-us" className="py-1 text-white"
+              onClick={toggleSidebar}>Contact Us</Link>
+
           </nav>
         </div>
 
         <div
-          className={`fixed inset-0 bg-black bg-opacity-50 z-10 ${
-            isSidebarOpen ? "block" : "hidden"
-          }`}
+          className={`fixed inset-0 bg-black bg-opacity-50 z-10 ${isSidebarOpen ? "block" : "hidden"
+            }`}
           onClick={toggleSidebar}
         ></div>
       </div>

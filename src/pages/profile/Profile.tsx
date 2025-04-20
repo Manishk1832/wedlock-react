@@ -4,7 +4,7 @@ import Footer from "../../components/header-footer-profile/Footer";
 import { ConfigProvider } from "antd";
 import { Tabs } from "antd";
 import type { TabsProps } from "antd";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Discover from "../../components/user-dashboard/Discover";
 // import {Messaging} from 'firebase/messaging'
 import Favourate from "../../components/user-dashboard/Favourate";
@@ -35,9 +35,8 @@ const Profile: React.FC = () => {
 
     // Get the current tab from URL parameters
     const params = new URLSearchParams(location.search);
-    const activeTab = params.get("tab") || "matches"; // Default to 'my-details' if no tab is provided
+    const activeTab = params.get("tab") || "matches"; 
   
-    // Function to handle tab change and update URL
     const handleTabChange = (key: string) => {
       params.set("tab", key);
       navigate({ search: params.toString() }, { replace: true });

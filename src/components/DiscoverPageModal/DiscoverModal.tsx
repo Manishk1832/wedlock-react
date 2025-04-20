@@ -455,7 +455,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
 
             {
               [
-                { name: "All", value: "all" },
+                // { name: "All", value: "all" },
                 ...religion
               ].map((rel) => (
                 <Checkbox
@@ -498,7 +498,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
                 {
                   [
 
-                    { value: "All" },
+                    // { value: "All" },
                     ...ethnicity
 
                   ].map((eth) => (
@@ -544,7 +544,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
 
                 {
                   [
-                    { value : "All" },
+                    // { value : "All" },
                     ...qualification.filter(value => !value.value.startsWith("--"))
 
                   ]
@@ -591,9 +591,9 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
 
             {
               [
-                {
-                  value: "All",
-                },
+                // {
+                //   value: "All",
+                // },
                 ...smokingHabits
               ]
                 .map((smoke) => (
@@ -626,7 +626,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
                   fontWeight: "bold",
                 }}
               >
-                Working With
+                Working As
               </label>
             }
             className="h-full flex-grow rounded bg-[#EAF2FF] p-4"
@@ -638,7 +638,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
 
               {
                 [
-                  { value: "All" },
+                  // { value: "All" },
                   ...occupation.filter(value => !value.value.startsWith("FREQUENTLY USED") && !value.value.startsWith("--"))
                 ]
                   .map((occ) => (
@@ -692,7 +692,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
 
                 {
                   [
-                    { value: "All" },
+                    // { value: "All" },
                     ...maritalStatus
                   ].map((marital) => (
                     <Checkbox
@@ -738,7 +738,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
 
                 {
                   [
-                    { value: "All" },
+                    // { value: "All" },
                     ...diet
                   ].map((diet) => (
                     <Checkbox
@@ -777,7 +777,7 @@ const DiscoverModal: React.FC<DiscoverModalProps> = ({
 
             {
               [
-                { value: "All" },
+                // { value: "All" },
                 ...communities.filter((value) => !value.value.includes("Frequently used Communities")),
               ].map((community) => (
                 <Checkbox

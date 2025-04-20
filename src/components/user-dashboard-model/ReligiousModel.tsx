@@ -4,7 +4,7 @@ import { Form, Input ,Select} from "antd";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
 import { useUpdateReligiousBackgroundMutation } from "../../Redux/Api/profile.api";
 import { toast } from "sonner";
-import { useGetReligionQuery,useGetCommunityQuery,useGetGotraQuery,useGetMotherOccupationQuery } from "../../Redux/Api/dropdown.api";
+import { useGetReligionQuery,useGetCommunityQuery,useGetGotraQuery,useGetMotherToungueQuery } from "../../Redux/Api/dropdown.api";
 import { useEffect, useState } from "react";
 import { RootState } from "./../../Redux/store";
 import { useSelector } from "react-redux";
@@ -60,7 +60,7 @@ const ReligiousModel: React.FC<ReligiousModalProps> = ({
   const { data: ReligionData } = useGetReligionQuery();
   const { data: CommunityData } = useGetCommunityQuery();
   const { data: GotraData} = useGetGotraQuery();
-  const { data: MotherOccupationData } = useGetMotherOccupationQuery();
+  const { data: MotherToungueData} = useGetMotherToungueQuery();
 
 
   useEffect(() => {
@@ -73,10 +73,10 @@ const ReligiousModel: React.FC<ReligiousModalProps> = ({
     if(GotraData){
       setGotra((GotraData as any).data);
     }
-    if(MotherOccupationData){
-      setMotherTongue((MotherOccupationData as any).data);
+    if(MotherToungueData){
+      setMotherTongue((MotherToungueData as any).data);
     }
-  }, [ReligionData,CommunityData,GotraData,MotherOccupationData]);
+  }, [ReligionData,CommunityData,GotraData,MotherToungueData]);
 
 
 

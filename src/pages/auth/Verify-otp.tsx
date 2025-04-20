@@ -156,10 +156,9 @@ const Verify = () => {
         </div>
 
         <div className="flex flex-col items-center justify-center text-white mt-4">
-          <h1 className="text-4xl font-bold">Verification code</h1>
+          <h1 className="text-4xl font-bold">One Time Password (OTP) verification code</h1>
           <p className="mt-4 md:text-lg text-center">
-            Enter verification code which is sent to your email <br /> address
-            and you verify
+          Please enter a verification code sent to your email address
           </p>
         </div>
         <div className="flex items-center justify-center mt-8">

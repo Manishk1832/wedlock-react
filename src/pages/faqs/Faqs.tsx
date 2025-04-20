@@ -6,7 +6,7 @@ import { CiSearch, CiHeart } from "react-icons/ci";
 
 const Faqs = () => {
   return (
-    <div className=" font-lato z-10">
+    <div className=" font-Proxima-Nova-Regular z-10">
       <div className="flex flex-col items-center justify-center py-16 gap-9 bg-[#E6F2F7] px-[16px]">
         <span className="text-blue-600 ">FAQs</span>
         <h1 className="text-5xl font-semibold ">Frequently asked questions</h1>
@@ -20,13 +20,13 @@ const Faqs = () => {
           />
         </div>
       </div>
-      <div className="grid grid-cols-3 p-20 gap-8 bg-[#F5F4F4] px-[9rem] card_container">
+      <div className="grid grid-cols-1 md:grid-cols-3  gap-8 bg-[#F5F4F4] px-4  md:px-20 py-10 card_container">
         <div className="flex flex-col items-center justify-center gap-8 faqs_card">
           <div className="rounded-full bg-[#F4EBFF] w-10 h-10 flex items-center justify-center">
             <CiHeart className="text-[#007EAF] text-2xl"/>
           </div>
 
-          <div className="flex flex-col items-center justify-center gap-3 11xl:w-full">
+          <div className="flex flex-col items-center justify-center gap-3 w-full">
           <h1 className="text-xl font-semibold">What is Wedlock Australia?
           </h1>
           <p className="text-[#475467] text-center">

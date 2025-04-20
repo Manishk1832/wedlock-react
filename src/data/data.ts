@@ -9,7 +9,7 @@ export const fatherOccupation = [
     },
     {
         id: 3,
-        name: "Business Woman"
+        name: "Business Man"
     },
     {
         id: 4,

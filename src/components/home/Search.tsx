@@ -9,9 +9,9 @@ const Search = () => {
 
   const categories: Record<CategoryKey, CategoryItem[]> = {
     "Nationality": [
-      { img: "/Avatar-1.png", ct: "Indian" },
-      { img: "/Avatar-2.png", ct: "Australian" },
-      { img: "/Avatar-3.png", ct: "Canadian" },
+      { img: "/Avatar-1.png", ct: "India" },
+      { img: "/Avatar-2.png", ct: "Australia" },
+      { img: "/Avatar-3.png", ct: "Canada" },
       { img: "/Avatar-4.png", ct: "United Kingdom" },
       { img: "/Avatar-5.png", ct: "United States of America" },
       { img: "/Avatar-3.png", ct: "Netherlands" },
@@ -60,29 +60,28 @@ const Search = () => {
   };
 
   return (
-    <div className="w-100 7xl:h-[60rem] 8xl:h-[60rem] 8xl:px-32 3xl:h-[67rem] bg-[#E6F2F7] 3xl:px-56 xl:px-10 5xl:py-4 7xl:px-36">
-      <div className="relative min-h-screen md:px-2 py-5 md:py-12 3xl:pt-28 p-4 container m-auto 5xl:h-[20rem]">
+    <div className="w-100  bg-[#E6F2F7] ">
+      <div className="relative overflow-hidden px-5 sm:px-20  container m-auto space-y-6  py-5 md:py-12">
         <img
           src="/curvesm.svg"
           alt="arw"
           className="absolute w-[48rem] -right-60 top-2 z-10"
         />
 
-        <div className="md:space-y-10 space-y-4">
+        <div className="">
           <div className="flex items-center justify-between w-[100%] browse">
-            <h1 className="text-[32px] md:text-[48px] xl:text-[64px] xl:leading-[83.2px] font-[Proxima-Nova-Bold] tracking-[-0.02em] text-[#007EAF]">
+            <h1 className="text-h2-mobile md:text-h2-desktop  font-[Proxima-Nova-Bold]  text-[#007EAF]">
               Find Your Perfect Match
             </h1>
           </div>
-          <p className="text-[20px] sm:text-[28px] text-[#101828E5] sm:leading-[42px] font-Proxima-Nova-Regular">
-            Because meaningful relationships start with the right connection, we
-            make it easy to find someone who truly complements your matrimonial
-            journey
+          <p className="text-[#101828E5] text-[20px]  font-Proxima-Nova-Light sm:text-[16px] md:text-[20px] lg:text-[24px]     xl:text-[28px] pt-[21px] leading-[30px] sm:leading-[10px] md:leading-[24px] lg:leading-[28px] xl:leading-[42px] md:text-start mr-1">
+            Because meaningful relationships start with the right connection,   we make it easy to find someone who  truly complements your matrimonial 
+            journey.
           </p>
         </div>
 
         {/* Tabs Section */}
-        <div className="flex justify-start gap-10 items-center my-10 overflow-x-auto whitespace-nowrap">
+        <div className="flex justify-start gap-10 items-center my-10 overflow-x-auto whitespace-nowrap  ">
           {(Object.keys(categories) as CategoryKey[]).map((tab) => (
             <button
               key={tab}

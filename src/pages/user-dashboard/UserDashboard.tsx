@@ -64,7 +64,7 @@ const UserDashboard: React.FC = () => {
       key: "billings",
       label: `Billing`,
       children: <BillingInfo />,
-      disabled: !(user?.usertype === "Exclusive" || user?.usertype === "Premium"),
+      // disabled: !(user?.usertype === "Exclusive" || user?.usertype === "Premium"),
     },
     {
       key: "notifications",
@@ -94,8 +94,8 @@ const UserDashboard: React.FC = () => {
                     colorText: "black",
                     colorBgTextActive: "#363636",
                     colorBorder: "#E6F2F7",
-                    fontSize: 14,
-                    fontFamily: "Proxima-Nova-semibold",
+                    fontSize: 18,
+                    fontFamily: "Proxima-Nova-Semibold",
                   },
                 },
               }}

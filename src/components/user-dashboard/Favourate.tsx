@@ -63,8 +63,8 @@ const Favourate = () => {
 
   return (
     <div>
-      <div className="mt-10 flex items-center justify-center">
-        <div className="grid gap-10 lg:gap-40 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4">
+      <div className="mt-10">
+        <div className="grid gap-10 lg:gap-40 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4">
           {isLoading ? (
             skeletonArray.map((_, index) => <SkeletonCard key={index} />)
           ) : profilesToDisplay && profilesToDisplay.length > 0 ? (

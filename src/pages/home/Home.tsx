@@ -2,7 +2,7 @@ import Ai from '../../components/home/Ai'
 import Search from '../../components/home/Search'
 import Archive from '../../components/home/Archive'
 import YouTube from '../../components/home/YouTube'
-import Navbar from '../../components/home/Navbar'
+// import Navbar from '../../components/home/Navbar'
 import GetApp from '../../components/home/GetApp'
 import Hero from '../../components/home/Hero'
 import Details from '../../components/home/Details'
@@ -14,7 +14,6 @@ import Pre from '../../components/home/Pre'
 const Home = () => {
   return (
     <div>
-      <Navbar />
       <Hero />
       <Archive />
       <GetApp />

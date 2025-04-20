@@ -1,13 +1,13 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Typography,
   Button,
   LinearProgress,
-  
+
 } from "@mui/material";
-import {useGetBillingInfoQuery} from "../../Redux/Api/billing.api";
-import {useGetSubscriptionHistoryQuery} from "../../Redux/Api/checkout.api";
+import { useGetBillingInfoQuery } from "../../Redux/Api/billing.api";
+import { useGetSubscriptionHistoryQuery } from "../../Redux/Api/checkout.api";
 import { DataGrid } from "@mui/x-data-grid";
 import Loading from "../Loading";
 import { Alert } from "antd";
@@ -19,11 +19,11 @@ import { useNavigate } from "react-router-dom";
 
 
 const BillingInfo = () => {
-  const {user} = useSelector((state: RootState) => state.userReducer) ;
+  const { user } = useSelector((state: RootState) => state.userReducer);
   const navigate = useNavigate();
 
   const handleUpgradeClick = () => {
-    navigate("/user-dashboard?plan=4"); 
+    navigate("/user-dashboard?tab=plans");
   };
 
   const [isExclusive, setIsExclusive] = useState(false);
@@ -49,7 +49,7 @@ const BillingInfo = () => {
 
 
   interface SubscriptionHistoryItem {
-    id: string; 
+    id: string;
     orderId: string;
     paymentStatus: string;
     planName: string;
@@ -67,6 +67,8 @@ const BillingInfo = () => {
     planType: '',
   });
 
+  console.log(billingData);
+
   const [subscriptionHistory, setSubscriptionHistory] = useState<SubscriptionHistoryItem[]>([]);
 
   type BillingInfoData = {
@@ -81,7 +83,7 @@ const BillingInfo = () => {
     data?: any;
   };
 
-  
+
   const { data, error, isLoading } = useGetBillingInfoQuery() as {
     data: BillingInfoData;
     error: any;
@@ -92,7 +94,7 @@ const BillingInfo = () => {
     data: SubscriptionHistoryData;
     error: any;
     isLoading: boolean;
-};
+  };
 
   useEffect(() => {
     if (data?.success === true) {
@@ -104,10 +106,10 @@ const BillingInfo = () => {
 
   useEffect(() => {
     if (subscriptionHistoryData?.success) {
-      const historyWithId = subscriptionHistoryData.data.map((item: any,index:any) => ({
+      const historyWithId = subscriptionHistoryData.data.map((item: any, index: any) => ({
         ...item,
         serial: index + 1,
-        id: item.orderId, 
+        id: item.orderId,
       }));
       setSubscriptionHistory(historyWithId);
     }
@@ -116,17 +118,17 @@ const BillingInfo = () => {
 
 
   if (isLoading) return <div><Loading /></div>;
- if (error) return <div>Error loading billing info</div>;
+  if (error) return <div>Error loading billing info</div>;
 
 
 
 
   const columns = [
     {
-      field:"serial",
+      field: "serial",
       headerName: "S/N",
       width: 90,
-      
+
 
     },
     {
@@ -134,12 +136,12 @@ const BillingInfo = () => {
       headerName: "Order ID",
       width: 300,
       renderCell: (params: any) => (
-        <Typography color="#666CFF" fontWeight="bold" marginTop={"15px"}>
+        <Typography color="#000000" marginTop={"15px"}>
           #{params.value}
         </Typography>
       ),
     },
-    
+
     {
       field: "planName",
       headerName: "Plan Name",
@@ -188,10 +190,10 @@ const BillingInfo = () => {
     // },
   ];
 
-  
+
 
   return (
-   
+
 
     <div className="#BDC1CA">
       <div className="mb-10 flex flex-col items-center justify-between gap-8 rounded-lg bg-[#FFFFFF] md:flex-row md:p-10">
@@ -209,7 +211,7 @@ const BillingInfo = () => {
                 letterSpacing: "3%",
               }}
             >
-              Your Current Plan is {billingData?.currentPlan }
+              Your Current Plan is {billingData?.currentPlan}
             </h4>
             <p
               className="text-md text-[#4C4E64]"
@@ -228,8 +230,13 @@ const BillingInfo = () => {
                 letterSpacing: "3%",
               }}
             >
-              Active until {billingData?.expirationDate}        
-                  </h4>
+
+              {
+                billingData?.expirationDate === 'N/A' ? 'Active' : `Active until ${billingData?.expirationDate}`
+              }
+
+
+            </h4>
             <p
               className="text-md text-[#4C4E64]"
               style={{ lineHeight: "24px", letterSpacing: "0.15px" }}
@@ -246,13 +253,19 @@ const BillingInfo = () => {
                 letterSpacing: "3%",
               }}
             >
-              {billingData?.price} Per {billingData?.planType}
-              <strong
-                className="rounded-full bg-[#e9e9fc] p-2 px-2 text-sm text-[#666CFF]"
-                style={{ fontFamily: "Proxima-Nova-Regular, sans-serif" }}
-              >
-                Popular
-              </strong>
+
+              <>
+                {billingData?.price}
+                {billingData?.price !== 'Free' && ` Per ${billingData?.planType}`}
+              </>
+              {!isExclusive || billingData?.currentPlan === "Standard" &&
+                <strong
+                  className="rounded-full bg-[#e9e9fc] p-2 px-2 text-sm text-[#666CFF] ml-2"
+                  style={{ fontFamily: "Proxima-Nova-Regular, sans-serif" }}
+                >
+                  Popular
+                </strong>
+              }
             </h4>
             {/* <p
               className="text-md text-[#4C4E64]"
@@ -262,7 +275,7 @@ const BillingInfo = () => {
             </p> */}
           </div>
 
-          { isExclusive ? <div> </div>:<div>
+          {isExclusive ? <div> </div> : <div>
             <Button variant="contained" onClick={handleUpgradeClick} sx={{ backgroundColor: `${isExclusive ? '#8E69B4' : '#007EAF'}` }}>
               Upgrade Plan
             </Button>
@@ -270,46 +283,61 @@ const BillingInfo = () => {
 
           }
 
-          
+
         </div>
         <div className="w-[100%] px-2 xl:w-[50%]">
           <div className="text-[#FDB528]">
             {
-              billingData?.notification === true &&(
-              <Alert
-              message="We need your attention!"
-              description="Your plan requires update"
-              type="warning"
-              showIcon
-              icon={<CiWarning />}
-              closable
-            />
-             )
+              billingData?.notification === true && (
+                <Alert
+                  message="We need your attention!"
+                  description="Your plan requires update"
+                  type="warning"
+                  showIcon
+                  icon={<CiWarning />}
+                  closable
+                />
+              )
             }
 
-           
-          </div>
-          <div className="mb-4 mt-4">
-            <div className="flex justify-between font-bold text-[#4C4E64]">
-              <h4>Days</h4>
-              <h4>{billingData?.remainingDays} of {billingData?.totalDays} days</h4>
-            </div>
-            <div className="mb-2 mt-2">
-              <LinearProgress variant="determinate" value={(Number(billingData?.remainingDays) / Number(billingData?.totalDays)) * 100} />
-            </div>
 
-            <p>{billingData?.remainingDays} days remaining until your plan requires update</p>
           </div>
+          {billingData?.currentPlan === "Standard" ? <div></div> :  (
+            <div className="mb-4 mt-4">
+              <div className="flex justify-between font-bold text-[#4C4E64]">
+                <h4>Days</h4>
+                <h4>
+                  {billingData?.remainingDays} of {billingData?.totalDays} days
+                </h4>
+              </div>
+              <div className="mb-2 mt-2">
+                <LinearProgress
+                  variant="determinate"
+                  value={
+                    (Number(billingData?.remainingDays) / Number(billingData?.totalDays)) * 100
+                  }
+                />
+              </div>
+              <p>
+                {billingData?.remainingDays} days remaining until your plan requires update
+              </p>
+            </div>
+          )
+          
+          
+          }
+
+
         </div>
       </div>
 
       <div className="rounded-lg bg-[#FFFFFF]">
         {
           isExclusive ? <div></div> : <div className="flex justify-end p-4">
-          <Button variant="contained" onClick={handleUpgradeClick} sx={{ backgroundColor: `${isExclusive ? '#8E69B4' : '#007EAF'}` }}>
-            Upgrade Plan
-          </Button>
-        </div>
+            <Button variant="contained" onClick={handleUpgradeClick} sx={{ backgroundColor: `${isExclusive ? '#8E69B4' : '#007EAF'}` }}>
+              Upgrade Plan
+            </Button>
+          </div>
 
         }
         <div>
@@ -333,6 +361,7 @@ const BillingInfo = () => {
             rows={subscriptionHistory}
             disableColumnResize
             columns={columns}
+
           />
         </div>
       </div>

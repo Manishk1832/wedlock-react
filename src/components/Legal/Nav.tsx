@@ -8,6 +8,8 @@ const sections = [
   { title: "PRIVACY", links: "/privacy-policy" },
   { title: "COOKIES POLICY", links: "/cookies-policy" },
   { title:"Services",links:"/services"},
+  { title:"Child Safety", links:"/child-safety-policy"},
+  {title:"Delete Account",links:"/delete-account"}
 ];
 
 interface activeSectionProps {

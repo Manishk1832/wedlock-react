@@ -148,7 +148,7 @@ const OtherDetails = () => {
             Other Details
           </h1>
           <p className="text-sm leading-6 xl:text-xl">
-            Including additional details enriches your profile, making it easier to find meaningful and compatible connections.
+            Including additional details enriches your profile, making it easier to find meaningful and compatible connections
           </p>
         </div>
         <form
@@ -161,9 +161,11 @@ const OtherDetails = () => {
               <select
                 {...register("religion")}
                 className="h-10 w-full rounded border bg-[#F9F5FFE5] p-2 text-[#838E9E]"
-              
-           
+                defaultValue={""}
               >
+                <option value="" disabled>
+                Select Religion
+                </option>
                {
                 religion.map((religion) => (
                   <option value={religion.value} key={religion.id} >
@@ -188,7 +190,7 @@ const OtherDetails = () => {
                 className="h-10 w-full rounded border bg-[#F9F5FFE5] p-2 text-[#838E9E]"
               >
                 <option value="" disabled selected>
-                  select community
+                Select Community
                 </option>
                 {community.map((community) => (
                   <option value={community.value} key={community.id}>
@@ -246,9 +248,10 @@ const OtherDetails = () => {
               <select
                 {...register("caste")}
                 className="h-10 w-full rounded border bg-[#F9F5FFE5] p-2 text-[#838E9E]"
+                defaultValue={""}
               >
                 <option value="" disabled>
-                  Caste
+                 Select caste
                 </option>
                 {caste.map((caste) => (
                   <option value={caste.value} key={caste.id}>
@@ -272,7 +275,7 @@ const OtherDetails = () => {
               <input
                 type="text"
                 {...register("placeOfBirth")}
-                placeholder="Place"
+                placeholder="Enter your place of birth"
                 className="h-10 w-full rounded border bg-[#F9F5FFE5] p-2 text-[#838E9E]"
               />
               {errors.placeOfBirth && (
@@ -284,7 +287,7 @@ const OtherDetails = () => {
           </div>
 
           {/* Submit Button */}
-          <div className="md:col-span-2 flex justify-end">
+          <div className="md:col-span-2 flex justify-end mb-5">
             <button
               type="submit"
               className={`w-full rounded-[0.5rem] bg-[#F9F5FFE5] px-4 py-2 ${isExclusive ? 'text-[#60457E]' : 'text-[#007EAF]'}

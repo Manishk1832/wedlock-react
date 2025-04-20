@@ -147,7 +147,7 @@ const Verification = () => {
           <h1 className="text-4xl font-bold">Verification code</h1>
           <p className="mt-4 md:text-lg text-center">
             Enter verification code which is sent to your email <br /> address
-            and you verify
+            and  verify
           </p>
         </div>
 

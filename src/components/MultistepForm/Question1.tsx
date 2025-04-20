@@ -1,7 +1,5 @@
 import React from "react";
 
-
-
 const questions = [
   {
     id: 1,
@@ -23,39 +21,37 @@ type QuestionProps = {
 };
 
 
-const Question1 : React.FC<QuestionProps> = ({ selectedOptions, handleOptionChange }) => {
-
-
+const Question1: React.FC<QuestionProps> = ({ selectedOptions, handleOptionChange }) => {
   return (
-    <div>
+    <div className="flex flex-col gap-6 py-4">
       {questions.map((question) => (
-        <div key={question.id} className="my-2">
-          <h2 className="w-full text-left text-2xl font-bold md:text-center md:text-4xl mb-4">
-            {question.text}
-          </h2>
-
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3  md:w-auto py-4">
-            {question.options.map((option, index) => (
-            <label
-            key={index}
-            className={`flex items-center justify-between  rounded-xl text-sm h-10 cursor-pointer px-6 ${
-              selectedOptions.some(
+        <div key={question.id}>
+          <p className="font-Proxima-Nova-SemiBold text-white w-full  text-2xl   md:text-3xl mb-4">{question.text}</p>
+          <div className="flex flex-wrap gap-4 py-2">
+            {question.options.map((option, index) => {
+              const isSelected = selectedOptions.some(
                 (sel) => sel.questionId === question.id && sel.answerValue === option
-              )
-                ? "bg-white text-[#007EAF] h-12"
-                : "bg-[#FFFFFF80] text-white"
-            }`}
-          >
-                {option} 
-                <input
-                  type="checkbox"
-                  className="ml-2 w-4 h-4 "
-                  checked={selectedOptions.some(
-                    (sel) => sel.questionId === question.id && sel.answerValue === option
-                  )}  onChange={() => handleOptionChange(question.id, option)}
+              );
+
+              return (
+                <label
+                  key={index}
+                  htmlFor={`option-${question.id}-${index}`}
+                  className={`flex items-center justify-between w-full md:w-[150px] rounded-xl text-sm h-10 cursor-pointer px-6 transition-all  ${
+                    isSelected ? "bg-white text-[#007EAF]" : "bg-[#FFFFFF80] text-white"
+                  }`}
+                >
+                  {option}
+                  <input
+                    id={`option-${question.id}-${index}`}
+                    type="checkbox"
+                    className="ml-2 w-4 h-4"
+                    checked={isSelected}
+                    onChange={() => handleOptionChange(question.id, option)}
                   />
-              </label>
-            ))}
+                </label>
+              );
+            })}
           </div>
         </div>
       ))}

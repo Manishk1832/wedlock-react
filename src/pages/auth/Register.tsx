@@ -97,9 +97,10 @@ const register = () => {
         <div className="bg-white flex items-center justify-center rounded-md w-10 h-10">
           <img src="/star.png" alt="Star"  />
         </div>
-        <div className="flex flex-col items-center justify-center text-white mt-4">
+        <div className="flex flex-col items-center justify-center text-white mt-4 text-center">
           <h1 className="text-4xl font-bold">Create an account</h1>
-          <p className="mt-4 md:text-xl">Start your free 30-day trial. Cancel at any time.</p>
+          <p className="mt-4 md:text-xl">By tapping the button, you agree to our  Terms. Learn  how we  process <br className='hidden md:block'/> your data  in our Privacy Policy and Cookie Policy.
+          </p>
         </div>
       </div>
 

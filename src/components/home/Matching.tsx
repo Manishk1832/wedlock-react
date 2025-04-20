@@ -1,39 +1,34 @@
 import {FaStar} from "react-icons/fa";
-import {FiMic} from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import {PiChatsBold} from "react-icons/pi";
+
 import '../../font.css';
 
 const Matching = () => {
     const navigate = useNavigate();
     return (
-        <div className="bg-[#DCD1E8] bg-gradient-to-bl from-[white] to-[#DCD1E8]    relative w-100 py-5 md:py-12 ">
+        <div className="bg-[#DCD1E8] bg-gradient-to-bl from-[white] to-[#DCD1E8]     relative w-100   ">
 
-            <div className="container  m-auto max-md:px-4">
-            <div className="bg-[url('/shadow.png')] -rotate-342 absolute w-[80rem] h-[100%]  top-0 right-0  sm:hidden hidden "></div>
+            <div className="relative overflow-hidden px-5 sm:px-20   container m-auto space-y-6  py-5 md:py-12">
+            <div className="bg-[url('/shadow.png')] -rotate-342 absolute w-[80rem] h-[100%]  top-0 right-0  sm:hidden hidden  "></div>
             <img
                 src="/curve.png"
                 alt="arw"
                 className="absolute w-[50%] left-[50%] "
             
             />
-            <div className="container max-md:py-0 ">
+            <div className=" flex   flex-col  justify-between w-full">
 
             <div
-                className="text-[#60457E]   sm:px-20 z-20  container  w-100 3xl:px-28  4xl:px-24 xl:pb-16 pb-8 3xl:px-28 2xl:px-24">
-
-                <h1 className=" text-[32px] md:text-[48px] xl:text-[64px]  xl:leading-[83.2px] font-[Proxima-Nova-Bold] tracking-[-0.02em]  text-[#4E3A63] ">Exclusive
+                className="text-[#60457E] w-100  ">
+                <h1 className="font-Proxima-Nova-Bold text-h2-mobile md:text-h2-desktop text-[#4E3A63] ">Exclusive
                     matchmaking</h1>
-
-                <p className="text-[20px] max-md:pt-10 pt-8 sm:text-[24px] md:text-[21px]  md:text-start  xl:text-[28px]  text-[#475467] ">
+                <p className="text-[20px]  font-Proxima-Nova-Light sm:text-[16px] md:text-[20px] lg:text-[24px]     xl:text-[28px] pt-[21px] leading-[30px] sm:leading-[10px] md:leading-[24px] lg:leading-[28px] xl:leading-[42px] md:text-start mr-1 ">
                 Our Exclusive Matchmaking service is designed for exceptional individuals who prioritise meaningful, long-term relationships. Whether you're ready to find your life partner or are looking for someone who shares your vision of a future together, our approach is tailored to your unique needs.
-
                 </p>
             </div>
 
 
-            <div
-                className="lg:flex container m-auto    justify-between  items-center  sm:w-[87%] w-100  gap-44     bg-[#60457E] rounded-3xl px-4 lg:px-12 py-5 md:py-10 opacity-95	">
+            <div className="lg:flex m-auto mt-9 justify-between items-center w-full max-w-[1200px] gap-12 bg-[#60457E] rounded-3xl px-4 lg:px-12 py-5 md:py-10 opacity-95">
  
                 <div className="relative  h-full flex justify-center items-center lg:w-1/2 ">
                     <div className="">
@@ -54,33 +49,33 @@ const Matching = () => {
                             <h1 className="lg:text-xl text-sm font-[Proxima-Nova-semiBold] ">Get access to Exclusive profiles</h1>
                         </div>
                         <div className="flex items-center gap-5 rounded-xl bg-[#FFFFFF80] lg:w-96 h-10 px-2 md:px-5">
-                            <FiMic className="text-2xl text-[#007EAF] "/>
+                        <FaStar className="text-2xl text-yellow-400 "/>
                             <h1 className="lg:text-xl text-sm font-[Proxima-Nova-semiBold] ">Personalised matchmaking</h1>
                         </div>
                         <div className="flex items-center gap-5 rounded-xl bg-[#FFFFFF80] lg:w-96 h-10 px-2 md:px-5">
-                            <PiChatsBold className="md:text-2xl text-lg text-[#008435] "/>
+                        <FaStar className="text-2xl text-yellow-400 "/>
                             <h1 className="lg:text-xl text-sm font-[Proxima-Nova-semiBold] ">
                          Control over privacy and visibility
                          </h1>
                         </div>
                         <div className="flex items-center gap-5 rounded-xl bg-[#FFFFFF80] lg:w-96 h-10 px-2  md:px-5">
-                            <PiChatsBold className="md:text-2xl text-lg text-[#008435] "/>
+                        <FaStar className="text-2xl text-yellow-400 "/>
                             <h1 className="lg:text-xl text-sm font-[Proxima-Nova-semiBold] ">
                             Personality assessments
                              </h1>
                         </div>
                         <div className="flex items-center gap-5 rounded-xl bg-[#FFFFFF80] lg:w-96 h-10 px-2 md:px-5">
-                            <PiChatsBold className="md:text-2xl text-lg text-[#008435] "/>
+                        <FaStar className="text-2xl text-yellow-400 "/>
                             <h1 className="lg:text-xl text-sm font-[Proxima-Nova-semiBold] ">
                             Top-tier profile visibility
                             </h1>
                         </div>
 
                     </div>
-                    <div className="flex items-center justify-between  gap-2">
+                    <div className="flex items-center justify-center md:justify-between  gap-2">
                         <button
                             onClick={ ()=>{navigate("/exclusive")} }
-                            className="flex items-center justify-center px-4 text-white bg-[#3C2C4C] rounded-full md:w-60 lg:h-16 h-10  ">
+                            className="flex items-center justify-center px-4 text-[#3C2C4C] bg-[white] rounded-full md:w-60 lg:h-16 h-10  ">
                             <p className="text-sm md:text-lg font-[Proxima-Nova-SemiBold]">Check your eligibility
                             </p>
                         </button>
